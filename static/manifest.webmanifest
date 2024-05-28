@@ -1,10 +1,10 @@
 {
-  "name": "Rutina FST-7",
-  "short_name": "fst-7",
-  "description": "Rutina FST-7",
+  "name": "Mikhan's Gym Trainer",
+  "short_name": "Gym Trainer",
+  "description": "Mikhan's Gym Trainer",
   "icons": [
     {
-      "src": "https://cdn.glitch.global/a347e4f2-3a6c-43b8-ab57-47eb10ed5016/favicon.svg?v=1716275545847",
+      "src": "/favicon.svg",
       "sizes": "144x144",
       "type": "image/svg"
     }
