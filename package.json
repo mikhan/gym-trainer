@@ -12,6 +12,10 @@
     "format": "prettier --write ."
   },
   "devDependencies": {
+    "@fontsource-variable/quicksand": "^5.0.18",
+    "@fortawesome/free-brands-svg-icons": "^6.5.2",
+    "@fortawesome/free-regular-svg-icons": "^6.5.2",
+    "@fortawesome/free-solid-svg-icons": "^6.5.2",
     "@sveltejs/adapter-auto": "^3.0.0",
     "@sveltejs/kit": "^2.0.0",
     "@sveltejs/vite-plugin-svelte": "^3.0.0",
@@ -25,6 +29,7 @@
     "prettier-plugin-svelte": "^3.1.2",
     "svelte": "^5.0.0-next.1",
     "svelte-check": "^3.6.0",
+    "svelte-fa": "^4.0.2",
     "tslib": "^2.4.1",
     "typescript": "^5.0.0",
     "vite": "^5.0.3"

@@ -1,0 +1,16 @@
+@import '@fontsource-variable/quicksand';
+
+* {
+  box-sizing: border-box;
+}
+
+:root {
+  color-scheme: dark;
+  /* overflow-y: scroll; */
+  background-color: hsl(0, 0%, 17%);
+}
+
+body {
+  margin: 0;
+  font-family: 'Quicksand Variable', sans-serif;
+}
