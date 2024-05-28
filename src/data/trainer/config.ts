@@ -1,11 +1,3 @@
-import pechoImage from './images/pecho.webp'
-import espaldaImage from './images/espalda.webp'
-import hombroImage from './images/hombro.webp'
-import bicepsImage from './images/biceps.webp'
-import tricepsImage from './images/triceps.webp'
-import piernasImage from './images/piernas.webp'
-import abdomenImage from './images/abdomen.webp'
-
 export type MuscleGroup = {
   id: string
   name: string
@@ -38,43 +30,43 @@ export function getMuscleGroups(): MuscleGroup[] {
       id: 'pecho',
       name: 'Pecho',
       color: { hue: '0' },
-      image: { src: pechoImage },
+      image: { src: '/muscle-groups/pecho.webp' },
     },
     {
       id: 'espalda',
       name: 'Espalda',
       color: { hue: '45' },
-      image: { src: espaldaImage },
+      image: { src: '/muscle-groups/espalda.webp' },
     },
     {
       id: 'hombro',
       name: 'Hombro',
       color: { hue: '90' },
-      image: { src: hombroImage },
+      image: { src: '/muscle-groups/hombro.webp' },
     },
     {
       id: 'bicep',
       name: 'Bícep',
       color: { hue: '135' },
-      image: { src: bicepsImage },
+      image: { src: '/muscle-groups/biceps.webp' },
     },
     {
       id: 'tricep',
       name: 'Trícep',
       color: { hue: '180' },
-      image: { src: tricepsImage },
+      image: { src: '/muscle-groups/triceps.webp' },
     },
     {
       id: 'pierna',
       name: 'Pierna',
       color: { hue: '225' },
-      image: { src: piernasImage },
+      image: { src: '/muscle-groups/piernas.webp' },
     },
     {
       id: 'abdomen',
       name: 'Abdomen',
       color: { hue: '270' },
-      image: { src: abdomenImage },
+      image: { src: '/muscle-groups/abdomen.webp' },
     },
   ]
 }

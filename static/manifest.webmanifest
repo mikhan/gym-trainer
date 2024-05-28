@@ -1,0 +1,16 @@
+{
+  "name": "Rutina FST-7",
+  "short_name": "fst-7",
+  "description": "Rutina FST-7",
+  "icons": [
+    {
+      "src": "https://cdn.glitch.global/a347e4f2-3a6c-43b8-ab57-47eb10ed5016/favicon.svg?v=1716275545847",
+      "sizes": "144x144",
+      "type": "image/svg"
+    }
+  ],
+  "start_url": "/index.html",
+  "display": "fullscreen",
+  "theme_color": "#2b2b2b",
+  "background_color": "#2b2b2b"
+}

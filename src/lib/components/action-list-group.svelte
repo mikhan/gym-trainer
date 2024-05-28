@@ -29,7 +29,8 @@
     width: fit-content;
     padding: 0 1rem;
     height: 20px;
-    align-content: center;
+    display: grid;
+    place-items: center;
     font-size: 12px;
     font-weight: bold;
     letter-spacing: 1px;
