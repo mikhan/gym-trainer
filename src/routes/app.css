@@ -5,12 +5,46 @@
 }
 
 :root {
-  color-scheme: dark;
-  /* overflow-y: scroll; */
-  background-color: hsl(0, 0%, 17%);
-}
+  --color-primary-hue: 135;
+  --color-accent-hue: 175;
+  --color-neutral-hue: 265;
 
-body {
-  margin: 0;
-  font-family: 'Quicksand Variable', sans-serif;
+  --layout-gap: 8px;
+
+  --card-roundness: 6px;
+
+  --surface-canvas-bg: oklch(28% 0.01 var(--color-neutral-hue));
+  --surface-canvas-hover: oklch(48% 0.01 var(--color-neutral-hue));
+  --surface-canvas-border: oklch(80% 0.01 var(--color-neutral-hue));
+  --surface-canvas-fg: oklch(80% 0.01 var(--color-neutral-hue));
+
+  --surface-1-bg: oklch(37% 0.02 var(--color-neutral-hue));
+  --surface-1-hover: oklch(42% 0.02 var(--color-neutral-hue));
+  --surface-1-border: oklch(85% 0.02 var(--color-neutral-hue));
+  --surface-1-fg: oklch(85% 0.02 var(--color-neutral-hue));
+
+  --surface-2-bg: oklch(47% 0.02 var(--color-neutral-hue));
+  --surface-2-hover: oklch(52% 0.02 var(--color-neutral-hue));
+  --surface-2-border: oklch(95% 0.02 var(--color-neutral-hue));
+  --surface-2-fg: oklch(95% 0.02 var(--color-neutral-hue));
+
+  --surface-popover-bg: oklch(20% 0.01 var(--color-neutral-hue));
+  --surface-popover-hover: oklch(29% 0.02 var(--color-neutral-hue));
+  --surface-popover-border: oklch(80% 0.05 var(--color-neutral-hue));
+  --surface-popover-fg: oklch(80% 0.05 var(--color-neutral-hue));
+
+  --surface-primary-bg: oklch(56% 0.15 var(--color-primary-hue));
+  --surface-primary-hover: oklch(61% 0.15 var(--color-primary-hue));
+  --surface-primary-border: oklch(95% 0.05 var(--color-primary-hue));
+  --surface-primary-fg: oklch(95% 0.05 var(--color-primary-hue));
+
+  --surface-accent-bg: oklch(56% 0.15 var(--color-accent-hue));
+  --surface-accent-hover: oklch(61% 0.15 var(--color-accent-hue));
+  --surface-accent-border: oklch(76% 0.05 var(--color-accent-hue));
+  --surface-accent-fg: oklch(95% 0.05 var(--color-accent-hue));
+
+  --shadow-base: 0 2px 3px hsl(0 0% 0% / 20%), 0 4px 6px hsl(0 0% 0% / 20%);
+  --shadow-over: 0 4px 6px hsl(0 0% 0% / 20%), 0 20px 30px hsl(0 0% 0% / 30%);
+
+  --focus-color: oklch(56% 1.55 108);
 }

@@ -23,22 +23,31 @@ let trainerViewportContext: TrainerViewportContext | null = null
 export function createTrainerViewportContext(): TrainerViewportContext {
   if (trainerViewportContext) return trainerViewportContext
 
-  const actionContexts = new Map<Action, object>()
+  const actionContexts: Action[] = []
   const currentAction$ = signal<Action | undefined>()
 
   trainerViewportContext = {
     currentAction$,
     getActions() {
-      return Array.from(actionContexts.keys())
+      return actionContexts
     },
     setCurrentAction(action: Action) {
       currentAction$.set(action)
     },
     addAction(action) {
-      actionContexts.set(action, {})
+      actionContexts.push(action)
+
+      if (typeof currentAction$.get() === 'undefined') {
+        currentAction$.set(action)
+      }
     },
     removeAction(action) {
-      actionContexts.delete(action)
+      const index = actionContexts.indexOf(action)
+      actionContexts.splice(index, 1)
+
+      if (currentAction$.get() === action) {
+        currentAction$.set(actionContexts[index])
+      }
     },
   }
 

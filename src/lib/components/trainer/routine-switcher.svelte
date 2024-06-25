@@ -1,0 +1,89 @@
+<script lang="ts">
+  import type { Routine } from '$data/trainer/trainings'
+
+  type Props = {
+    routines: Routine[]
+    currentRoutineId: string | undefined
+  }
+
+  let { routines, currentRoutineId = $bindable() }: Props = $props()
+  let currentRoutine = $derived(routines.find(({ id }) => id === currentRoutineId))
+</script>
+
+<button class="menu-anchor" type="button" popovertarget="routine-switcher">
+  {currentRoutine?.name}
+</button>
+<ul class="menu" id="routine-switcher" popover="auto">
+  {#each routines as routine}
+    <li>
+      <button
+        class="menu-item"
+        class:active={currentRoutineId === routine.id}
+        type="button"
+        onclick={() => (currentRoutineId = routine.id)}
+        popovertarget="routine-switcher">{routine.name}</button
+      >
+    </li>
+  {/each}
+</ul>
+
+<style lang="postcss">
+  button {
+    padding: 0 16px;
+    height: 40px;
+    text-align: left;
+  }
+
+  .menu-anchor {
+    anchor-name: --routine-switcher;
+    background-color: var(--surface-2-bg);
+    color: var(--surface-2-fg);
+    min-width: 20ch;
+    border-radius: var(--card-roundness);
+    transition: background-color 150ms;
+
+    &:hover {
+      background-color: var(--surface-2-hover);
+    }
+  }
+
+  .menu {
+    gap: 4px;
+    position: fixed;
+    position-anchor: --routine-switcher;
+    inset-area: bottom span-right;
+    margin: 0;
+    padding: 16px 0;
+    min-width: anchor-size(inline);
+    border: none;
+    border-radius: var(--card-roundness);
+    background-color: color-mix(in oklch, var(--surface-popover-bg) 85%, transparent);
+    backdrop-filter: blur(8px);
+    color: var(--surface-popover-fg);
+    box-shadow: var(--shadow-over);
+
+    &:popover-open {
+      display: grid;
+    }
+  }
+
+  .menu-item {
+    flex: 1 1 auto;
+    width: 100%;
+    color: var(--surface-2-fg);
+    outline-offset: -2px;
+
+    &:hover {
+      background-color: var(--surface-popover-hover);
+    }
+
+    &.active {
+      background-color: var(--surface-accent-bg);
+      color: var(--surface-accent-fg);
+
+      &:hover {
+        background-color: var(--surface-accent-hover);
+      }
+    }
+  }
+</style>
