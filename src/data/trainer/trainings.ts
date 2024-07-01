@@ -1,4 +1,4 @@
-import { getItem } from '$lib/services/storage/storage.local'
+// import { getItem } from '$lib/services/storage/storage.local'
 import seeds from './seeds.json'
 
 export type Training = {
@@ -26,8 +26,11 @@ export type Step = {
   delay: number
 }
 
+let trainings: Training[]
+
 export function getTrainings(): Training[] {
-  return getItem('trainer.trainings', createDefault)
+  // return getItem('trainer.trainings', createDefault)
+  return (trainings ??= createDefault())
 }
 
 function createDefault(): Training[] {

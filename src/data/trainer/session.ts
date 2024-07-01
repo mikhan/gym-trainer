@@ -1,4 +1,4 @@
-import { getItem, setItem } from '$lib/services/storage/storage.local'
+import { setItem } from '$lib/services/storage/storage.local'
 import { getTrainings } from './trainings'
 
 export type Session = {
@@ -6,8 +6,11 @@ export type Session = {
   currentRoutineId: string | undefined
 }
 
+let session: Session
+
 export function getSession(): Session {
-  return getItem('trainer.session', createDefault)
+  // return getItem('trainer.session', createDefault)
+  return (session ??= createDefault())
 }
 
 export function setSession(session: Session) {
@@ -18,7 +21,7 @@ function createDefault(): Session {
   const trainings = getTrainings()
 
   return {
-    currentTrainingId: trainings[0].id,
-    currentRoutineId: trainings[0].routines[0].id,
+    currentTrainingId: trainings[1].id,
+    currentRoutineId: trainings[1].routines[0].id,
   }
 }

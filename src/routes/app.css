@@ -15,7 +15,7 @@
 
   --surface-canvas-bg: oklch(28% 0.01 var(--color-neutral-hue));
   --surface-canvas-hover: oklch(48% 0.01 var(--color-neutral-hue));
-  --surface-canvas-border: oklch(80% 0.01 var(--color-neutral-hue));
+  --surface-canvas-border: oklch(38% 0.01 var(--color-neutral-hue));
   --surface-canvas-fg: oklch(80% 0.01 var(--color-neutral-hue));
 
   --surface-1-bg: oklch(37% 0.02 var(--color-neutral-hue));
@@ -43,8 +43,142 @@
   --surface-accent-border: oklch(76% 0.05 var(--color-accent-hue));
   --surface-accent-fg: oklch(95% 0.05 var(--color-accent-hue));
 
-  --shadow-base: 0 2px 3px hsl(0 0% 0% / 20%), 0 4px 6px hsl(0 0% 0% / 20%);
-  --shadow-over: 0 4px 6px hsl(0 0% 0% / 20%), 0 20px 30px hsl(0 0% 0% / 30%);
+  --shadow-base: 0px 1px 0px hsl(0 0% 0% / 30%),
+    1px 2px 4px oklch(18% 0.01 var(--color-neutral-hue) / 20%);
+  --shadow-over: 0px 4px 6px hsl(0 0% 0% / 20%), 0px 20px 30px hsl(0 0% 0% / 30%);
 
   --focus-color: oklch(56% 1.55 108);
+}
+
+html {
+  color-scheme: dark;
+  font-family: 'Quicksand Variable', sans-serif;
+  background-color: var(--surface-canvas-bg);
+  color: var(--surface-canvas-fg);
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  height: 100vh;
+}
+
+button {
+  background: none;
+  border: none;
+  padding: 0;
+  margin: 0;
+  color: inherit;
+  font-family: inherit;
+  font-size: inherit;
+}
+
+:where(button, input, .focusable) {
+  &:focus-visible {
+    outline: 2px solid var(--focus-color);
+    outline-offset: -2px;
+  }
+}
+
+.scrollable {
+  overflow-y: auto;
+  max-height: 100%;
+
+  @media (pointer: fine) {
+    --scrollbar-size: 16px;
+    --scrollbar-track-color: transparent;
+    --scrollbar-thumb-color: color-mix(in oklch, currentColor 25%, transparent);
+    --scrollbar-thumb-size: 2px;
+
+    &:hover {
+      --scrollbar-thumb-color: color-mix(in oklch, currentColor 50%, transparent);
+      --scrollbar-thumb-size: 4px;
+    }
+
+    &::-webkit-scrollbar {
+      width: var(--scrollbar-size);
+      height: var(--scrollbar-size);
+      background-color: var(--scrollbar-track-color);
+    }
+
+    &::-webkit-scrollbar-corner {
+      background-color: var(--scrollbar-track-color);
+    }
+
+    &::-webkit-scrollbar-thumb {
+      border: calc(calc(var(--scrollbar-size) - var(--scrollbar-thumb-size)) / 2) solid transparent;
+      border-radius: calc(var(--scrollbar-size) / 2);
+      background-color: var(--scrollbar-thumb-color);
+      background-clip: content-box;
+      transition: border-width 250ms;
+    }
+  }
+}
+
+.scrollable-shadow {
+  --scrollable-shadow-size: 3rem;
+  --scrollable-shadow-color: hsl(0 0 0 / 40%);
+  display: grid;
+  grid-template-rows: auto 1fr auto;
+  align-items: flex-start;
+
+  &::before,
+  &::after {
+    content: '';
+    display: block;
+    position: sticky;
+    height: var(--scrollable-shadow-size);
+    background-color: inherit;
+    pointer-events: none;
+    margin-block-start: calc(var(--scrollable-shadow-size) * -1);
+    animation-timeline: scroll();
+    opacity: 0;
+    z-index: 1;
+  }
+
+  &::before {
+    top: 0;
+    animation-name: fade-in;
+    background-image: radial-gradient(
+      farthest-side at top center,
+      var(--scrollable-shadow-color),
+      transparent
+    );
+    mask-image: linear-gradient(to bottom, black, transparent);
+  }
+
+  &::after {
+    bottom: 0;
+    animation-name: fade-out;
+    background-image: radial-gradient(
+      farthest-side at bottom center,
+      var(--scrollable-shadow-color),
+      transparent
+    );
+    mask-image: linear-gradient(to top, black, transparent);
+  }
+}
+
+@keyframes fade-in {
+  0% {
+    opacity: 0;
+  }
+  75% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+@keyframes fade-out {
+  0% {
+    opacity: 1;
+  }
+  75% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
 }

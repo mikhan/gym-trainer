@@ -63,6 +63,24 @@ export function getMuscleGroups(): MuscleGroup[] {
       image: { src: '/muscle-groups/piernas.webp' },
     },
     {
+      id: 'cuadricep',
+      name: 'Cuadrícep',
+      color: { hue: '225' },
+      image: { src: '/muscle-groups/piernas.webp' },
+    },
+    {
+      id: 'femoral',
+      name: 'Femoral',
+      color: { hue: '225' },
+      image: { src: '/muscle-groups/piernas.webp' },
+    },
+    {
+      id: 'pantorrilla',
+      name: 'Pantorrilla',
+      color: { hue: '225' },
+      image: { src: '/muscle-groups/piernas.webp' },
+    },
+    {
       id: 'abdomen',
       name: 'Abdomen',
       color: { hue: '270' },

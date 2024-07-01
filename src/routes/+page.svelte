@@ -17,12 +17,10 @@
   })
 
   function pickCurrentTraining(trainings?: Training[], currentTrainingId?: string) {
-    if (currentTrainingId) return trainings?.find(({ id }) => (id = currentTrainingId))
+    if (currentTrainingId) return trainings?.find(({ id }) => id === currentTrainingId)
   }
 </script>
 
 {#if routines}
   <TrainerViewport {routines} bind:currentRoutineId></TrainerViewport>
 {/if}
-
-<style lang="postcss"></style>

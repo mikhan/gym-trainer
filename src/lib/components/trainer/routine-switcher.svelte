@@ -1,5 +1,6 @@
 <script lang="ts">
   import type { Routine } from '$data/trainer/trainings'
+  import UiMenu from '../ui/ui-menu.svelte'
 
   type Props = {
     routines: Routine[]
@@ -13,7 +14,7 @@
 <button class="menu-anchor" type="button" popovertarget="routine-switcher">
   {currentRoutine?.name}
 </button>
-<ul class="menu" id="routine-switcher" popover="auto">
+<UiMenu id="routine-switcher">
   {#each routines as routine}
     <li>
       <button
@@ -25,7 +26,7 @@
       >
     </li>
   {/each}
-</ul>
+</UiMenu>
 
 <style lang="postcss">
   button {
@@ -44,26 +45,6 @@
 
     &:hover {
       background-color: var(--surface-2-hover);
-    }
-  }
-
-  .menu {
-    gap: 4px;
-    position: fixed;
-    position-anchor: --routine-switcher;
-    inset-area: bottom span-right;
-    margin: 0;
-    padding: 16px 0;
-    min-width: anchor-size(inline);
-    border: none;
-    border-radius: var(--card-roundness);
-    background-color: color-mix(in oklch, var(--surface-popover-bg) 85%, transparent);
-    backdrop-filter: blur(8px);
-    color: var(--surface-popover-fg);
-    box-shadow: var(--shadow-over);
-
-    &:popover-open {
-      display: grid;
     }
   }
 

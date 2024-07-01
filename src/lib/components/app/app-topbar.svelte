@@ -1,21 +1,14 @@
 <script lang="ts">
-  import type { Snippet } from 'svelte'
+  import { onDestroy, type Snippet } from 'svelte'
+  import { getAppTopbarContext } from './app-topbar-context.svelte'
 
   type Props = { children?: Snippet }
 
   let { children }: Props = $props()
+
+  const appTopbarContext = getAppTopbarContext()
+
+  if (children) appTopbarContext.addTitle(children)
+
+  onDestroy(() => children && appTopbarContext.removeTitle(children))
 </script>
-
-<div class="app-topbar">
-  {#if children}
-    {@render children()}
-  {/if}
-</div>
-
-<style lang="postcss">
-  .app-topbar {
-    display: flex;
-    min-height: 40px;
-    box-shadow: var(--card-shadow);
-  }
-</style>

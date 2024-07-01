@@ -37,17 +37,15 @@
   })
 </script>
 
-<div class="action-list-entry" class:active style:--color-hue={action.group.color.hue}>
+<div class="action-list-entry" class:active>
   <button class="entry-item" onclick={setActive}>
-    <div class="entry-item-name">{action.name}</div>
+    {action.name}
   </button>
-  <!-- <button class="entry-active-switcher focusable" class:active onclick={setActive}></button> -->
 </div>
 
 <style lang="postcss">
   .action-list-entry {
     scroll-snap-align: start;
-    scroll-margin-block-start: calc(var(--layout-gap) + 1.5rem + var(--layout-gap));
     display: grid;
     grid-template-columns: 1fr min-content;
     background-color: var(--surface-1-bg);
@@ -74,47 +72,5 @@
     text-align: start;
     gap: 8px;
     padding: 0.5rem 1rem;
-  }
-
-  .entry-item-name {
-    font-size: 90%;
-  }
-
-  .entry-active-switcher {
-    display: grid;
-    place-items: center;
-    width: 40px;
-    height: 40px;
-    border: none;
-    background-color: transparent;
-    border-radius: 100%;
-
-    &.active {
-      &::after {
-        opacity: 1;
-      }
-    }
-
-    &::before {
-      content: '';
-      display: block;
-      width: 20px;
-      height: 20px;
-      border: 2px solid var(--surface-accent-border);
-      border-radius: 100%;
-      grid-area: 1 / -1;
-    }
-
-    &::after {
-      content: '';
-      display: block;
-      width: 12px;
-      height: 12px;
-      border-radius: 100%;
-      grid-area: 1 / -1;
-      background-color: var(--surface-accent-border);
-      opacity: 0;
-      transition: opacity 250ms;
-    }
   }
 </style>

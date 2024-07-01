@@ -5,10 +5,8 @@
   import RoutineSwitcher from './routine-switcher.svelte'
   import { type Routine } from '$data/trainer/trainings'
   import ActionCurrent from './action-current.svelte'
-  import TrainerTimer from './trainer-timer.svelte'
+  // import TrainerTimer from './trainer-timer.svelte'
   import AppTopbar from '../app/app-topbar.svelte'
-
-  let viewportRoot: HTMLElement
 
   type Props = {
     routines: Routine[]
@@ -27,12 +25,13 @@
   }
 </script>
 
-<div class="trainer-viewport" bind:this={viewportRoot}>
-  <AppTopbar>
-    {#if routines && currentRoutine}
-      <RoutineSwitcher {routines} bind:currentRoutineId></RoutineSwitcher>
-    {/if}
-  </AppTopbar>
+<AppTopbar>
+  {#if routines && currentRoutine}
+    <RoutineSwitcher {routines} bind:currentRoutineId></RoutineSwitcher>
+  {/if}
+</AppTopbar>
+
+<div class="trainer-viewport">
   {#if $currentAction$}
     <ActionCurrent action={$currentAction$}></ActionCurrent>
   {/if}
@@ -47,44 +46,15 @@
 <style lang="postcss">
   .trainer-viewport {
     display: grid;
-    grid-template:
-      '. . .' auto
-      '. h .' auto
-      '. a .' auto
-      '. l .' 1fr
-      '. p .' auto
-      '. . .' auto
-      / auto 1fr auto;
+    align-content: flex-start;
     gap: var(--layout-gap);
+    padding: var(--layout-gap);
     align-items: flex-start;
     width: 100%;
     height: 100%;
 
-    @media (orientation: landscape) or (min-width: 40rem) {
-      grid-template:
-        '. . 0 .' auto
-        '. h h .' auto
-        '. a l .' auto
-        '. p l .' 1fr
-        '. . . .' auto
-        / 0 minmax(0, 30rem) minmax(0, 30rem) 1fr;
-      /* place-content: start start; */
-    }
-
-    & > :global(*:nth-child(1)) {
-      grid-area: h;
-    }
-
-    & > :global(*:nth-child(2)) {
-      grid-area: a;
-    }
-
-    & > :global(*:nth-child(3)) {
-      grid-area: l;
-    }
-
-    & > :global(*:nth-child(4)) {
-      grid-area: p;
+    @media (orientation: landscape) or (min-width: 640px) {
+      grid-template-columns: repeat(auto-fit, minmax(min-content, 480px));
     }
   }
 </style>
