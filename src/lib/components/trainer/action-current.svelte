@@ -77,48 +77,4 @@
       font-weight: bold;
     }
   }
-
-  .indicators {
-    display: flex;
-    gap: 16px;
-    flex-wrap: wrap;
-    margin-block-start: 8px;
-    padding-block: 8px;
-  }
-
-  .indicator {
-    display: grid;
-    place-items: center;
-    width: 32px;
-    height: 32px;
-    padding: 8px;
-    margin: -8px;
-
-    input {
-      opacity: 0;
-      position: absolute;
-    }
-  }
-
-  .indicator-border {
-    border-radius: 999px;
-    border: 1px solid currentColor;
-    width: 100%;
-    height: 100%;
-    padding: 2px;
-
-    &::before {
-      content: '';
-      display: block;
-      border-radius: 999px;
-      background-color: currentColor;
-      width: 100%;
-      height: 100%;
-      opacity: 0;
-    }
-  }
-
-  .indicator:has(input:checked) .indicator-border::before {
-    opacity: 1;
-  }
 </style>

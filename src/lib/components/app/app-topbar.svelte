@@ -2,7 +2,7 @@
   import { onDestroy, type Snippet } from 'svelte'
   import { getAppTopbarContext } from './app-topbar-context.svelte'
 
-  type Props = { children?: Snippet }
+  type Props = { children: Snippet }
 
   let { children }: Props = $props()
 

@@ -9,37 +9,18 @@
   const appTopbarContext = setAppTopbarContext()
 </script>
 
-<div class="app-shell">
-  <header part="topbar" class="app-topbar">
-    {#if appTopbarContext.title}
-      {@render appTopbarContext.title()}
-    {/if}
+<div class="app-shell grid grid-rows-[auto,1fr,auto] w-full h-full">
+  <header class="app-topbar flex items-center gap-[--layout-gap] h-16 px-[--layout-gap]">
+    <div>
+      {#if appTopbarContext.title}
+        {@render appTopbarContext.title()}
+      {/if}
+    </div>
   </header>
 
-  <main class="app-viewport">
+  <main class="overflow-auto app-viewport">
     {@render children()}
   </main>
 
   <footer class="app-footer"></footer>
 </div>
-
-<style lang="postcss">
-  .app-shell {
-    display: grid;
-    grid-template-rows: auto 1fr auto;
-    width: 100%;
-    height: 100%;
-  }
-
-  .app-topbar {
-    display: flex;
-    align-items: center;
-    gap: var(--layout-gap);
-    height: 4rem;
-    padding-inline: var(--layout-gap);
-  }
-
-  .app-viewport {
-    overflow: auto;
-  }
-</style>
