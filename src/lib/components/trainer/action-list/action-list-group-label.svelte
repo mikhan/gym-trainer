@@ -23,8 +23,8 @@
     border-radius: 8px;
     position: sticky;
     top: var(--layout-gap);
-    color: var(--surface-accent-fg);
-    background-color: var(--surface-accent-bg);
+    color: var(--color-accent-fg);
+    background-color: var(--color-accent-bg);
     box-shadow: var(--shadow-base);
     z-index: 1;
   }

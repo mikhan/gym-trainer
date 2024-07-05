@@ -48,19 +48,19 @@
     scroll-snap-align: start;
     display: grid;
     grid-template-columns: 1fr min-content;
-    background-color: var(--surface-1-bg);
-    color: var(--surface-1-fg);
+    background-color: var(--color-canvas-bg);
+    color: var(--color-canvas-fg);
     border-radius: 8px;
     transition: background-color 250ms;
     min-height: 40px;
 
     &:hover {
-      background-color: var(--surface-1-hover);
+      background-color: var(--color-canvas-hover);
     }
 
     &.active {
-      background-color: var(--surface-accent-bg);
-      color: var(--surface-accent-fg);
+      background-color: var(--color-accent-bg);
+      color: var(--color-accent-fg);
     }
   }
 

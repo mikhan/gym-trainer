@@ -23,9 +23,9 @@
     min-width: anchor-size(inline);
     border: none;
     border-radius: var(--card-roundness);
-    background-color: color-mix(in oklch, var(--surface-popover-bg) 85%, transparent);
+    background-color: color-mix(in oklch, var(--color-popover-bg) 85%, transparent);
     backdrop-filter: blur(8px);
-    color: var(--surface-popover-fg);
+    color: var(--color-popover-fg);
     box-shadow: var(--shadow-over);
 
     transform: translateY(-8px);

@@ -31,7 +31,7 @@
   {/if}
 </AppTopbar>
 
-<div class="trainer-viewport">
+<div class="scrollable scrollable-shadow">
   {#if $currentAction$}
     <ActionCurrent action={$currentAction$}></ActionCurrent>
   {/if}
@@ -44,7 +44,7 @@
 </div>
 
 <style lang="postcss">
-  .trainer-viewport {
+  /* .trainer-viewport {
     display: grid;
     align-content: flex-start;
     gap: var(--layout-gap);
@@ -56,5 +56,5 @@
     @media (orientation: landscape) or (min-width: 640px) {
       grid-template-columns: repeat(auto-fit, minmax(min-content, 480px));
     }
-  }
+  } */
 </style>

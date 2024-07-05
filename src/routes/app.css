@@ -17,36 +17,37 @@
     --layout-gap: 8px;
 
     --card-roundness: 6px;
+    --button-roundness: 6px;
 
-    --surface-canvas-bg: oklch(28% 0.01 var(--color-neutral-hue));
-    --surface-canvas-hover: oklch(48% 0.01 var(--color-neutral-hue));
-    --surface-canvas-border: oklch(38% 0.01 var(--color-neutral-hue));
-    --surface-canvas-fg: oklch(80% 0.01 var(--color-neutral-hue));
+    --color-canvas-bg: oklch(28% 0.01 var(--color-neutral-hue));
+    --color-canvas-hover: oklch(33% 0.01 var(--color-neutral-hue));
+    --color-canvas-border: oklch(38% 0.01 var(--color-neutral-hue));
+    --color-canvas-fg: oklch(80% 0.01 var(--color-neutral-hue));
 
-    --surface-1-bg: oklch(37% 0.02 var(--color-neutral-hue));
-    --surface-1-hover: oklch(42% 0.02 var(--color-neutral-hue));
-    --surface-1-border: oklch(85% 0.02 var(--color-neutral-hue));
-    --surface-1-fg: oklch(85% 0.02 var(--color-neutral-hue));
+    --color-1-bg: oklch(37% 0.02 var(--color-neutral-hue));
+    --color-1-hover: oklch(42% 0.02 var(--color-neutral-hue));
+    --color-1-border: oklch(85% 0.02 var(--color-neutral-hue));
+    --color-1-fg: oklch(85% 0.02 var(--color-neutral-hue));
 
-    --surface-2-bg: oklch(47% 0.02 var(--color-neutral-hue));
-    --surface-2-hover: oklch(52% 0.02 var(--color-neutral-hue));
-    --surface-2-border: oklch(95% 0.02 var(--color-neutral-hue));
-    --surface-2-fg: oklch(95% 0.02 var(--color-neutral-hue));
+    --color-2-bg: oklch(47% 0.02 var(--color-neutral-hue));
+    --color-2-hover: oklch(52% 0.02 var(--color-neutral-hue));
+    --color-2-border: oklch(95% 0.02 var(--color-neutral-hue));
+    --color-2-fg: oklch(95% 0.02 var(--color-neutral-hue));
 
-    --surface-popover-bg: oklch(20% 0.01 var(--color-neutral-hue));
-    --surface-popover-hover: oklch(29% 0.02 var(--color-neutral-hue));
-    --surface-popover-border: oklch(80% 0.05 var(--color-neutral-hue));
-    --surface-popover-fg: oklch(80% 0.05 var(--color-neutral-hue));
+    --color-popover-bg: oklch(20% 0.01 var(--color-neutral-hue));
+    --color-popover-hover: oklch(29% 0.02 var(--color-neutral-hue));
+    --color-popover-border: oklch(80% 0.05 var(--color-neutral-hue));
+    --color-popover-fg: oklch(80% 0.05 var(--color-neutral-hue));
 
-    --surface-primary-bg: oklch(56% 0.15 var(--color-primary-hue));
-    --surface-primary-hover: oklch(61% 0.15 var(--color-primary-hue));
-    --surface-primary-border: oklch(95% 0.05 var(--color-primary-hue));
-    --surface-primary-fg: oklch(95% 0.05 var(--color-primary-hue));
+    --color-primary-bg: oklch(56% 0.15 var(--color-primary-hue));
+    --color-primary-hover: oklch(61% 0.15 var(--color-primary-hue));
+    --color-primary-border: oklch(95% 0.05 var(--color-primary-hue));
+    --color-primary-fg: oklch(95% 0.05 var(--color-primary-hue));
 
-    --surface-accent-bg: oklch(56% 0.15 var(--color-accent-hue));
-    --surface-accent-hover: oklch(61% 0.15 var(--color-accent-hue));
-    --surface-accent-border: oklch(76% 0.05 var(--color-accent-hue));
-    --surface-accent-fg: oklch(95% 0.05 var(--color-accent-hue));
+    --color-accent-bg: oklch(56% 0.15 var(--color-accent-hue));
+    --color-accent-hover: oklch(61% 0.15 var(--color-accent-hue));
+    --color-accent-border: oklch(76% 0.05 var(--color-accent-hue));
+    --color-accent-fg: oklch(95% 0.05 var(--color-accent-hue));
 
     --shadow-base: 0px 1px 0px hsl(0 0% 0% / 30%),
       1px 2px 4px oklch(18% 0.01 var(--color-neutral-hue) / 20%);
@@ -56,26 +57,14 @@
   }
 
   html {
-    /* color-scheme: dark; */
-    font-family: 'Quicksand Variable', sans-serif;
-    background-color: var(--surface-canvas-bg);
-    color: var(--surface-canvas-fg);
+    color-scheme: dark;
   }
 
   body {
-    margin: 0;
-    padding: 0;
     height: 100dvh;
-  }
-
-  button {
-    background: none;
-    border: none;
-    padding: 0;
-    margin: 0;
-    color: inherit;
-    font-family: inherit;
-    font-size: inherit;
+    font-family: 'Quicksand Variable', sans-serif;
+    background-color: var(--color-canvas-bg);
+    color: var(--color-canvas-fg);
   }
 
   :where(button, input, .focusable) {
@@ -188,6 +177,51 @@
     }
     100% {
       opacity: 0;
+    }
+  }
+}
+
+@layer utilities {
+  .surface-canvas {
+    --surface-bg: var(--color-canvas-bg);
+    --surface-fg: var(--color-canvas-fg);
+  }
+
+  .surface-primary {
+    --surface-bg: var(--color-primary-bg);
+    --surface-fg: var(--color-primary-fg);
+  }
+
+  .variant-filled {
+    background-color: color-mix(in oklch, var(--surface-bg), var(--surface-fg) 25%);
+    color: color-mix(in oklch, var(--surface-fg), white 75%);
+    border-color: transparent;
+  }
+}
+
+@layer components {
+  .surface {
+    background-color: var(--surface-bg);
+    color: var(--surface-fg);
+  }
+
+  .button {
+    padding: 0 theme(space.4);
+    height: theme(space.10);
+    background-color: var(--surface-bg, Canvas);
+    color: var(--surface-fg);
+    border: 1px solid color-mix(in oklch, var(--surface-fg), var(--surface-bg));
+    border-radius: var(--button-roundness);
+    transition:
+      background-color 150ms,
+      scale 150ms;
+
+    &:hover {
+      filter: brightness(1.25);
+    }
+
+    &:active {
+      scale: 0.98;
     }
   }
 }

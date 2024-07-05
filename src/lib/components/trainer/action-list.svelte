@@ -87,7 +87,7 @@
   }
 </script>
 
-<div class="action-list scrollable scrollable-shadow">
+<div class="action-list">
   <div class="list">
     {#each schedule as group, index (index)}
       <div class="list-group">
@@ -102,13 +102,13 @@
 
 <style lang="postcss">
   .action-list {
-    background-color: var(--surface-1-bg);
-    color: var(--surface-1-fg);
+    /* background-color: var(--color-1-bg);
+    color: var(--color-1-fg);
     box-shadow: var(--shadow-base);
-    border-radius: var(--card-roundness);
+    border-radius: var(--card-roundness); */
     scroll-snap-type: y mandatory;
     scroll-padding: var(--layout-gap);
-    scroll-padding-block-start: calc(var(--layout-gap) + 1.5rem + var(--layout-gap));
+    /* scroll-padding-block-start: calc(var(--layout-gap) + 1.5rem + var(--layout-gap)); */
   }
 
   .list {

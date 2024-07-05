@@ -51,23 +51,23 @@
     display: grid;
     gap: 4px;
     align-content: end;
-    border-radius: var(--card-roundness);
-    color: var(--surface-accent-fg);
+    /* border-radius: var(--card-roundness); */
+    color: var(--color-accent-fg);
     background-image: linear-gradient(
         to bottom,
         transparent,
-        color-mix(in oklch, var(--surface-accent-bg) 10%, transparent)
+        color-mix(in oklch, var(--color-accent-bg) 10%, transparent)
       ),
       linear-gradient(
         to bottom,
-        color-mix(in oklch, var(--surface-canvas-bg) 10%, transparent),
-        color-mix(in oklch, var(--surface-canvas-bg) 90%, transparent)
+        color-mix(in oklch, var(--color-canvas-bg) 10%, transparent),
+        color-mix(in oklch, var(--color-canvas-bg) 90%, transparent)
       ),
       var(--background);
     background-size: cover;
     background-position: center;
     padding: 2rem 2rem;
-    box-shadow: var(--shadow-base);
+    /* box-shadow: var(--shadow-base); */
     width: 100%;
     aspect-ratio: 1/1;
     max-height: 33vh;

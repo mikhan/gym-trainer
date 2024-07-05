@@ -10,7 +10,9 @@
 </script>
 
 <div class="app-shell grid grid-rows-[auto,1fr,auto] w-full h-full">
-  <header class="app-topbar flex items-center gap-[--layout-gap] h-16 px-[--layout-gap]">
+  <header
+    class="app-topbar flex items-center overflow-hidden gap-[--layout-gap] h-16 px-[--layout-gap] border-b border-[--color-canvas-border]"
+  >
     <div>
       {#if appTopbarContext.title}
         {@render appTopbarContext.title()}
@@ -18,9 +20,9 @@
     </div>
   </header>
 
-  <main class="overflow-auto app-viewport">
+  <main class="overflow-hidden app-viewport">
     {@render children()}
   </main>
 
-  <footer class="app-footer"></footer>
+  <footer class="overflow-hidden app-footer"></footer>
 </div>

@@ -37,33 +37,33 @@
 
   .menu-anchor {
     anchor-name: --routine-switcher;
-    background-color: var(--surface-2-bg);
-    color: var(--surface-2-fg);
+    background-color: var(--color-2-bg);
+    color: var(--color-2-fg);
     min-width: 20ch;
     border-radius: var(--card-roundness);
     transition: background-color 150ms;
 
     &:hover {
-      background-color: var(--surface-2-hover);
+      background-color: var(--color-2-hover);
     }
   }
 
   .menu-item {
     flex: 1 1 auto;
     width: 100%;
-    color: var(--surface-2-fg);
+    color: var(--color-2-fg);
     outline-offset: -2px;
 
     &:hover {
-      background-color: var(--surface-popover-hover);
+      background-color: var(--color-popover-hover);
     }
 
     &.active {
-      background-color: var(--surface-accent-bg);
-      color: var(--surface-accent-fg);
+      background-color: var(--color-accent-bg);
+      color: var(--color-accent-fg);
 
       &:hover {
-        background-color: var(--surface-accent-hover);
+        background-color: var(--color-accent-hover);
       }
     }
   }
