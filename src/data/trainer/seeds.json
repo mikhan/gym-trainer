@@ -576,40 +576,6 @@
               ]
             },
             {
-              "name": "Press militar con barra",
-              "group": "hombro",
-              "muscle": "hombro",
-              "steps": [
-                { "type": "repetitions", "value": "12", "delay": 90 },
-                { "type": "repetitions", "value": "10", "delay": 90 },
-                { "type": "repetitions", "value": "8", "delay": 90 }
-              ]
-            },
-            {
-              "name": "Elevaciones frontales con mancuerna",
-              "group": "hombro",
-              "muscle": "hombro",
-              "steps": [
-                { "type": "repetitions", "value": "12", "delay": 60 },
-                { "type": "repetitions", "value": "10", "delay": 60 },
-                { "type": "repetitions", "value": "18", "delay": 60 }
-              ]
-            },
-            {
-              "name": "Elevaciones laterales",
-              "group": "hombro",
-              "muscle": "hombro",
-              "steps": [
-                { "type": "failure", "value": "8-12", "delay": 30 },
-                { "type": "failure", "value": "8-12", "delay": 30 },
-                { "type": "failure", "value": "8-12", "delay": 30 },
-                { "type": "failure", "value": "8-12", "delay": 30 },
-                { "type": "failure", "value": "8-12", "delay": 30 },
-                { "type": "failure", "value": "8-12", "delay": 30 },
-                { "type": "failure", "value": "8-12", "delay": 30 }
-              ]
-            },
-            {
               "name": "Extensión de tríceps con cuerda",
               "group": "tricep",
               "muscle": "tricep",
@@ -633,6 +599,40 @@
               "name": "Extensión de polea tras nuca",
               "group": "tricep",
               "muscle": "tricep",
+              "steps": [
+                { "type": "failure", "value": "8-12", "delay": 30 },
+                { "type": "failure", "value": "8-12", "delay": 30 },
+                { "type": "failure", "value": "8-12", "delay": 30 },
+                { "type": "failure", "value": "8-12", "delay": 30 },
+                { "type": "failure", "value": "8-12", "delay": 30 },
+                { "type": "failure", "value": "8-12", "delay": 30 },
+                { "type": "failure", "value": "8-12", "delay": 30 }
+              ]
+            },
+            {
+              "name": "Press militar con barra",
+              "group": "hombro",
+              "muscle": "hombro",
+              "steps": [
+                { "type": "repetitions", "value": "12", "delay": 90 },
+                { "type": "repetitions", "value": "10", "delay": 90 },
+                { "type": "repetitions", "value": "8", "delay": 90 }
+              ]
+            },
+            {
+              "name": "Elevaciones frontales con mancuerna",
+              "group": "hombro",
+              "muscle": "hombro",
+              "steps": [
+                { "type": "repetitions", "value": "12", "delay": 60 },
+                { "type": "repetitions", "value": "10", "delay": 60 },
+                { "type": "repetitions", "value": "18", "delay": 60 }
+              ]
+            },
+            {
+              "name": "Elevaciones laterales",
+              "group": "hombro",
+              "muscle": "hombro",
               "steps": [
                 { "type": "failure", "value": "8-12", "delay": 30 },
                 { "type": "failure", "value": "8-12", "delay": 30 },
@@ -679,17 +679,7 @@
               ]
             },
             {
-              "name": "Remo en máquina",
-              "group": "espalda",
-              "muscle": "espalda",
-              "steps": [
-                { "type": "repetitions", "value": "12", "delay": 60 },
-                { "type": "repetitions", "value": "10", "delay": 60 },
-                { "type": "repetitions", "value": "8", "delay": 60 }
-              ]
-            },
-            {
-              "name": "Pull over en máquina",
+              "name": "Remo con agarre cerrado",
               "group": "espalda",
               "muscle": "espalda",
               "steps": [
@@ -703,9 +693,9 @@
               ]
             },
             {
-              "name": "Face Pull",
-              "group": "hombro",
-              "muscle": "hombro",
+              "name": "Curl alterno con mancuernas",
+              "group": "bicep",
+              "muscle": "bicep",
               "steps": [
                 { "type": "repetitions", "value": "12", "delay": 60 },
                 { "type": "repetitions", "value": "10", "delay": 60 },
@@ -713,9 +703,19 @@
               ]
             },
             {
-              "name": "Encogimientos en máquina",
-              "group": "hombro",
-              "muscle": "hombro",
+              "name": "Banco Scott con barra",
+              "group": "bicep",
+              "muscle": "bicep",
+              "steps": [
+                { "type": "repetitions", "value": "12", "delay": 60 },
+                { "type": "repetitions", "value": "10", "delay": 60 },
+                { "type": "repetitions", "value": "8", "delay": 60 }
+              ]
+            },
+            {
+              "name": "Curl barra EZ",
+              "group": "bicep",
+              "muscle": "bicep",
               "steps": [
                 { "type": "failure", "value": "10-15", "delay": 30 },
                 { "type": "failure", "value": "10-15", "delay": 30 },
@@ -727,9 +727,9 @@
               ]
             },
             {
-              "name": "Curl spider",
-              "group": "bicep",
-              "muscle": "bicep",
+              "name": "Face Pull",
+              "group": "hombro",
+              "muscle": "hombro",
               "steps": [
                 { "type": "repetitions", "value": "12", "delay": 60 },
                 { "type": "repetitions", "value": "10", "delay": 60 },
@@ -737,9 +737,9 @@
               ]
             },
             {
-              "name": "Curl concentrado",
-              "group": "bicep",
-              "muscle": "bicep",
+              "name": "Aperturas invertidas",
+              "group": "hombro",
+              "muscle": "hombro",
               "steps": [
                 { "type": "repetitions", "value": "12", "delay": 60 },
                 { "type": "repetitions", "value": "10", "delay": 60 },
@@ -747,9 +747,9 @@
               ]
             },
             {
-              "name": "Doble bicep con cable",
-              "group": "bicep",
-              "muscle": "bicep",
+              "name": "Encogimientos con barra",
+              "group": "hombro",
+              "muscle": "hombro",
               "steps": [
                 { "type": "failure", "value": "10-15", "delay": 30 },
                 { "type": "failure", "value": "10-15", "delay": 30 },
@@ -766,13 +766,23 @@
           "name": "Leg",
           "series": [
             {
+              "name": "Desplantes",
+              "group": "pierna",
+              "muscle": "cuadricep",
+              "steps": [
+                { "type": "repetitions", "value": "12", "delay": 90 },
+                { "type": "repetitions", "value": "10", "delay": 90 },
+                { "type": "repetitions", "value": "8", "delay": 90 }
+              ]
+            },
+            {
               "name": "Sentadillas",
               "group": "pierna",
               "muscle": "cuadricep",
               "steps": [
                 { "type": "repetitions", "value": "12", "delay": 90 },
-                { "type": "repetitions", "value": "12", "delay": 90 },
-                { "type": "repetitions", "value": "12", "delay": 90 }
+                { "type": "repetitions", "value": "10", "delay": 90 },
+                { "type": "repetitions", "value": "8", "delay": 90 }
               ]
             },
             {
@@ -781,8 +791,8 @@
               "muscle": "cuadricep",
               "steps": [
                 { "type": "repetitions", "value": "12", "delay": 60 },
-                { "type": "repetitions", "value": "12", "delay": 60 },
-                { "type": "repetitions", "value": "12", "delay": 60 }
+                { "type": "repetitions", "value": "10", "delay": 60 },
+                { "type": "repetitions", "value": "8", "delay": 60 }
               ]
             },
             {
@@ -800,7 +810,7 @@
               ]
             },
             {
-              "name": "Elevación talones de pie",
+              "name": "Elevación talones en prensa",
               "group": "pierna",
               "muscle": "pantorrilla",
               "steps": [
@@ -820,7 +830,7 @@
               ]
             },
             {
-              "name": "Elevación talones en prensa",
+              "name": "Elevación talones de pie",
               "group": "pierna",
               "muscle": "pantorrilla",
               "steps": [
@@ -844,27 +854,23 @@
               ]
             },
             {
-              "name": "Crunch Invertido",
+              "name": "Oblicuos con polea",
               "group": "abdomen",
               "muscle": "abdomen",
               "steps": [
-                { "type": "repetitions", "value": "20", "delay": 60 },
-                { "type": "repetitions", "value": "20", "delay": 60 },
-                { "type": "repetitions", "value": "20", "delay": 60 }
+                { "type": "failure", "value": "15-20", "delay": 60 },
+                { "type": "failure", "value": "15-20", "delay": 60 },
+                { "type": "failure", "value": "15-20", "delay": 60 }
               ]
             },
             {
-              "name": "Plancha abdominal",
+              "name": "Crunch con polea",
               "group": "abdomen",
               "muscle": "abdomen",
               "steps": [
-                { "type": "seconds", "value": "20", "delay": 40 },
-                { "type": "seconds", "value": "20", "delay": 40 },
-                { "type": "seconds", "value": "20", "delay": 40 },
-                { "type": "seconds", "value": "20", "delay": 40 },
-                { "type": "seconds", "value": "20", "delay": 40 },
-                { "type": "seconds", "value": "20", "delay": 40 },
-                { "type": "seconds", "value": "20", "delay": 40 }
+                { "type": "failure", "value": "15-20", "delay": 60 },
+                { "type": "failure", "value": "15-20", "delay": 60 },
+                { "type": "failure", "value": "15-20", "delay": 60 }
               ]
             }
           ]
@@ -949,6 +955,40 @@
                 { "type": "failure", "value": "12-15", "delay": 30 },
                 { "type": "failure", "value": "12-15", "delay": 30 }
               ]
+            },
+            {
+              "name": "Press militar con barra",
+              "group": "hombro",
+              "muscle": "hombro",
+              "steps": [
+                { "type": "repetitions", "value": "12", "delay": 90 },
+                { "type": "repetitions", "value": "10", "delay": 90 },
+                { "type": "repetitions", "value": "8", "delay": 90 }
+              ]
+            },
+            {
+              "name": "Elevaciones frontales con mancuerna",
+              "group": "hombro",
+              "muscle": "hombro",
+              "steps": [
+                { "type": "repetitions", "value": "12", "delay": 60 },
+                { "type": "repetitions", "value": "10", "delay": 60 },
+                { "type": "repetitions", "value": "18", "delay": 60 }
+              ]
+            },
+            {
+              "name": "Elevaciones laterales",
+              "group": "hombro",
+              "muscle": "hombro",
+              "steps": [
+                { "type": "failure", "value": "8-12", "delay": 30 },
+                { "type": "failure", "value": "8-12", "delay": 30 },
+                { "type": "failure", "value": "8-12", "delay": 30 },
+                { "type": "failure", "value": "8-12", "delay": 30 },
+                { "type": "failure", "value": "8-12", "delay": 30 },
+                { "type": "failure", "value": "8-12", "delay": 30 },
+                { "type": "failure", "value": "8-12", "delay": 30 }
+              ]
             }
           ]
         },
@@ -966,7 +1006,7 @@
               ]
             },
             {
-              "name": "Jalones agarre ancho",
+              "name": "Jalones agarre cerrado",
               "group": "espalda",
               "muscle": "espalda",
               "steps": [
@@ -976,17 +1016,7 @@
               ]
             },
             {
-              "name": "Remo con barra",
-              "group": "espalda",
-              "muscle": "espalda",
-              "steps": [
-                { "type": "repetitions", "value": "12", "delay": 60 },
-                { "type": "repetitions", "value": "10", "delay": 60 },
-                { "type": "repetitions", "value": "8", "delay": 60 }
-              ]
-            },
-            {
-              "name": "Remo en máquina",
+              "name": "Remo con mancuernas",
               "group": "espalda",
               "muscle": "espalda",
               "steps": [
@@ -1010,9 +1040,9 @@
               ]
             },
             {
-              "name": "Face Pull",
-              "group": "hombro",
-              "muscle": "hombro",
+              "name": "Curl martillo",
+              "group": "bicep",
+              "muscle": "bicep",
               "steps": [
                 { "type": "repetitions", "value": "12", "delay": 60 },
                 { "type": "repetitions", "value": "10", "delay": 60 },
@@ -1020,41 +1050,17 @@
               ]
             },
             {
-              "name": "Encogimientos en máquina",
-              "group": "hombro",
-              "muscle": "hombro",
-              "steps": [
-                { "type": "failure", "value": "10-15", "delay": 30 },
-                { "type": "failure", "value": "10-15", "delay": 30 },
-                { "type": "failure", "value": "10-15", "delay": 30 },
-                { "type": "failure", "value": "10-15", "delay": 30 },
-                { "type": "failure", "value": "10-15", "delay": 30 },
-                { "type": "failure", "value": "10-15", "delay": 30 },
-                { "type": "failure", "value": "10-15", "delay": 30 }
-              ]
-            },
-            {
-              "name": "Curl Alterno mancuernas",
+              "name": "Curl con cuerda",
               "group": "bicep",
               "muscle": "bicep",
               "steps": [
                 { "type": "repetitions", "value": "12", "delay": 60 },
-                { "type": "repetitions", "value": "12", "delay": 60 },
-                { "type": "repetitions", "value": "12", "delay": 60 }
+                { "type": "repetitions", "value": "10", "delay": 60 },
+                { "type": "repetitions", "value": "8", "delay": 60 }
               ]
             },
             {
-              "name": "Banco scott con barra",
-              "group": "bicep",
-              "muscle": "bicep",
-              "steps": [
-                { "type": "repetitions", "value": "12", "delay": 60 },
-                { "type": "repetitions", "value": "12", "delay": 60 },
-                { "type": "repetitions", "value": "12", "delay": 60 }
-              ]
-            },
-            {
-              "name": "Curl barra EZ",
+              "name": "Curl de bíceps invertido",
               "group": "bicep",
               "muscle": "bicep",
               "steps": [
@@ -1066,6 +1072,40 @@
                 { "type": "failure", "value": "8-12", "delay": 30 },
                 { "type": "failure", "value": "8-12", "delay": 30 }
               ]
+            },
+            {
+              "name": "Face Pull",
+              "group": "hombro",
+              "muscle": "hombro",
+              "steps": [
+                { "type": "repetitions", "value": "12", "delay": 60 },
+                { "type": "repetitions", "value": "10", "delay": 60 },
+                { "type": "repetitions", "value": "8", "delay": 60 }
+              ]
+            },
+            {
+              "name": "Aperturas invertidas",
+              "group": "hombro",
+              "muscle": "hombro",
+              "steps": [
+                { "type": "repetitions", "value": "12", "delay": 60 },
+                { "type": "repetitions", "value": "10", "delay": 60 },
+                { "type": "repetitions", "value": "8", "delay": 60 }
+              ]
+            },
+            {
+              "name": "Encogimientos con barra",
+              "group": "hombro",
+              "muscle": "hombro",
+              "steps": [
+                { "type": "failure", "value": "10-15", "delay": 30 },
+                { "type": "failure", "value": "10-15", "delay": 30 },
+                { "type": "failure", "value": "10-15", "delay": 30 },
+                { "type": "failure", "value": "10-15", "delay": 30 },
+                { "type": "failure", "value": "10-15", "delay": 30 },
+                { "type": "failure", "value": "10-15", "delay": 30 },
+                { "type": "failure", "value": "10-15", "delay": 30 }
+              ]
             }
           ]
         },
@@ -1073,13 +1113,23 @@
           "name": "Leg",
           "series": [
             {
-              "name": "Zancadas en multipower",
+              "name": "Desplantes",
               "group": "pierna",
               "muscle": "femoral",
               "steps": [
                 { "type": "repetitions", "value": "12", "delay": 60 },
+                { "type": "repetitions", "value": "10", "delay": 60 },
+                { "type": "repetitions", "value": "8", "delay": 60 }
+              ]
+            },
+            {
+              "name": "Push femoral en máquina",
+              "group": "pierna",
+              "muscle": "femoral",
+              "steps": [
                 { "type": "repetitions", "value": "12", "delay": 60 },
-                { "type": "repetitions", "value": "12", "delay": 60 }
+                { "type": "repetitions", "value": "10", "delay": 60 },
+                { "type": "repetitions", "value": "8", "delay": 60 }
               ]
             },
             {
@@ -1088,8 +1138,8 @@
               "muscle": "femoral",
               "steps": [
                 { "type": "repetitions", "value": "12", "delay": 60 },
-                { "type": "repetitions", "value": "12", "delay": 60 },
-                { "type": "repetitions", "value": "12", "delay": 60 }
+                { "type": "repetitions", "value": "10", "delay": 60 },
+                { "type": "repetitions", "value": "8", "delay": 60 }
               ]
             },
             {
@@ -1117,31 +1167,31 @@
               ]
             },
             {
-              "name": "Elevación talones en máquina",
-              "group": "pierna",
-              "muscle": "pantorrilla",
-              "steps": [
-                { "type": "repetitions", "value": "12", "delay": 60 },
-                { "type": "repetitions", "value": "12", "delay": 60 },
-                { "type": "repetitions", "value": "12", "delay": 60 }
-              ]
-            },
-            {
               "name": "Soleo sentado",
               "group": "pierna",
               "muscle": "pantorrilla",
               "steps": [
-                { "type": "failure", "value": "15-20", "delay": 30 },
-                { "type": "failure", "value": "15-20", "delay": 30 },
-                { "type": "failure", "value": "15-20", "delay": 30 },
-                { "type": "failure", "value": "15-20", "delay": 30 },
-                { "type": "failure", "value": "15-20", "delay": 30 },
-                { "type": "failure", "value": "15-20", "delay": 30 },
-                { "type": "failure", "value": "15-20", "delay": 30 }
+                { "type": "repetitions", "value": "20", "delay": 60 },
+                { "type": "repetitions", "value": "20", "delay": 60 },
+                { "type": "repetitions", "value": "20", "delay": 60 }
               ]
             },
             {
-              "name": "Elevación de rodillas colgado",
+              "name": "Elevación talones de pie",
+              "group": "pierna",
+              "muscle": "pantorrilla",
+              "steps": [
+                { "type": "failure", "value": "10-12", "delay": 30 },
+                { "type": "failure", "value": "10-12", "delay": 30 },
+                { "type": "failure", "value": "10-12", "delay": 30 },
+                { "type": "failure", "value": "10-12", "delay": 30 },
+                { "type": "failure", "value": "10-12", "delay": 30 },
+                { "type": "failure", "value": "10-12", "delay": 30 },
+                { "type": "failure", "value": "10-12", "delay": 30 }
+              ]
+            },
+            {
+              "name": "Elevación de piernas colgado",
               "group": "abdomen",
               "muscle": "abdomen",
               "steps": [
@@ -1151,27 +1201,23 @@
               ]
             },
             {
-              "name": "Crunch en polea con peso",
+              "name": "Oblicuos con polea",
               "group": "abdomen",
               "muscle": "abdomen",
               "steps": [
-                { "type": "repetitions", "value": "20", "delay": 60 },
-                { "type": "repetitions", "value": "20", "delay": 60 },
-                { "type": "repetitions", "value": "20", "delay": 60 }
+                { "type": "failure", "value": "15-20", "delay": 60 },
+                { "type": "failure", "value": "15-20", "delay": 60 },
+                { "type": "failure", "value": "15-20", "delay": 60 }
               ]
             },
             {
-              "name": "V-Ups",
+              "name": "Crunch con polea",
               "group": "abdomen",
               "muscle": "abdomen",
               "steps": [
-                { "type": "seconds", "value": "20", "delay": 30 },
-                { "type": "seconds", "value": "20", "delay": 30 },
-                { "type": "seconds", "value": "20", "delay": 30 },
-                { "type": "seconds", "value": "20", "delay": 30 },
-                { "type": "seconds", "value": "20", "delay": 30 },
-                { "type": "seconds", "value": "20", "delay": 30 },
-                { "type": "seconds", "value": "20", "delay": 30 }
+                { "type": "failure", "value": "15-20", "delay": 60 },
+                { "type": "failure", "value": "15-20", "delay": 60 },
+                { "type": "failure", "value": "15-20", "delay": 60 }
               ]
             }
           ]
