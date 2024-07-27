@@ -1,0 +1,101 @@
+@layer utilities {
+  .dark {
+    color-scheme: dark;
+  }
+
+  .focusable {
+    &:focus-visible,
+    &.--focused {
+      outline: 2px solid oklch(var(--color-ring));
+      outline-offset: -2px;
+    }
+  }
+
+  .focusable:focus-visible,
+  .focusable.--focused,
+  .focusable-within:focus-within,
+  .focusable-within.--focused {
+    outline: 2px solid oklch(var(--color-ring));
+    outline-offset: -2px;
+  }
+
+  .scrollbar-autohide {
+    @media (pointer: fine) {
+      &:not(:hover) {
+        --scrollbar-thumb-color: transparent;
+      }
+    }
+  }
+
+  .scrollbar-stable {
+    scrollbar-gutter: stable;
+  }
+
+  .scrollable-shadow {
+    --scrollable-shadow-size: 3rem;
+    --scrollable-shadow-color: hsl(0 0 0 / 40%);
+    display: grid;
+    grid-template-rows: auto 1fr auto;
+    align-items: flex-start;
+
+    &::before,
+    &::after {
+      content: '';
+      display: block;
+      position: sticky;
+      height: var(--scrollable-shadow-size);
+      background-color: inherit;
+      pointer-events: none;
+      margin-block-start: calc(var(--scrollable-shadow-size) * -1);
+      animation-timeline: scroll();
+      opacity: 0;
+      z-index: 1;
+    }
+
+    &::before {
+      top: 0;
+      animation-name: fade-in;
+      background-image: radial-gradient(
+        farthest-side at top center,
+        var(--scrollable-shadow-color) 33%,
+        transparent
+      );
+      mask-image: linear-gradient(to bottom, var(--scrollable-shadow-color), transparent);
+    }
+
+    &::after {
+      bottom: 0;
+      animation-name: fade-out;
+      background-image: radial-gradient(
+        farthest-side at bottom center,
+        var(--scrollable-shadow-color) 33%,
+        transparent
+      );
+      mask-image: linear-gradient(to top, black, transparent);
+    }
+  }
+
+  @keyframes fade-in {
+    0% {
+      opacity: 0;
+    }
+    75% {
+      opacity: 1;
+    }
+    100% {
+      opacity: 1;
+    }
+  }
+
+  @keyframes fade-out {
+    0% {
+      opacity: 1;
+    }
+    75% {
+      opacity: 1;
+    }
+    100% {
+      opacity: 0;
+    }
+  }
+}

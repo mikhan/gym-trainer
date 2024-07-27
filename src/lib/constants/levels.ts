@@ -1,0 +1,36 @@
+export const levels = ['intermedio', 'principante', 'avanzado']
+
+export const equipments = [
+  'caja',
+  'peso corporal',
+  'pelota medicinal',
+  'conos',
+  'escalera piso',
+  'caminadora',
+  'otros',
+  'bosu ball',
+  'barra',
+  'mancuerna',
+  'banco',
+  'trap bar',
+  'cardio',
+  'eliptica',
+  'cuerda',
+  'liga',
+  'battling ropes',
+  'landmine',
+  'maquina',
+  'smith',
+  'trx',
+  'polea',
+  'hack squat',
+  'pesa rusa',
+  'barra z',
+  'barras',
+  'rack predicador',
+  'pelota yoga',
+  'roller',
+  'ninguno',
+]
+
+export const types = ['fuerza', 'cardio', 'isometrico', 'estiramiento']

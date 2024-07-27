@@ -21,6 +21,7 @@ export function getMuscles() {
     { id: 'pecho', name: 'Pecho' },
     { id: 'hombro', name: 'Hombro' },
     { id: 'espalda', name: 'Espalda' },
+    { id: 'pierna', name: 'Pierna' },
   ]
 }
 

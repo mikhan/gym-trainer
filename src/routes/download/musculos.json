@@ -1,0 +1,112 @@
+[
+  {
+    "id": 1,
+    "name": "Bíceps",
+    "zone": "Superior"
+  },
+  {
+    "id": 2,
+    "name": "Tríceps",
+    "zone": "Superior"
+  },
+  {
+    "id": 3,
+    "name": "Abdominal",
+    "zone": "Core"
+  },
+  {
+    "id": 4,
+    "name": "Cuadríceps",
+    "zone": "Inferior"
+  },
+  {
+    "id": 5,
+    "name": "Femoral",
+    "zone": "Inferior"
+  },
+  {
+    "id": 6,
+    "name": "Pecho",
+    "zone": "Superior"
+  },
+  {
+    "id": 7,
+    "name": "Glúteo",
+    "zone": "Inferior"
+  },
+  {
+    "id": 8,
+    "name": "Pantorrilla",
+    "zone": "Inferior"
+  },
+  {
+    "id": 9,
+    "name": "Dorsales",
+    "zone": "Superior"
+  },
+  {
+    "id": 10,
+    "name": "Hombro frontal",
+    "zone": "Superior"
+  },
+  {
+    "id": 11,
+    "name": "Hombro posterior",
+    "zone": "Superior"
+  },
+  {
+    "id": 12,
+    "name": "Hombro lateral",
+    "zone": "Superior"
+  },
+  {
+    "id": 13,
+    "name": "Oblícuos",
+    "zone": "Superior"
+  },
+  {
+    "id": 14,
+    "name": "Espalda alta",
+    "zone": "Superior"
+  },
+  {
+    "id": 15,
+    "name": "Espalda baja",
+    "zone": "Superior"
+  },
+  {
+    "id": 16,
+    "name": "Cardiovascular",
+    "zone": "Superior"
+  },
+  {
+    "id": 17,
+    "name": "Antebrazo",
+    "zone": "Superior"
+  },
+  {
+    "id": 18,
+    "name": "Pliometrico",
+    "zone": "Core"
+  },
+  {
+    "id": 19,
+    "name": "Abductores",
+    "zone": "Inferior"
+  },
+  {
+    "id": 20,
+    "name": "Weightlifting",
+    "zone": "Core"
+  },
+  {
+    "id": 21,
+    "name": "Trapecio",
+    "zone": "Superior"
+  },
+  {
+    "id": 22,
+    "name": "Cuello",
+    "zone": "Superior"
+  }
+]

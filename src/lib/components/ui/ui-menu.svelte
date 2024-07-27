@@ -1,48 +1,57 @@
 <script lang="ts">
-  import type { Snippet } from 'svelte'
+  import { onMount, type Snippet } from 'svelte'
+  import { anchor } from '$lib/actions/anchor'
+  import { UiMenuContext } from './ui-menu-context.svelte'
+  import { clsx } from 'clsx'
+  import type { HTMLMenuAttributes } from 'svelte/elements'
+  import { getElement } from '$lib/utils/element'
 
   type Props = {
-    id: string
+    target: string | HTMLElement
     children: Snippet
-  }
+  } & HTMLMenuAttributes
 
-  let { id, children }: Props = $props()
+  let { target, children, class: className, ...props }: Props = $props()
+  const context = UiMenuContext.create()
+
+  onMount(() => {
+    const anchorElement = getElement(target)
+    if (!anchorElement) return
+    anchorElement.setAttribute('popovertarget', context.id)
+
+    return () => anchorElement.removeAttribute('popovertarget')
+  })
 </script>
 
-<ul {id} popover="auto">
+<menu
+  class={clsx(
+    'fixed rounded-card border border-popover-border bg-popover/60 p-1 text-popover-fg shadow-over backdrop-blur-lg',
+    'ui-menu',
+    className,
+  )}
+  id={context.id}
+  popover="auto"
+  use:anchor={target}
+  {...props}>
   {@render children()}
-</ul>
+</menu>
 
 <style lang="postcss">
-  ul {
-    position: fixed;
-    position-anchor: --routine-switcher;
+  .ui-menu {
+    position-visibility: anchors-visible;
+    position-try-options:
+      flip-block,
+      flip-inline,
+      flip-block flip-inline;
     inset-area: bottom span-right;
-    margin: 0;
-    padding: 16px 0;
     min-width: anchor-size(inline);
-    border: none;
-    border-radius: var(--card-roundness);
-    background-color: color-mix(in oklch, var(--color-popover-bg) 85%, transparent);
-    backdrop-filter: blur(8px);
-    color: var(--color-popover-fg);
-    box-shadow: var(--shadow-over);
-
-    transform: translateY(-8px);
-    opacity: 0;
-    transition:
-      transform 250ms,
-      opacity 250ms,
-      display 250ms allow-discrete;
+    transform: translateY(1rem);
 
     &:popover-open {
       transform: translateY(0);
-      opacity: 1;
 
       @starting-style {
-        display: grid;
-        transform: translateY(-8px);
-        opacity: 0;
+        transform: translateY(1rem);
       }
     }
   }

@@ -48,19 +48,19 @@
     scroll-snap-align: start;
     display: grid;
     grid-template-columns: 1fr min-content;
-    background-color: var(--color-canvas-bg);
-    color: var(--color-canvas-fg);
+    background-color: theme('colors.canvas.DEFAULT');
+    color: theme('colors.canvas.fg');
     border-radius: 8px;
     transition: background-color 250ms;
     min-height: 40px;
 
     &:hover {
-      background-color: var(--color-canvas-hover);
+      background-color: theme('colors.canvas.hover');
     }
 
     &.active {
-      background-color: var(--color-accent-bg);
-      color: var(--color-accent-fg);
+      background-color: theme('colors.accent.DEFAULT');
+      color: theme('colors.accent.fg');
     }
   }
 

@@ -31,7 +31,7 @@
   {/if}
 </AppTopbar>
 
-<div class="scrollable scrollable-shadow">
+<div class="scrollable-shadow h-full overflow-y-auto">
   {#if $currentAction$}
     <ActionCurrent action={$currentAction$}></ActionCurrent>
   {/if}
@@ -42,19 +42,3 @@
     <TrainerTimer action={$currentAction$}></TrainerTimer>
   {/if} -->
 </div>
-
-<style lang="postcss">
-  /* .trainer-viewport {
-    display: grid;
-    align-content: flex-start;
-    gap: var(--layout-gap);
-    padding: var(--layout-gap);
-    align-items: flex-start;
-    width: 100%;
-    height: 100%;
-
-    @media (orientation: landscape) or (min-width: 640px) {
-      grid-template-columns: repeat(auto-fit, minmax(min-content, 480px));
-    }
-  } */
-</style>

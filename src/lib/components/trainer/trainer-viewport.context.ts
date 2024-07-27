@@ -1,6 +1,6 @@
 import type { Action } from '$lib/types'
 import { createContext } from '$lib/utils/create-context'
-import { signal, type SignalStore } from '$lib/utils/signal-store'
+import { type SignalStore, signal } from '$lib/utils/signal-store'
 
 export interface TrainerViewportContext {
   currentAction$: SignalStore<Action | undefined>

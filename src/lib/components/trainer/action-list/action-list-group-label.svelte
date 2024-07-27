@@ -22,10 +22,10 @@
     text-transform: uppercase;
     border-radius: 8px;
     position: sticky;
-    top: var(--layout-gap);
-    color: var(--color-accent-fg);
-    background-color: var(--color-accent-bg);
-    box-shadow: var(--shadow-base);
+    top: theme('space.layout-gap');
+    color: theme('colors.accent.fg');
+    background-color: theme('colors.accent.DEFAULT');
+    box-shadow: theme('boxShadow.base');
     z-index: 1;
   }
 </style>

@@ -14,6 +14,7 @@ export type Routine = {
 }
 
 export type Serie = {
+  id: string
   name: string
   group: string
   muscle: string
@@ -28,15 +29,27 @@ export type Step = {
 
 let trainings: Training[]
 
-export function getTrainings(): Training[] {
+export async function getTrainings(): Promise<Types.Training[]> {
+  await new Promise((resolve) => setTimeout(resolve, 2000))
   // return getItem('trainer.trainings', createDefault)
   return (trainings ??= createDefault())
 }
 
-function createDefault(): Training[] {
+function createDefault(): Types.Training[] {
   return seeds.trainings.map(({ routines, ...training }) => ({
-    id: crypto.randomUUID(),
-    routines: routines.map((routine) => ({ id: crypto.randomUUID(), ...routine })),
     ...training,
+    id: crypto.randomUUID(),
+    routines: routines.map(({ series, ...routine }) => ({
+      ...routine,
+      id: crypto.randomUUID(),
+      series: series.map(({ steps, ...serie }) => ({
+        ...serie,
+        id: crypto.randomUUID(),
+        steps: steps.map(({ type, ...step }) => ({
+          ...step,
+          type: type as 'repetitions' | 'failure',
+        })),
+      })),
+    })),
   }))
 }

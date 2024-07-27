@@ -1,0 +1,107 @@
+/* @import '@fontsource-variable/quicksand'; */
+@import '@fontsource-variable/inter';
+
+@layer theme {
+  :root {
+    color-scheme: light;
+
+    /* --font-family: 'Quicksand Variable'; */
+    --font-family: 'Inter Variable';
+
+    --color-neutral-hue: 240;
+    --color-primary-hue: 255;
+    --color-accent-hue: 175;
+
+    --layout-gap: 8px;
+
+    --card-roundness: 6px;
+    --button-roundness: 6px;
+
+    --color-selection: 60% 0.15 80;
+    --color-selection-fg: 100% 0.02 80;
+    --color-ring: 90% 0.2 80;
+
+    /* Canvas */
+
+    --color-canvas: 28% 0.015 var(--color-neutral-hue);
+    --color-canvas-hover: 33% 0.015 var(--color-neutral-hue);
+    --color-canvas-border: 38% 0.015 var(--color-neutral-hue);
+    --color-canvas-fg: 85% 0.015 var(--color-neutral-hue);
+
+    /* Neutral */
+
+    --color-neutral-darkest: 15% 0.015 var(--color-neutral-hue);
+    --color-neutral-darkest-hover: 20% 0.02 var(--color-neutral-hue);
+    --color-neutral-darkest-border: 25% 0.02 var(--color-neutral-hue);
+    --color-neutral-darkest-fg: 80% 0.02 var(--color-neutral-hue);
+
+    --color-neutral-darker: 25% 0.015 var(--color-neutral-hue);
+    --color-neutral-darker-hover: 30% 0.02 var(--color-neutral-hue);
+    --color-neutral-darker-border: 35% 0.02 var(--color-neutral-hue);
+    --color-neutral-darker-fg: 80% 0.02 var(--color-neutral-hue);
+
+    --color-neutral: 35% 0.02 var(--color-neutral-hue);
+    --color-neutral-hover: 40% 0.025 var(--color-neutral-hue);
+    --color-neutral-border: 45% 0.02 var(--color-neutral-hue);
+    --color-neutral-fg: 87% 0.02 var(--color-neutral-hue);
+
+    --color-neutral-lighter: 45% 0.02 var(--color-neutral-hue);
+    --color-neutral-lighter-hover: 50% 0.02 var(--color-neutral-hue);
+    --color-neutral-lighter-border: 55% 0.02 var(--color-neutral-hue);
+    --color-neutral-lighter-fg: 90% 0.02 var(--color-neutral-hue);
+
+    --color-neutral-lightest: 55% 0.02 var(--color-neutral-hue);
+    --color-neutral-lightest-hover: 60% 0.02 var(--color-neutral-hue);
+    --color-neutral-lightest-border: 65% 0.02 var(--color-neutral-hue);
+    --color-neutral-lightest-fg: 100% 0.02 var(--color-neutral-hue);
+
+    /* Primary */
+
+    --color-primary-darker: 46% 0.12 var(--color-primary-hue);
+    --color-primary-darker-hover: 54% 0.12 var(--color-primary-hue);
+    --color-primary-darker-border: 60% 0.1 var(--color-primary-hue);
+    --color-primary-darker-fg: 95% 0.05 var(--color-primary-hue);
+
+    --color-primary: 56% 0.15 var(--color-primary-hue);
+    --color-primary-hover: 64% 0.15 var(--color-primary-hue);
+    --color-primary-border: 70% 0.1 var(--color-primary-hue);
+    --color-primary-fg: 95% 0.05 var(--color-primary-hue);
+
+    --color-primary-lighter: 66% 0.15 var(--color-primary-hue);
+    --color-primary-lighter-hover: 74% 0.15 var(--color-primary-hue);
+    --color-primary-lighter-border: 80% 0.1 var(--color-primary-hue);
+    --color-primary-lighter-fg: 96% 0.05 var(--color-primary-hue);
+
+    /* Accent */
+
+    --color-accent-darker: 46% 0.15 var(--color-accent-hue);
+    --color-accent-darker-hover: 51% 0.15 var(--color-accent-hue);
+    --color-accent-darker-border: 61% 0.1 var(--color-accent-hue);
+    --color-accent-darker-fg: 95% 0.05 var(--color-accent-hue);
+
+    --color-accent: 56% 0.15 var(--color-accent-hue);
+    --color-accent-hover: 61% 0.15 var(--color-accent-hue);
+    --color-accent-border: 71% 0.1 var(--color-accent-hue);
+    --color-accent-fg: 95% 0.05 var(--color-accent-hue);
+
+    --color-accent-lighter: 66% 0.15 var(--color-accent-hue);
+    --color-accent-lighter-hover: 71% 0.15 var(--color-accent-hue);
+    --color-accent-lighter-border: 81% 0.1 var(--color-accent-hue);
+    --color-accent-lighter-fg: 100% 0.05 var(--color-accent-hue);
+
+    /* Popover */
+
+    --color-popover: 20% 0.02 var(--color-neutral-hue);
+    --color-popover-hover: 40% 0.05 var(--color-neutral-hue);
+    --color-popover-border: 30% 0.02 var(--color-neutral-hue);
+    --color-popover-fg: 90% 0.02 var(--color-neutral-hue);
+
+    --shadow: 0px 1px 1px rgb(0 0 0 / 30%), 0px 2px 4px rgb(0 0 0 / 20%);
+    --shadow-over: 0px 4px 4px -2px rgb(0 0 0 / 30%), 0px 10px 10px -4px rgb(0 0 0 / 20%),
+      0px 20px 20px -8px rgb(0 0 0 / 20%);
+
+    @media (min-width: theme('screens.md')) {
+      --layout-gap: 16px;
+    }
+  }
+}

@@ -1,14 +1,20 @@
 <script lang="ts">
-  import { onDestroy, type Snippet } from 'svelte'
-  import { getAppTopbarContext } from './app-topbar-context.svelte'
+  import { onMount, type Snippet } from 'svelte'
+  import { AppShellContext } from './app-shell-context.svelte'
 
-  type Props = { children: Snippet }
+  type Props = { children: Snippet; actions?: Snippet }
 
-  let { children }: Props = $props()
+  let { children, actions }: Props = $props()
 
-  const appTopbarContext = getAppTopbarContext()
+  const appShellContext = AppShellContext.get()
 
-  if (children) appTopbarContext.addTitle(children)
+  onMount(() => {
+    appShellContext.addTitle(children)
+    if (actions) appShellContext.addActions(actions)
 
-  onDestroy(() => children && appTopbarContext.removeTitle(children))
+    return () => {
+      appShellContext.removeTitle(children)
+      if (actions) appShellContext.removeActions(actions)
+    }
+  })
 </script>

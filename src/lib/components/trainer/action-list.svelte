@@ -102,23 +102,18 @@
 
 <style lang="postcss">
   .action-list {
-    /* background-color: var(--color-1-bg);
-    color: var(--color-1-fg);
-    box-shadow: var(--shadow-base);
-    border-radius: var(--card-roundness); */
     scroll-snap-type: y mandatory;
-    scroll-padding: var(--layout-gap);
-    /* scroll-padding-block-start: calc(var(--layout-gap) + 1.5rem + var(--layout-gap)); */
+    scroll-padding: theme('space.layout-gap');
   }
 
   .list {
     display: grid;
-    gap: var(--layout-gap);
-    padding: var(--layout-gap);
+    gap: theme('space.layout-gap');
+    padding: theme('space.layout-gap');
   }
 
   .list-group {
     display: grid;
-    gap: var(--layout-gap);
+    gap: theme('space.layout-gap');
   }
 </style>

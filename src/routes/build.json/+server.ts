@@ -1,6 +1,6 @@
 import { json } from '@sveltejs/kit'
-import type { RequestHandler } from './$types'
 import { BRANCH, COMMIT_REF } from '$env/static/private'
+import type { RequestHandler } from './$types'
 
 export const prerender = true
 

@@ -1,0 +1,10 @@
+@layer base, components, utilities, theme;
+
+@import './base.css';
+@import './components.css';
+@import './utilities.css';
+@import './theme.css';
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;

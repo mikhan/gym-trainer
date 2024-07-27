@@ -1,4 +1,5 @@
-import { SupabaseClient, Session, User } from '@supabase/supabase-js'
+import { Session, SupabaseClient, User } from '@supabase/supabase-js'
+import { Database } from './database/database.types'
 
 // See https://kit.svelte.dev/docs/types#app
 // for information about these interfaces
@@ -7,7 +8,7 @@ declare global {
     // interface Error {}
 
     interface Locals {
-      supabase: SupabaseClient
+      supabase: SupabaseClient<Database>
       safeGetSession(): Promise<{ session: Session | null; user: User | null }>
     }
 

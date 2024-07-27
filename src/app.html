@@ -1,14 +1,16 @@
 <!doctype html>
-<html lang="en" class="dark [color-scheme:dark]">
+<html lang="en" class="dark">
   <head>
     <meta charset="utf-8" />
-    <link rel="icon" href="%sveltekit.assets%/favicon.svg" type="image/svg" />
-    <link rel="manifest" href="%sveltekit.assets%/manifest.webmanifest" />
+    <link rel="icon" type="image/svg+xml" href="/%sveltekit.assets%/favicon.svg" />
+    <link rel="icon" type="image/png" href="/%sveltekit.assets%/favicon.png" />
+    <link rel="apple-touch-icon" href="%sveltekit.assets%/images/icons/apple-touch-icon.png" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>My Gym Trainer</title>
+    <link rel="manifest" crossorigin="use-credentials" href="/manifest.webmanifest" />
+    <title>Gym Trainer</title>
     %sveltekit.head%
   </head>
-  <body class="surface-canvas" data-sveltekit-preload-data="hover">
+  <body class="surface-canvas bg-canvas" data-sveltekit-preload-data="hover">
     <div class="contents">%sveltekit.body%</div>
   </body>
 </html>
