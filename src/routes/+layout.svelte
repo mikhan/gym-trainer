@@ -14,18 +14,6 @@
 
   let { children, data }: Props = $props()
 
-  const channel = data.supabase.channel('room1')
-  console.log('channel', channel)
-  channel
-    .on('presence', { event: 'sync' }, () =>
-      console.log('Synced presence state: ', channel.presenceState()),
-    )
-    .subscribe(async (status) => {
-      if (status === 'SUBSCRIBED') {
-        await channel.track({ online_at: new Date().toISOString() })
-      }
-    })
-
   onMount(() => {
     const {
       data: { subscription },

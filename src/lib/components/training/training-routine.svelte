@@ -41,6 +41,8 @@
     return groupedSeries
   })
 
+  let newSerieId: string | undefined = $state()
+
   function getFromRegistry(elements: HTMLElement[]): Types.RoutineSerie[] {
     return elements.map((e) => {
       const routineId = e.dataset.routineId
@@ -63,6 +65,13 @@
     return sameValue ? `${serie.steps.length} x ${values[0]} reps` : `${values.join(', ')} reps`
   }
 
+  function addSerie() {
+    newSerieId = crypto.randomUUID()
+    const newSerie = { ...routine$.series.at(-1)!, id: newSerieId, name: '' }
+    routine$.series = [...routine$.series, newSerie]
+    trainingViewportContext.updateRoutine(routine$)
+  }
+
   function updateSeries(series: Types.RoutineSerie[]) {
     routine$.series = series
     trainingViewportContext.updateRoutine(routine$)
@@ -77,14 +86,22 @@
   }
 </script>
 
+{#if newSerieId}
+  <TrainingSerieEditor
+    routineId={routine$.id}
+    serieId={newSerieId}
+    open={newSerieId !== undefined}
+    onclose={() => (newSerieId = undefined)}></TrainingSerieEditor>
+{/if}
+
 <article
-  class="rounded-card border border-neutral-border bg-neutral py-2 text-neutral-fg"
+  class="max-w-xl rounded-card border border-neutral-border bg-neutral py-2 text-neutral-fg"
   id={`routine-${routine$.id}`}
   use:tocTarget>
   <header
     class="sticky top-0 z-1 flex items-center gap-2 border-b border-neutral-border bg-inherit px-8 py-4">
     <div class="grow text-xl font-bold">{routine$.name}</div>
-    <UiButton>Add Serie</UiButton>
+    <UiButton onclick={() => addSerie()}>Add Serie</UiButton>
     <UiButton onclick={() => startRoutine(routine$.id)}>Start</UiButton>
   </header>
   <ul
@@ -95,7 +112,7 @@
 
       {#each groupedSerie.series as serie (serie.id)}
         <li
-          class="focusable-within group flex h-16 items-center gap-4 px-4 hover:bg-neutral-hover"
+          class="focusable-within group flex h-8 items-center gap-4 px-4 hover:bg-neutral-hover"
           use:sortitem={trainingViewportContext.training$.id}
           data-routine-id={routine$.id}
           data-serie-id={serie.id}>
