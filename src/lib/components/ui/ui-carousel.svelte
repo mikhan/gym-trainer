@@ -118,7 +118,6 @@
       scroll-snap-type: both mandatory;
       scroll-behavior: smooth;
       container: carousel / size;
-      --scrollbar-size: 0px;
 
       &[data-direction='horizontal'] {
         grid-auto-flow: column;
@@ -138,6 +137,10 @@
 
       &[data-snap='center'] > li {
         scroll-snap-align: center;
+      }
+
+      &::-webkit-scrollbar {
+        display: none;
       }
 
       & > li {

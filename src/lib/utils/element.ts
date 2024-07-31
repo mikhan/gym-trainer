@@ -1,5 +1,5 @@
-export function getElement<T extends HTMLElement>(value: T | string): T | null {
-  if (value instanceof HTMLElement) return value
-
-  return document.getElementById(value) as T | null
+export function getElement<T extends HTMLElement>(value: unknown): T | null {
+  if (value instanceof HTMLElement) return value as T
+  if (typeof value === 'string' && value) return document.getElementById(value) as T | null
+  return null
 }

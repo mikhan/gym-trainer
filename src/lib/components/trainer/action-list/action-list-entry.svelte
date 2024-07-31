@@ -1,5 +1,4 @@
 <script lang="ts">
-  import type { Action } from '$lib/types'
   import { onMount } from 'svelte'
   import {
     createTrainerActionContext,
@@ -7,8 +6,8 @@
   } from '../trainer-viewport.context'
 
   type Props = {
-    action: Action
-    onclick?: (action: Action) => void
+    action: Types.Action
+    onclick?: (action: Types.Action) => void
   }
 
   let { action }: Props = $props()

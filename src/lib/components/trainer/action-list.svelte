@@ -1,7 +1,6 @@
 <script lang="ts">
   import { getMuscleGroups, getMuscles, type Muscle, type MuscleGroup } from '$data/trainer/config'
   import type { Routine } from '$data/trainer/trainings'
-  import type { ActionGroup } from '$lib/types'
   import ActionListEntry from './action-list/action-list-entry.svelte'
   import ActionListGroupLabel from './action-list/action-list-group-label.svelte'
 
@@ -20,25 +19,25 @@
 
   let schedule = $derived(createSchedule(routine))
 
-  function createSchedule(routine: Routine): ActionGroup[] {
-    const schedule: ActionGroup[] = []
+  function createSchedule(routine: Routine): Types.ActionGroup[] {
+    const schedule: Types.ActionGroup[] = []
 
     let currentName = ''
     let currentSerie = 0
     let currentStep = 0
-    let currentGroup: ActionGroup | undefined
+    let currentGroup: Types.ActionGroup | undefined
 
-    for (const { name, group, muscle, steps } of routine.series) {
+    for (const { name, muscle: muscleId, steps } of routine.series) {
       if (currentName !== name) {
         currentName = name
         currentSerie = currentSerie + 1
         currentStep = 0
       }
 
-      const step = steps[0]
+      const step = steps[0]!
 
-      const muscleGroup = muscleGroups[muscle]
-      if (!muscleGroup) throw new Error(`Unknown muscle group '${muscle}'`)
+      const muscleGroup = muscleGroups[muscleId]
+      if (!muscleGroup) throw new Error(`Unknown muscle group '${muscleId}'`)
 
       if (currentGroup?.name !== muscleGroup.name) {
         currentGroup = {
@@ -52,7 +51,10 @@
       const values = steps
         .map(({ value }) => value)
         .filter((item, index, array) => array.indexOf(item) === index)
-      const value = values.length === 1 ? values[0] : values.join(', ')
+      const value = values.length === 1 ? values[0]! : values.join(', ')
+
+      const muscle = muscles[muscleId]
+      if (!muscle) throw new Error(`Unknown muscle '${muscleId}'`)
 
       currentGroup.actions.push({
         id: crypto.randomUUID(),
@@ -60,7 +62,7 @@
         serie: currentSerie,
         step: ++currentStep,
         steps: steps.length,
-        muscle: muscles[muscle],
+        muscle,
         group: {
           id: muscleGroup.id,
           name: muscleGroup.name,

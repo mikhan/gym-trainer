@@ -1,21 +1,29 @@
-/* @import '@fontsource-variable/quicksand'; */
-@import '@fontsource-variable/inter';
+@import '@fontsource-variable/quicksand';
+/* @import '@fontsource-variable/inter'; */
 
 @layer theme {
   :root {
     color-scheme: light;
 
-    /* --font-family: 'Quicksand Variable'; */
-    --font-family: 'Inter Variable';
+    --font-family: 'Quicksand Variable';
+    /* --font-family: 'Inter Variable'; */
 
     --color-neutral-hue: 240;
-    --color-primary-hue: 255;
+    --color-primary-hue: 240;
     --color-accent-hue: 175;
 
-    --layout-gap: 8px;
+    --layout-header-height: 0px;
+    --layout-footer-height: 0px;
+    --layout-gap-sm: 8px;
+    --layout-gap-md: 16px;
+    --layout-gap: var(--layout-gap-sm);
 
-    --card-roundness: 6px;
-    --button-roundness: 6px;
+    @media (min-width: theme('screens.md')) {
+      --layout-gap: var(--layout-gap-md);
+    }
+
+    --card-roundness: 8px;
+    --button-roundness: 4px;
 
     --color-selection: 60% 0.15 80;
     --color-selection-fg: 100% 0.02 80;
@@ -30,9 +38,9 @@
 
     /* Neutral */
 
-    --color-neutral-darkest: 15% 0.015 var(--color-neutral-hue);
-    --color-neutral-darkest-hover: 20% 0.02 var(--color-neutral-hue);
-    --color-neutral-darkest-border: 25% 0.02 var(--color-neutral-hue);
+    --color-neutral-darkest: 19% 0.01 var(--color-neutral-hue);
+    --color-neutral-darkest-hover: 25% 0.02 var(--color-neutral-hue);
+    --color-neutral-darkest-border: 30% 0.02 var(--color-neutral-hue);
     --color-neutral-darkest-fg: 80% 0.02 var(--color-neutral-hue);
 
     --color-neutral-darker: 25% 0.015 var(--color-neutral-hue);
@@ -97,11 +105,12 @@
     --color-popover-fg: 90% 0.02 var(--color-neutral-hue);
 
     --shadow: 0px 1px 1px rgb(0 0 0 / 30%), 0px 2px 4px rgb(0 0 0 / 20%);
-    --shadow-over: 0px 4px 4px -2px rgb(0 0 0 / 30%), 0px 10px 10px -4px rgb(0 0 0 / 20%),
-      0px 20px 20px -8px rgb(0 0 0 / 20%);
+    --shadow: inset 0 0 0.5px 1px hsla(0, 0%, 100%, 0.05), 0 0 0 1px hsla(0, 0%, 0%, 0.1),
+      0 0.3px 0.4px hsla(0, 0%, 0%, 0.02), 0 0.9px 1.5px hsla(0, 0%, 0%, 0.045),
+      0 3.5px 6px hsla(0, 0%, 0%, 0.09);
 
-    @media (min-width: theme('screens.md')) {
-      --layout-gap: 16px;
-    }
+    --shadow-over: inset 0 0 0.5px 1px hsla(0, 0%, 100%, 0.05), 0 0 0 1px hsla(0, 0%, 0%, 0.1),
+      0px 4px 4px -2px rgb(0 0 0 / 30%), 0px 10px 10px -4px rgb(0 0 0 / 20%),
+      0px 20px 20px -8px rgb(0 0 0 / 20%);
   }
 }

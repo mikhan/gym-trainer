@@ -74,7 +74,7 @@
     overflow: hidden;
   }
 
-  .input {
+  .ui-input {
     background-color: theme('colors.neutral.lighter.DEFAULT');
     color: theme('colors.neutral.lighter.fg');
     border: 1px solid theme('colors.neutral.lighter.border');

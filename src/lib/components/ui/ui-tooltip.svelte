@@ -6,23 +6,27 @@
   import { getElement } from '$lib/utils/element'
 
   type Props = {
-    target: string | HTMLElement
     children: Snippet
+    target: string | HTMLElement
+    align?: 'block-start' | 'block-end' | 'inline-start' | 'inline-end'
   } & HTMLAttributes<HTMLElement>
 
-  let { target, children, class: className }: Props = $props()
-  const id = crypto.randomUUID()
+  let { children, target, align = 'block-end', class: className }: Props = $props()
+  let anchorElement: HTMLElement | null
+  let element = $state() as HTMLElement
 
-  function show() {
-    document.getElementById(id)?.showPopover()
+  export function show() {
+    const anchorPopover = getElement(anchorElement?.getAttribute('popovertarget'))
+    if (anchorPopover && anchorPopover.matches(':popover-open')) return
+    element.showPopover()
   }
 
-  function hide() {
-    document.getElementById(id)?.hidePopover()
+  export function hide() {
+    element.hidePopover()
   }
 
   onMount(() => {
-    const anchorElement = getElement(target)
+    anchorElement = getElement(target)
 
     if (!anchorElement) return
 
@@ -30,6 +34,11 @@
     anchorElement.addEventListener('mouseover', show, { signal: controller.signal })
     anchorElement.addEventListener('mouseout', hide, { signal: controller.signal })
     anchorElement.addEventListener('mousedown', hide, { signal: controller.signal })
+
+    const anchorPopover = getElement(anchorElement?.getAttribute('popovertarget'))
+    if (anchorPopover) {
+      anchorPopover.addEventListener('beforetoggle', hide, { signal: controller.signal })
+    }
 
     return () => controller.abort()
   })
@@ -41,8 +50,9 @@
     'ui-tooltip',
     className,
   )}
-  {id}
+  data-align={align}
   popover="manual"
+  bind:this={element}
   use:anchor={target}>
   {@render children()}
 </div>
@@ -54,8 +64,25 @@
       flip-block,
       flip-inline,
       flip-block flip-inline;
-    inset-area: bottom;
+    inset-area: block-end;
     transition-delay: 0s;
+    margin: 8px;
+
+    &[data-align='block-start'] {
+      inset-area: block-start;
+    }
+
+    &[data-align='block-end'] {
+      inset-area: block-end;
+    }
+
+    &[data-align='inline-start'] {
+      inset-area: inline-start;
+    }
+
+    &[data-align='inline-end'] {
+      inset-area: inline-end;
+    }
 
     &:popover-open {
       transition-delay: 500ms;

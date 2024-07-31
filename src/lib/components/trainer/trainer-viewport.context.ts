@@ -1,17 +1,16 @@
-import type { Action } from '$lib/types'
 import { createContext } from '$lib/utils/create-context'
 import { type SignalStore, signal } from '$lib/utils/signal-store'
 
 export interface TrainerViewportContext {
-  currentAction$: SignalStore<Action | undefined>
-  setCurrentAction: (action: Action) => void
-  getActions: () => Action[]
-  addAction: (action: Action) => void
-  removeAction: (action: Action) => void
+  currentAction$: SignalStore<Types.Action | undefined>
+  setCurrentAction: (action: Types.Action) => void
+  getActions: () => Types.Action[]
+  addAction: (action: Types.Action) => void
+  removeAction: (action: Types.Action) => void
 }
 
 export interface TrainerActionContext {
-  action: Action
+  action: Types.Action
   isActive$: SignalStore<boolean>
 }
 
@@ -23,15 +22,15 @@ let trainerViewportContext: TrainerViewportContext | null = null
 export function createTrainerViewportContext(): TrainerViewportContext {
   if (trainerViewportContext) return trainerViewportContext
 
-  const actionContexts: Action[] = []
-  const currentAction$ = signal<Action | undefined>()
+  const actionContexts: Types.Action[] = []
+  const currentAction$ = signal<Types.Action | undefined>()
 
   trainerViewportContext = {
     currentAction$,
     getActions() {
       return actionContexts
     },
-    setCurrentAction(action: Action) {
+    setCurrentAction(action: Types.Action) {
       currentAction$.set(action)
     },
     addAction(action) {
@@ -54,7 +53,7 @@ export function createTrainerViewportContext(): TrainerViewportContext {
   return trainerViewportContext
 }
 
-export function createTrainerActionContext(action: Action): TrainerActionContext {
+export function createTrainerActionContext(action: Types.Action): TrainerActionContext {
   const isActive$ = signal<boolean>(false)
 
   return {

@@ -1,25 +1,24 @@
 <script lang="ts">
   import { getMuscleGroups } from '$data/trainer/config'
-  import type { Action } from '$lib/types'
-  import { getTrainerViewportContext } from './trainer-viewport.context'
+  // import { getTrainerViewportContext } from './trainer-viewport.context'
 
-  type Props = { action: Action }
+  type Props = { action: Types.Action }
 
-  const trainerViewportContext = getTrainerViewportContext()
+  // const trainerViewportContext = getTrainerViewportContext()
   const muscleGroups = getMuscleGroups()
 
   let { action }: Props = $props()
   let muscleGroup = $derived(muscleGroups.find(({ id }) => id === action.group.id)!)
-  let steps = $derived(Array.from({ length: action.steps }, (_, i) => i + 1))
-  let currentStep = $state(action.step)
+  // let steps = $derived(Array.from({ length: action.steps }, (_, i) => i + 1))
+  // let currentStep = $state(action.step)
 
-  function changeAction(serie: number, step: number) {
-    if (!action) return
+  // function changeAction(serie: number, step: number) {
+  //   if (!action) return
 
-    const actions = trainerViewportContext.getActions()
-    const newAction = actions.find((action) => action.serie === serie && action.step === step)
-    trainerViewportContext.currentAction$.set(newAction)
-  }
+  //   const actions = trainerViewportContext.getActions()
+  //   const newAction = actions.find((action) => action.serie === serie && action.step === step)
+  //   trainerViewportContext.currentAction$.set(newAction)
+  // }
 </script>
 
 <div

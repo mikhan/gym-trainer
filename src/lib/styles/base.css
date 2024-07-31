@@ -71,37 +71,4 @@
       opacity: 0;
     }
   }
-
-  @media (pointer: fine) {
-    * {
-      --scrollbar-size: theme('spacing.4');
-      --scrollbar-track-color: transparent;
-      --scrollbar-thumb-color: color-mix(in oklch, currentColor 15%, transparent);
-      --scrollbar-thumb-size: 4px;
-
-      &:hover {
-        --scrollbar-thumb-color: color-mix(in oklch, currentColor 30%, transparent);
-        --scrollbar-thumb-size: 6px;
-      }
-
-      &::-webkit-scrollbar {
-        width: var(--scrollbar-size);
-        height: var(--scrollbar-size);
-        background-color: var(--scrollbar-track-color);
-      }
-
-      &::-webkit-scrollbar-corner {
-        background-color: var(--scrollbar-track-color);
-      }
-
-      &::-webkit-scrollbar-thumb {
-        border: calc(calc(var(--scrollbar-size) - var(--scrollbar-thumb-size)) / 2) solid
-          transparent;
-        border-radius: calc(var(--scrollbar-size) / 2);
-        background-color: var(--scrollbar-thumb-color);
-        background-clip: content-box;
-        transition: all 250ms;
-      }
-    }
-  }
 }

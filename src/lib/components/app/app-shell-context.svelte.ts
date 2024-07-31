@@ -15,6 +15,7 @@ export class AppShellContext {
   public title: Snippet | undefined = $derived(this.#titles.at(-1))
   public footer: Snippet | undefined = $derived(this.#footers.at(-1))
   public actions: ReadonlyArray<Snippet> = $state.frozen([])
+  public previous: string | URL | undefined = $state()
 
   private constructor() {}
 

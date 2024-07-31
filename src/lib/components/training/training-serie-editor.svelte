@@ -7,6 +7,7 @@
   import { onMount } from 'svelte'
   import UiIconbutton from '../ui/ui-iconbutton.svelte'
   import UiButton from '../ui/ui-button.svelte'
+  import { convertUnit } from '$lib/utils/unit-converter'
 
   type Props = {
     routineId: string
@@ -24,9 +25,12 @@
   let useSameDelay = $state(true)
 
   function pickSerie(training: Types.Training, routineId: string, serieId: string) {
-    return training.routines
-      .find(({ id }) => id === routineId)
-      ?.series.find(({ id }) => id === serieId)!
+    const routine = training.routines.find(({ id }) => id === routineId)
+    if (!routine) throw new Error(`Routine '${serieId}' not found.`)
+    const serie = routine?.series.find(({ id }) => id === serieId)
+    if (!serie) throw new Error(`Serie '${serieId}' not found.`)
+
+    return serie
   }
 
   function deleteStep(index: number) {
@@ -52,8 +56,13 @@
     onclose?.()
   }
 
+  function changeUnit(step: Types.RoutineStep, unit: string) {
+    step.weight.value = Math.round(convertUnit(step.weight.value, step.weight.unit, unit))
+    step.weight.unit = unit
+  }
+
   onMount(() => {
-    useSameDelay = serie$.steps.every(({ delay }) => delay === serie$.steps[0].delay)
+    useSameDelay = serie$.steps.every(({ delay }) => delay === serie$.steps[0]?.delay)
   })
 </script>
 
@@ -63,12 +72,12 @@
     <div class="flex flex-wrap gap-2">
       <label class="field flex-[3_1_40ch]">
         <span class="field-label">Name</span>
-        <input class="input" type="string" required bind:value={serie$.name} />
+        <input class="ui-input" type="string" required bind:value={serie$.name} />
       </label>
       <label class="field flex-[1_1_15ch]">
         <span class="field-label">Muscle</span>
         <select
-          class="input"
+          class="ui-input"
           required
           bind:value={serie$.muscle}
           onchange={() => (serie$.group = serie$.muscle)}>
@@ -89,20 +98,20 @@
       <div class="flex items-end gap-2">
         <label class="field grow">
           <span class="field-label">Type</span>
-          <select class="input" required bind:value={step.type}>
+          <select class="ui-input" required bind:value={step.type}>
             <option value="repetitions">Repetitions</option>
             <option value="failure">Failure</option>
           </select>
         </label>
         <label class="field grow">
           <span class="field-label">Value</span>
-          <input class="input" type="string" required bind:value={step.value} />
+          <input class="ui-input" type="string" required bind:value={step.value} />
         </label>
-        <!-- {#if !sameDelay} -->
+        <!-- {#if !useSameDelay} -->
         <label class="field grow">
           <span class="field-label">Recovery time</span>
           <input
-            class="input"
+            class="ui-input"
             type="number"
             min="0"
             step="5"
@@ -110,9 +119,22 @@
             bind:value={step.delay}
             onchange={() =>
               useSameDelay &&
-              serie$.steps.forEach((step) => (step.delay = serie$.steps[0].delay))} />
+              serie$.steps.forEach((step) => (step.delay = serie$.steps[0]?.delay ?? 0))} />
         </label>
         <!-- {/if} -->
+        <label class="field grow">
+          <span class="field-label">Weight</span>
+          <div class="flex gap-2">
+            <input class="ui-input" type="number" min="0" required bind:value={step.weight.value} />
+            <select
+              class="ui-input w-16"
+              value={step.weight.unit}
+              onchange={({ currentTarget }) => changeUnit(step, currentTarget.value)}>
+              <option value="kg">Kg</option>
+              <option value="lb">Lb</option>
+            </select>
+          </div>
+        </label>
         <UiIconbutton
           class="shrink-0"
           label="Delete step"

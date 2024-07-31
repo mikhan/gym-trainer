@@ -4,7 +4,12 @@ const routineStepSchema = z.object({
   type: z.enum(['repetitions', 'failure']),
   value: z.string(),
   delay: z.number().default(30),
-  weight: z.number().default(0),
+  weight: z
+    .object({
+      unit: z.string(),
+      value: z.number(),
+    })
+    .default({ unit: 'kg', value: 0 }),
 })
 
 const routineSerieSchema = z.object({
@@ -40,14 +45,12 @@ export async function getTrainings(supabase: App.Locals['supabase']): Promise<Ty
 export async function getTraining(
   supabase: App.Locals['supabase'],
   trainingId: string,
-): Promise<Types.Training> {
+): Promise<Types.Training | null> {
   const result = await supabase.from('training').select(`id, name, routines`).eq('id', trainingId)
 
   if (result.error) throw result.error
 
-  const item = trainingSchema.parse(result.data[0])
-
-  if (!item) throw new Error('Not found')
+  const item = result.data[0] ? trainingSchema.parse(result.data[0]) : null
 
   return item
 }

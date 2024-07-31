@@ -1,5 +1,4 @@
 <script lang="ts">
-  import type { Action } from 'svelte/action'
   import TrainingSerieEditor from '$lib/components/training/training-serie-editor.svelte'
   import Fa from 'svelte-fa'
   import { sortitem, sortlist } from '../../actions/sortable.action'
@@ -78,17 +77,21 @@
   }
 </script>
 
-<div class="rounded-card bg-neutral text-neutral-fg" id={`routine-${routine$.id}`} use:tocTarget>
-  <div class="sticky top-0 flex rounded-card bg-neutral px-8 py-4">
-    <div class="grow">{routine$.name}</div>
+<article
+  class="rounded-card border border-neutral-border bg-neutral py-2 text-neutral-fg"
+  id={`routine-${routine$.id}`}
+  use:tocTarget>
+  <header
+    class="sticky top-0 z-1 flex items-center gap-2 border-b border-neutral-border bg-inherit px-8 py-4">
+    <div class="grow text-xl font-bold">{routine$.name}</div>
+    <UiButton>Add Serie</UiButton>
     <UiButton onclick={() => startRoutine(routine$.id)}>Start</UiButton>
-  </div>
+  </header>
   <ul
     use:sortlist={trainingViewportContext.training$.id}
     onsortend={(event) => updateSeries(getFromRegistry(event.detail.elements))}>
     {#each groupedSeries$ as groupedSerie}
-      <div class="px-8 py-2 text-sm font-bold">{groupedSerie.group.name}</div>
-      <hr class="border-neutral-border" />
+      <div class="px-8 py-4 text-sm font-bold">{groupedSerie.group.name}</div>
 
       {#each groupedSerie.series as serie (serie.id)}
         <li
@@ -125,12 +128,8 @@
           open={serie.id === currentSerie$?.id}
           onclose={() => (currentSerie$ = null)}></TrainingSerieEditor>
       {/each}
-      <hr class="border-neutral-border" />
     {:else}
-      <li class="grid place-content-center h-16 px-4 opacity-50">Empty list</li>
+      <div class="grid place-content-center h-16 px-4 opacity-50">Empty list</div>
     {/each}
   </ul>
-  <div class="p-4">
-    <UiButton>Add Serie</UiButton>
-  </div>
-</div>
+</article>

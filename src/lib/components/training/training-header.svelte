@@ -3,7 +3,7 @@
     training: Types.Training
   }
 
-  let { training }: Props = $props()
+  const { training }: Props = $props()
 </script>
 
 <header>

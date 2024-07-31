@@ -29,7 +29,7 @@ import ejercicios from './ejercicios.json'
 //   }
 // }
 
-export const GET: RequestHandler = async ({ locals }) => {
+export const GET: RequestHandler = async () => {
   // for (const [index, ejercicio] of Object.entries(ejercicios)) {
   //   console.log(`Insert id: ${index}`)
   //   const { error } = await locals.supabase.from('exercise').insert(ejercicio)

@@ -19,20 +19,8 @@
     outline-offset: -2px;
   }
 
-  .scrollbar-autohide {
-    @media (pointer: fine) {
-      &:not(:hover) {
-        --scrollbar-thumb-color: transparent;
-      }
-    }
-  }
-
-  .scrollbar-stable {
-    scrollbar-gutter: stable;
-  }
-
   .scrollable-shadow {
-    --scrollable-shadow-size: 3rem;
+    --scrollable-shadow-size: 2rem;
     --scrollable-shadow-color: hsl(0 0 0 / 40%);
     display: grid;
     grid-template-rows: auto 1fr auto;
@@ -48,54 +36,42 @@
       pointer-events: none;
       margin-block-start: calc(var(--scrollable-shadow-size) * -1);
       animation-timeline: scroll();
+      animation-name: scrollable-shadow-fade-in;
       opacity: 0;
       z-index: 1;
     }
 
     &::before {
       top: 0;
-      animation-name: fade-in;
       background-image: radial-gradient(
         farthest-side at top center,
         var(--scrollable-shadow-color) 33%,
         transparent
       );
-      mask-image: linear-gradient(to bottom, var(--scrollable-shadow-color), transparent);
+      mask-image: linear-gradient(to bottom, black, transparent);
     }
 
     &::after {
       bottom: 0;
-      animation-name: fade-out;
       background-image: radial-gradient(
         farthest-side at bottom center,
         var(--scrollable-shadow-color) 33%,
         transparent
       );
       mask-image: linear-gradient(to top, black, transparent);
+      animation-direction: reverse;
     }
   }
 
-  @keyframes fade-in {
+  @keyframes scrollable-shadow-fade-in {
     0% {
       opacity: 0;
     }
-    75% {
+    1% {
       opacity: 1;
     }
     100% {
       opacity: 1;
-    }
-  }
-
-  @keyframes fade-out {
-    0% {
-      opacity: 1;
-    }
-    75% {
-      opacity: 1;
-    }
-    100% {
-      opacity: 0;
     }
   }
 }

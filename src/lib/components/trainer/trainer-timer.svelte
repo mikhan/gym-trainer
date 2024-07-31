@@ -1,12 +1,12 @@
 <script lang="ts">
-  import type { Action } from '$lib/types'
-  import { getTrainerViewportContext } from './trainer-viewport.context'
+  // import type { Action } from '$lib/types'
+  // import { getTrainerViewportContext } from './trainer-viewport.context'
 
-  type Props = { action: Action }
+  // type Props = { action: Action }
 
-  const trainerViewportContext = getTrainerViewportContext()
+  // const trainerViewportContext = getTrainerViewportContext()
 
-  let { action }: Props = $props()
+  // let { action }: Props = $props()
 </script>
 
 <div class="trainer-timer"></div>

@@ -25,7 +25,7 @@
     top: theme('space.layout-gap');
     color: theme('colors.accent.fg');
     background-color: theme('colors.accent.DEFAULT');
-    box-shadow: theme('boxShadow.base');
+    box-shadow: theme('boxShadow.DEFAULT');
     z-index: 1;
   }
 </style>

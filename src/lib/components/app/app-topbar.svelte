@@ -2,19 +2,19 @@
   import { onMount, type Snippet } from 'svelte'
   import { AppShellContext } from './app-shell-context.svelte'
 
-  type Props = { children: Snippet; actions?: Snippet }
+  type Props = { children: Snippet; previous?: string | URL }
 
-  let { children, actions }: Props = $props()
+  let { children, previous }: Props = $props()
 
   const appShellContext = AppShellContext.get()
 
   onMount(() => {
     appShellContext.addTitle(children)
-    if (actions) appShellContext.addActions(actions)
+    appShellContext.previous = previous
 
     return () => {
       appShellContext.removeTitle(children)
-      if (actions) appShellContext.removeActions(actions)
+      appShellContext.previous = undefined
     }
   })
 </script>

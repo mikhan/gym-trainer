@@ -31,7 +31,7 @@
   {/if}
 </AppTopbar>
 
-<div class="scrollable-shadow h-full overflow-y-auto">
+<div>
   {#if $currentAction$}
     <ActionCurrent action={$currentAction$}></ActionCurrent>
   {/if}
