@@ -1,5 +1,10 @@
 import type { Config } from 'tailwindcss'
 import { fontFamily } from 'tailwindcss/defaultTheme'
+import { gridPlugin } from './tools/tailwind/plugins/grid'
+import { pointerPlugin } from './tools/tailwind/plugins/pointer'
+import { scrollbarPlugin } from './tools/tailwind/plugins/scrollbar'
+import { typescalePlugin } from './tools/tailwind/plugins/typescale'
+
 // import { buttonPlugin } from './tools/tailwind/plugins/button'
 // import { cssVariablesPlugin } from './tools/tailwind/plugins/css-variables'
 // import { elevationPlugin } from './tools/tailwind/plugins/elevation'
@@ -8,18 +13,23 @@ import { fontFamily } from 'tailwindcss/defaultTheme'
 // import { hocusPlugin } from './tools/tailwind/plugins/hocus'
 // import { layoutPlugin } from './tools/tailwind/plugins/layout'
 // import { linkPlugin } from './tools/tailwind/plugins/link'
-import { scrollbarPlugin } from './tools/tailwind/plugins/scrollbar'
-
 // import { surfacePlugin } from './tools/tailwind/plugins/surface'
 // import { textShadowPlugin } from './tools/tailwind/plugins/text-shadow'
 // import { textWrapPlugin } from './tools/tailwind/plugins/text-wrap'
+
+const varColor = (varName: string) => `oklch(from var(${varName}) l c h / <alpha-value>)`
+const colorHover = (varName: string) =>
+  `oklch(from color-mix(in oklch, var(${varName}), var(${varName}-fg) 10%) l c h / <alpha-value>)`
+const colorActive = (varName: string) =>
+  `oklch(from color-mix(in oklch, var(${varName}), var(${varName}-fg) 15%) l c h / <alpha-value>)`
 
 export default {
   content: ['./src/**/*.{html,js,svelte,ts}'],
   darkMode: 'selector',
   theme: {
     fontFamily: {
-      sans: ['var(--font-family)', ...fontFamily.sans],
+      sans: ["var(--font-family-sans, '')", ...fontFamily.sans],
+      mono: ["var(--font-family-mono, '')", ...fontFamily.mono],
     },
     borderRadius: {
       card: 'var(--card-roundness)',
@@ -35,100 +45,138 @@ export default {
       transparent: 'transparent',
       white: 'white',
       black: 'black',
-      ring: 'oklch(var(--color-ring) / <alpha-value>)',
+      ring: {
+        DEFAULT: varColor('--color-ring'),
+      },
       selection: {
-        DEFAULT: 'oklch(var(--color-selection) / <alpha-value>)',
-        fg: 'oklch(var(--color-selection-fg) / <alpha-value>)',
+        DEFAULT: varColor('--color-selection'),
+        fg: varColor('--color-selection-fg'),
       },
       surface: {
-        DEFAULT: 'oklch(var(--color-surface) / <alpha-value>)',
-        hover: 'oklch(var(--color-surface-hover) / <alpha-value>)',
-        border: 'oklch(var(--color-surface-border) / <alpha-value>)',
-        fg: 'oklch(var(--color-surface-fg) / <alpha-value>)',
+        DEFAULT: varColor('--color-surface'),
+        fg: varColor('--color-surface-fg'),
+        line: varColor('--color-surface-line'),
+        hover: colorHover('--color-surface'),
+        active: colorActive('--color-surface'),
       },
       canvas: {
-        DEFAULT: 'oklch(var(--color-canvas) / <alpha-value>)',
-        hover: 'oklch(var(--color-canvas-hover) / <alpha-value>)',
-        border: 'oklch(var(--color-canvas-border) / <alpha-value>)',
-        fg: 'oklch(var(--color-canvas-fg) / <alpha-value>)',
+        DEFAULT: varColor('--color-canvas'),
+        fg: varColor('--color-canvas-fg'),
+        line: varColor('--color-canvas-line'),
+        hover: colorHover('--color-canvas'),
+        active: colorActive('--color-canvas'),
       },
       neutral: {
-        DEFAULT: 'oklch(var(--color-neutral) / <alpha-value>)',
-        hover: 'oklch(var(--color-neutral-hover) / <alpha-value>)',
-        border: 'oklch(var(--color-neutral-border) / <alpha-value>)',
-        fg: 'oklch(var(--color-neutral-fg) / <alpha-value>)',
+        DEFAULT: varColor('--color-neutral'),
+        fg: varColor('--color-neutral-fg'),
+        line: varColor('--color-neutral-line'),
+        hover: colorHover('--color-neutral'),
+        active: colorActive('--color-neutral'),
         lighter: {
-          DEFAULT: 'oklch(var(--color-neutral-lighter) / <alpha-value>)',
-          hover: 'oklch(var(--color-neutral-lighter-hover) / <alpha-value>)',
-          border: 'oklch(var(--color-neutral-lighter-border) / <alpha-value>)',
-          fg: 'oklch(var(--color-neutral-lighter-fg) / <alpha-value>)',
+          DEFAULT: varColor('--color-neutral-lighter'),
+          fg: varColor('--color-neutral-lighter-fg'),
+          line: varColor('--color-neutral-lighter-line'),
+          hover: colorHover('--color-neutral-lighter'),
+          active: colorActive('--color-neutral-lighter'),
         },
         lightest: {
-          DEFAULT: 'oklch(var(--color-neutral-lightest) / <alpha-value>)',
-          hover: 'oklch(var(--color-neutral-lightest-hover) / <alpha-value>)',
-          border: 'oklch(var(--color-neutral-lightest-border) / <alpha-value>)',
-          fg: 'oklch(var(--color-neutral-lightest-fg) / <alpha-value>)',
+          DEFAULT: varColor('--color-neutral-lightest'),
+          fg: varColor('--color-neutral-lightest-fg'),
+          line: varColor('--color-neutral-lightest-line'),
+          hover: colorHover('--color-neutral-lightest'),
+          active: colorActive('--color-neutral-lightest'),
         },
         darker: {
-          DEFAULT: 'oklch(var(--color-neutral-darker) / <alpha-value>)',
-          hover: 'oklch(var(--color-neutral-darker-hover) / <alpha-value>)',
-          border: 'oklch(var(--color-neutral-darker-border) / <alpha-value>)',
-          fg: 'oklch(var(--color-neutral-darker-fg) / <alpha-value>)',
+          DEFAULT: varColor('--color-neutral-darker'),
+          fg: varColor('--color-neutral-darker-fg'),
+          line: varColor('--color-neutral-darker-line'),
+          hover: colorHover('--color-neutral-darker'),
+          active: colorActive('--color-neutral-darker'),
         },
         darkest: {
-          DEFAULT: 'oklch(var(--color-neutral-darkest) / <alpha-value>)',
-          hover: 'oklch(var(--color-neutral-darkest-hover) / <alpha-value>)',
-          border: 'oklch(var(--color-neutral-darkest-border) / <alpha-value>)',
-          fg: 'oklch(var(--color-neutral-darkest-fg) / <alpha-value>)',
+          DEFAULT: varColor('--color-neutral-darkest'),
+          fg: varColor('--color-neutral-darkest-fg'),
+          line: varColor('--color-neutral-darkest-line'),
+          hover: colorHover('--color-neutral-darkest'),
+          active: colorActive('--color-neutral-darkest'),
         },
       },
       popover: {
-        DEFAULT: 'oklch(var(--color-popover) / <alpha-value>)',
-        hover: 'oklch(var(--color-popover-hover) / <alpha-value>)',
-        border: 'oklch(var(--color-popover-border) / <alpha-value>)',
-        fg: 'oklch(var(--color-popover-fg) / <alpha-value>)',
+        DEFAULT: varColor('--color-popover'),
+        fg: varColor('--color-popover-fg'),
+        line: varColor('--color-popover-line'),
+        hover: colorHover('--color-popover'),
+        active: colorActive('--color-popover'),
       },
       primary: {
-        DEFAULT: 'oklch(var(--color-primary) / <alpha-value>)',
-        hover: 'oklch(var(--color-primary-hover) / <alpha-value>)',
-        border: 'oklch(var(--color-primary-border) / <alpha-value>)',
-        fg: 'oklch(var(--color-primary-fg) / <alpha-value>)',
+        DEFAULT: varColor('--color-primary'),
+        fg: varColor('--color-primary-fg'),
+        line: varColor('--color-primary-line'),
+        hover: colorHover('--color-primary'),
+        active: colorActive('--color-primary'),
         lighter: {
-          DEFAULT: 'oklch(var(--color-primary-lighter) / <alpha-value>)',
-          hover: 'oklch(var(--color-primary-lighter-hover) / <alpha-value>)',
-          border: 'oklch(var(--color-primary-lighter-border) / <alpha-value>)',
-          fg: 'oklch(var(--color-primary-lighter-fg) / <alpha-value>)',
+          DEFAULT: varColor('--color-primary-lighter'),
+          fg: varColor('--color-primary-lighter-fg'),
+          line: varColor('--color-primary-lighter-line'),
+          hover: colorHover('--color-primary-lighter'),
+          active: colorActive('--color-primary-lighter'),
         },
         darker: {
-          DEFAULT: 'oklch(var(--color-primary-darker) / <alpha-value>)',
-          hover: 'oklch(var(--color-primary-darker-hover) / <alpha-value>)',
-          border: 'oklch(var(--color-primary-darker-border) / <alpha-value>)',
-          fg: 'oklch(var(--color-primary-darker-fg) / <alpha-value>)',
+          DEFAULT: varColor('--color-primary-darker'),
+          fg: varColor('--color-primary-darker-fg'),
+          line: varColor('--color-primary-darker-line'),
+          hover: colorHover('--color-primary-darker'),
+          active: colorActive('--color-primary-darker'),
+        },
+      },
+      secondary: {
+        DEFAULT: varColor('--color-secondary'),
+        fg: varColor('--color-secondary-fg'),
+        line: varColor('--color-secondary-line'),
+        hover: colorHover('--color-secondary'),
+        active: colorActive('--color-secondary'),
+        lighter: {
+          DEFAULT: varColor('--color-secondary-lighter'),
+          fg: varColor('--color-secondary-lighter-fg'),
+          line: varColor('--color-secondary-lighter-line'),
+          hover: colorHover('--color-secondary-lighter'),
+          active: colorActive('--color-secondary-lighter'),
+        },
+        darker: {
+          DEFAULT: varColor('--color-secondary-darker'),
+          fg: varColor('--color-secondary-darker-fg'),
+          line: varColor('--color-secondary-darker-line'),
+          hover: colorHover('--color-secondary-darker'),
+          active: colorActive('--color-secondary-darker'),
         },
       },
       accent: {
-        DEFAULT: 'oklch(var(--color-accent) / <alpha-value>)',
-        hover: 'oklch(var(--color-accent-hover) / <alpha-value>)',
-        border: 'oklch(var(--color-accent-border) / <alpha-value>)',
-        fg: 'oklch(var(--color-accent-fg) / <alpha-value>)',
+        DEFAULT: varColor('--color-accent'),
+        fg: varColor('--color-accent-fg'),
+        line: varColor('--color-accent-line'),
+        hover: colorHover('--color-accent'),
+        active: colorActive('--color-accent'),
         lighter: {
-          DEFAULT: 'oklch(var(--color-accent-lighter) / <alpha-value>)',
-          hover: 'oklch(var(--color-accent-lighter-hover) / <alpha-value>)',
-          border: 'oklch(var(--color-accent-lighter-border) / <alpha-value>)',
-          fg: 'oklch(var(--color-accent-lighter-fg) / <alpha-value>)',
+          DEFAULT: varColor('--color-accent-lighter'),
+          fg: varColor('--color-accent-lighter-fg'),
+          line: varColor('--color-accent-lighter-line'),
+          hover: colorHover('--color-accent-lighter'),
+          active: colorActive('--color-accent-lighter'),
         },
         darker: {
-          DEFAULT: 'oklch(var(--color-accent-darker) / <alpha-value>)',
-          hover: 'oklch(var(--color-accent-darker-hover) / <alpha-value>)',
-          border: 'oklch(var(--color-accent-darker-border) / <alpha-value>)',
-          fg: 'oklch(var(--color-accent-darker-fg) / <alpha-value>)',
+          DEFAULT: varColor('--color-accent-darker'),
+          fg: varColor('--color-accent-darker-fg'),
+          line: varColor('--color-accent-darker-line'),
+          hover: colorHover('--color-accent-darker'),
+          active: colorActive('--color-accent-darker'),
         },
       },
     },
     transitionDuration: {
-      fast: '125ms',
-      normal: '250ms',
-      slow: '500ms',
+      DEFAULT: '200ms',
+      short: '200ms',
+      medium: '500ms',
+      long: '1000ms',
     },
     screens: {
       'sm': '480px',
@@ -153,8 +201,11 @@ export default {
   },
   plugins: [
     require('@tailwindcss/container-queries'),
+    scrollbarPlugin(),
+    gridPlugin(),
+    typescalePlugin(),
+    pointerPlugin(),
     // textShadowPlugin(),
-    // squarePlugin(),
     // formPlugin(),
     // linkPlugin(),
     // textWrapPlugin(),
@@ -163,7 +214,6 @@ export default {
     // hocusPlugin(),
     // focusablePlugin(),
     // layoutPlugin(),
-    scrollbarPlugin(),
     // buttonPlugin(),
     // surfacePlugin({
     //   canvas: 'canvas',

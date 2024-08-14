@@ -3,7 +3,7 @@
 @import './base.css';
 @import './components.css';
 @import './utilities.css';
-@import './theme.css';
+@import './themes/dark.css';
 
 @tailwind base;
 @tailwind components;

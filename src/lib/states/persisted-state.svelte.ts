@@ -1,0 +1,56 @@
+import { browser } from '$app/environment'
+import { onDestroy } from 'svelte'
+
+type StorageType = 'local' | 'session'
+
+export class PersistedState<T> {
+  static readonly namespace = 'state'
+
+  #defaultValue: string
+
+  readonly type: StorageType
+  readonly key: string
+  value = $state<T>() as T
+
+  constructor(key: string, defaultValue: T, type: StorageType = 'local') {
+    this.type = type
+    this.key = `${PersistedState.namespace}:${key}`
+    this.value = defaultValue
+    this.#defaultValue = this.serialize(defaultValue)
+
+    const storage = getStorage(type)
+    if (!storage) return
+
+    const storedValue = storage.getItem(this.key)
+    if (storedValue) this.value = this.deserialize(storedValue)
+
+    const onStorage = (event: StorageEvent) => {
+      if (event.storageArea !== storage) return
+      if (event.key !== this.key) return
+      const newValue = typeof event.newValue === 'string' ? event.newValue : this.#defaultValue
+      this.value = this.deserialize(newValue)
+    }
+
+    globalThis.addEventListener('storage', onStorage)
+    onDestroy(() => globalThis.removeEventListener('storage', onStorage))
+
+    $effect(() => storage.setItem(this.key, this.serialize(this.value)))
+  }
+
+  serialize(value: T): string {
+    return JSON.stringify(value)
+  }
+
+  deserialize(item: string): T {
+    return JSON.parse(item)
+  }
+}
+
+function getStorage(type: StorageType) {
+  if (!browser) return null
+
+  if (type === 'local') return globalThis.localStorage
+  if (type === 'session') return globalThis.sessionStorage
+
+  throw new TypeError(`Unknown storage type '${type}`)
+}

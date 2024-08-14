@@ -6,7 +6,7 @@
   .focusable {
     &:focus-visible,
     &.--focused {
-      outline: 2px solid oklch(var(--color-ring));
+      outline: 2px solid theme('colors.ring.DEFAULT');
       outline-offset: -2px;
     }
   }
@@ -15,7 +15,7 @@
   .focusable.--focused,
   .focusable-within:focus-within,
   .focusable-within.--focused {
-    outline: 2px solid oklch(var(--color-ring));
+    outline: 2px solid theme('colors.ring.DEFAULT');
     outline-offset: -2px;
   }
 

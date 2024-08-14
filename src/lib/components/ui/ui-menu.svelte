@@ -25,7 +25,7 @@
 
 <menu
   class={clsx(
-    'fixed rounded-card border border-popover-border bg-popover/80 p-1 text-popover-fg shadow-over backdrop-blur',
+    'border-popover-line fixed rounded-card border bg-popover/80 p-1 text-popover-fg shadow-over backdrop-blur',
     'ui-menu',
     className,
   )}

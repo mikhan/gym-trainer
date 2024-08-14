@@ -5,11 +5,16 @@
 
   type Props = {
     children: Snippet
+    variant?: 'primary'
   } & HTMLButtonAttributes
 
-  let { children, class: className, id, ...props }: Props = $props()
+  let { children, variant, class: className, id, ...props }: Props = $props()
 </script>
 
-<button class={clsx('ui-button focusable', className)} type="button" {id} {...props}>
+<button
+  class={clsx('ui-button focusable', variant && `ui-button-${variant}`, className)}
+  type="button"
+  {id}
+  {...props}>
   {@render children()}
 </button>

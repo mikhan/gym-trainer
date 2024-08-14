@@ -12,10 +12,7 @@
 
   const appShellContext = AppShellContext.create()
   let container = $state() as HTMLElement
-  let containerStyles = $state({
-    '--layout-header-height': '0px',
-    '--layout-footer-height': '0px',
-  }) as Record<string, string>
+  let containerStyles = $state({}) as Record<string, string>
 
   $effect(() => {
     for (const [name, value] of Object.entries(containerStyles)) {
@@ -71,8 +68,8 @@
           </div>
         {/if}
         <div
-          class="grid size-12 shrink-0 items-end justify-center overflow-clip rounded-full bg-primary">
-          <Fa icon={faUser} size="2.5x"></Fa>
+          class="grid size-8 shrink-0 items-end justify-center overflow-clip rounded-full bg-primary">
+          <Fa icon={faUser} size="1.5x"></Fa>
         </div>
       </div>
     </header>
@@ -92,6 +89,8 @@
 <style lang="postcss">
   :global {
     .app-shell {
+      --layout-header-height: 0px;
+      --layout-footer-height: 0px;
       display: grid;
       grid-template:
         'head' max-content
@@ -118,12 +117,12 @@
 
     .app-viewport {
       grid-area: view;
+      container-type: size;
     }
 
     .app-footer {
       grid-area: foot;
       width: 100%;
-      min-height: theme('spacing.16');
       position: sticky;
       bottom: 0;
       z-index: theme('zIndex.2');

@@ -18,7 +18,7 @@ export function linkPlugin() {
           'text-decoration': 'underline',
         },
         '&:focus-visible': {
-          'outline-color': getColor(theme('colors.ring')),
+          'outline-color': getColor(theme('colors.ring.DEFAUL')),
           'outline-offset': '2px',
         },
       },

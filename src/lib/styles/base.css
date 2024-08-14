@@ -1,23 +1,6 @@
 @layer base {
-  * {
-    box-sizing: border-box;
-  }
-
-  :host,
-  html {
-    line-height: 1.5;
-    -webkit-text-size-adjust: 100%;
-    tab-size: 4;
-    font-family: theme('fontFamily.sans');
-    font-feature-settings: normal;
-    font-variation-settings: normal;
-    -webkit-tap-highlight-color: transparent;
-  }
-
   body {
     height: 100dvh;
-    background-color: theme('colors.canvas.DEFAULT');
-    color: theme('colors.canvas.fg');
   }
 
   h1,
@@ -38,8 +21,12 @@
   }
 
   ::selection {
-    background-color: oklch(var(--color-selection));
-    color: oklch(var(--color-selection-fg));
+    background-color: theme('colors.selection.DEFAULT');
+    color: theme('colors.selection.fg');
+  }
+
+  ui-user-insertion {
+    background-color: theme('colors.ring.DEFAULT');
   }
 
   [popover] {

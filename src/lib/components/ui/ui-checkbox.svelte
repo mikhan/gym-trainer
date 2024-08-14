@@ -22,7 +22,7 @@
       height: theme('spacing.4');
       cursor: pointer;
       border-radius: theme('borderRadius.button');
-      border: 2px solid theme('colors.neutral.border');
+      border: 2px solid theme('colors.neutral.line');
       vertical-align: middle;
 
       &:checked {

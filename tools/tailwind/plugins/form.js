@@ -29,7 +29,7 @@ export function formPlugin() {
         'transitionProperty': 'outline-color, outline-offset',
         'transitionDuration': theme('transitionDuration.normal'),
         '&:focus-visible': {
-          outlineColor: getColor(theme('colors.ring')),
+          outlineColor: getColor(theme('colors.ring.DEFAULT')),
           outlineOffset: '2px',
         },
         '&::placeholder': {

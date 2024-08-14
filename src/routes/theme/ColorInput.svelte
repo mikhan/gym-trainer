@@ -1,4 +1,6 @@
 <script lang="ts">
+  import type { Action } from 'svelte/action'
+
   type Props = {
     value: string | undefined
     type: 'hue' | 'lch'
@@ -8,138 +10,150 @@
   class NumberValue {
     readonly type = 'number'
     value: number
-    min: number | undefined
-    max: number | undefined
-    step: number | undefined
-    suffix: string
-    constructor(
-      public name: string,
-      value: string,
-      options: { min?: number; max?: number; step?: number; suffix?: string } = {},
-    ) {
+    readonly min: number | undefined
+    readonly max: number | undefined
+    constructor(value: string, options: { min?: number; max?: number } = {}) {
       this.value = parseFloat(value)
       this.min = options.min
       this.max = options.max
-      this.step = options.step
-      this.suffix = options.suffix ?? ''
-    }
-    toString() {
-      return this.value + this.suffix
     }
   }
 
   class TextValue {
     readonly type = 'text'
-    constructor(
-      public name: string,
-      public value: string,
-    ) {}
-    toString() {
-      return this.value
-    }
+    constructor(public readonly value: string) {}
   }
 
-  let { value = $bindable(''), type, onchange }: Props = $props()
+  let { value = $bindable(), type, onchange }: Props = $props()
 
   let parts = $derived(getParts(value))
   let backgroundColor = $derived(getColor())
 
-  function getParts(value: string) {
-    if (type === 'hue') {
-      return [getConfig('h', value)]
-    } else if (type === 'lch') {
-      const [l, c, h] = value.split(/ +/g)
-      if (!l || !c || !h) throw new TypeError('Invalid color')
+  function getParts(value?: string) {
+    const parts: (TextValue | NumberValue)[] = []
+    if (!value) return parts
 
-      return [getConfig('l', l), getConfig('c', c), getConfig('h', h)]
+    for (const match of value.matchAll(/-?[0-9]+(?:\.[0-9]+)?|\D+/g)) {
+      const isNumber = /-?[0-9]+(?:\.[0-9]+)?/.test(match[0])
+      parts.push(
+        isNumber
+          ? new NumberValue(match[0], { min: 0, max: type === 'hue' ? 360 : 100 })
+          : new TextValue(match[0]),
+      )
     }
 
-    throw new TypeError('Invalid')
-  }
-
-  function getConfig(component: string, value: string) {
-    const type = getValueType(value)
-    if (type === 'text') return new TextValue(component, value)
-
-    if (component === 'l') {
-      return type === 'percentage'
-        ? new NumberValue(component, value, { min: 0, max: 100, step: 1, suffix: '%' })
-        : new NumberValue(component, value, { min: 0, max: 1, step: 0.01 })
-    }
-
-    if (component === 'c') {
-      return type === 'percentage'
-        ? new NumberValue(component, value, { min: 0, max: 100, step: 1, suffix: '%' })
-        : new NumberValue(component, value, { min: 0, max: 0.5, step: 0.01 })
-    }
-
-    if (component === 'h') {
-      return type === 'degree'
-        ? new NumberValue(component, value, { min: 0, max: 360, step: 1, suffix: 'deg' })
-        : new NumberValue(component, value, { min: 0, max: 360, step: 1 })
-    }
-
-    throw new TypeError('Invalid')
-  }
-
-  function getValueType(value: string) {
-    if (/^[-0-9.]+%$/.test(value)) return 'percentage'
-    if (/^[-0-9.]+deg$/.test(value)) return 'degree'
-    if (/^[-0-9.]+$/.test(value)) return 'number'
-    else return 'text'
+    return parts
   }
 
   function getColor() {
     if (type === 'lch') {
-      return `oklch(${value})`
+      return value
     } else {
-      return `oklch(50% 0.25 ${value})`
+      return `oklch(100% 1 ${value})`
     }
   }
 
   function update() {
     if (!onchange) return
-    const newValue = parts.map((part) => part.toString()).join(' ')
+    const newValue = parts.map((part) => part.value).join('')
     value = newValue
     onchange(newValue)
   }
+
+  function makeEditable(element: HTMLElement) {
+    element.contentEditable = 'plaintext-only'
+
+    element.addEventListener('blur', () => (element.contentEditable = 'false'), { once: true })
+  }
+
+  const numberControl: Action<HTMLElement, NumberValue | TextValue> = (element, part) => {
+    if (part.type === 'text') return
+
+    element.addEventListener('click', onClick)
+    element.addEventListener('mousedown', onMousedown)
+    element.setAttribute('tabindex', '-1')
+
+    return {
+      update(newPart) {
+        part = newPart
+      },
+      destroy() {
+        element.removeEventListener('click', onClick)
+        element.removeEventListener('mousedown', onMousedown)
+      },
+    }
+
+    function onClick() {
+      makeEditable(element)
+    }
+
+    function onMousedown() {
+      document.addEventListener('mousemove', onMousemove)
+      document.addEventListener('mouseup', onMouseup)
+
+      element.requestPointerLock()
+
+      function onMousemove(event: MouseEvent) {
+        if (part.type !== 'number') return
+        element.style.setProperty('user-select', 'none')
+        let y = event.movementY * -1
+        if (event.ctrlKey) y = y / 10
+        if (event.altKey) y = y / 100
+
+        part.value = parseFloat((part.value + y).toFixed(3))
+        if (part.min !== undefined) part.value = Math.max(part.min, part.value)
+        if (part.max !== undefined) part.value = Math.min(part.max, part.value)
+        update()
+      }
+
+      function onMouseup() {
+        document.removeEventListener('mousemove', onMousemove)
+        document.removeEventListener('mouseup', onMouseup)
+        element.style.removeProperty('user-select')
+        document.exitPointerLock()
+      }
+    }
+  }
 </script>
 
-<div class="flex items-center gap-1">
-  <div
-    class="size-5 flex-none rounded-full border border-black outline outline-1 outline-white/50"
-    style:background-color={backgroundColor}>
+<div class="wrapper">
+  <div class="color-sample" style:background-color={backgroundColor}></div>
+  <div class="color-value">
+    {#each parts as part}
+      <span class:number-control={part.type === 'number'} use:numberControl={part}>
+        {part.value}
+      </span>
+    {/each}
+    <span>;</span>
   </div>
-  <div class="text-sm">{type}</div>
-  {#each parts as part}
-    <!-- <span class="text-xs uppercase">{part.name}</span> -->
-    {#if part.type === 'number'}
-      <input
-        class="input max-w-[8ch] flex-1"
-        type="number"
-        min={part.min}
-        max={part.max}
-        step="any"
-        bind:value={part.value}
-        oninput={update} />
-    {:else if part.type === 'text'}
-      <input
-        class="input flex-1"
-        type="text"
-        spellcheck="false"
-        bind:value={part.value}
-        oninput={update} />
-    {/if}
-  {/each}
 </div>
 
 <style lang="postcss">
-  .input {
-    padding: 0 0 0 4px;
-    font-size: 14px;
-    font-weight: bold;
-    line-height: 20px;
-    border-radius: 4px;
-    width: 0px;
+  .wrapper {
+    display: inline-flex;
+    gap: 8px;
+    align-items: center;
+  }
+
+  .color-sample {
+    width: 14px;
+    aspect-ratio: 1/1;
+    border: 1px solid color-mix(in oklch, currentColor 50%, transparent);
+    border-radius: 100%;
+  }
+
+  .color-value {
+    display: flex;
+    align-items: center;
+    white-space: pre;
+    font-family: monospace;
+    font-size: 12px;
+    line-height: 1rem;
+  }
+
+  .number-control {
+    cursor: ns-resize;
+    color: rgb(83, 189, 224);
+    text-decoration-line: underline;
   }
 </style>

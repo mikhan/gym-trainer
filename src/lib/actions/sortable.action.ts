@@ -65,16 +65,22 @@ export const sortlist: Action<HTMLElement, string, ActionAttributes> = (element,
     }
 
     function documentDragover(event: DragEvent) {
-      indicator.style.setProperty('visibility', event.defaultPrevented ? 'visible' : 'hidden')
+      relation = null
 
       if (event.defaultPrevented) {
         relation = getElementRelation(currentParent, event.clientY)
-        relation && updateIndicator(indicator, relation)
+      }
 
+      if (relation) {
         if (indicator.parentElement !== currentParent) {
           currentParent.append(indicator)
           indicator.showPopover()
         }
+
+        indicator.style.setProperty('visibility', 'visible')
+        updateIndicator(indicator, relation)
+      } else {
+        indicator.style.setProperty('visibility', 'hidden')
       }
     }
 
@@ -87,17 +93,21 @@ export const sortlist: Action<HTMLElement, string, ActionAttributes> = (element,
       controller.abort()
       indicator.remove()
 
-      if (!dragCompleted) return
+      if (!dragCompleted || !relation || relation.item === draggedElement) return
+
+      let currentElements: HTMLElement[] = []
+      let originalElements: HTMLElement[] = []
 
       const elements = getDraggableElements(currentParent, sortlistName)
-      const sortedElements = applyRelation(elements, draggedElement, relation)
-      emitEvent(currentParent, sortedElements)
+      currentElements = applyRelation(elements, draggedElement, relation)
 
       if (originalParent !== currentParent) {
         const elements = getDraggableElements(originalParent, sortlistName)
-        const sortedElements = applyRelation(elements, draggedElement, null)
-        emitEvent(originalParent, sortedElements)
+        originalElements = applyRelation(elements, draggedElement, null)
       }
+
+      if (currentElements.length) emitEvent(currentParent, currentElements)
+      if (originalElements.length) emitEvent(originalParent, originalElements)
     }
   }
 }
@@ -124,20 +134,31 @@ function configureDataTransfer(dataTransfer: DataTransfer) {
 }
 
 function createIndicator(): HTMLElement {
+  let stylesheet = document.getElementById('ui-user-insertion-stylesheet')
+  if (!stylesheet) {
+    stylesheet = document.createElement('style')
+    stylesheet.id = 'ui-user-insertion-stylesheet'
+    stylesheet.textContent = `
+      :where(ui-user-insertion) {
+        display: block;
+        height: 4px;
+        border: 1px solid CanvasText;
+        outline: 1px solid Canvas;
+      }`
+    document.head.append(stylesheet)
+  }
+
   const indicator = document.createElement('div')
   indicator.style.setProperty('position', 'fixed')
   indicator.style.setProperty('translate', '0 -50%')
   indicator.style.setProperty('background', 'none')
   indicator.style.setProperty('margin', '0')
   indicator.style.setProperty('padding', '0')
+  indicator.style.setProperty('overflow', 'visible')
   indicator.style.setProperty('pointer-events', 'none')
   indicator.setAttribute('popover', 'manual')
 
   const insertion = document.createElement('ui-user-insertion')
-  insertion.style.setProperty('display', 'block')
-  insertion.style.setProperty('height', '4px')
-  insertion.style.setProperty('border', '1px solid CanvasText')
-  insertion.style.setProperty('outline', '1px solid Canvas')
   indicator.append(insertion)
 
   return indicator

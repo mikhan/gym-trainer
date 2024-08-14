@@ -1,34 +1,31 @@
 <script lang="ts">
   import TrainingSerieEditor from '$lib/components/training/training-serie-editor.svelte'
   import Fa from 'svelte-fa'
-  import { sortitem, sortlist } from '../../actions/sortable.action'
-  import { faEllipsisV, faGripLines } from '@fortawesome/free-solid-svg-icons'
+  import { sortitem, sortlist } from '$lib/actions/sortable.action'
+  import { faEllipsisV, faGripLines, faPlay, faPlus } from '@fortawesome/free-solid-svg-icons'
   import UiMenu from '$lib/components/ui/ui-menu.svelte'
   import UiMenuitem from '$lib/components/ui/ui-menuitem.svelte'
   import { tocTarget } from '$lib/actions/toc.action'
   import { TrainingViewportContext } from './training-viewport-context.svelte'
-  import UiIconbutton from '../ui/ui-iconbutton.svelte'
+  import UiIconbutton from '$lib/components/ui/ui-iconbutton.svelte'
   import { getMuscleGroups, type MuscleGroup } from '$data/trainer/config'
-  import UiButton from '../ui/ui-button.svelte'
   import { goto } from '$app/navigation'
 
   type Props = {
-    routineId: string
+    routine: Types.Routine
   }
 
-  const { routineId }: Props = $props()
+  let { routine }: Props = $props()
   const muscleGroups = getMuscleGroups()
   const trainingViewportContext = TrainingViewportContext.get()
   let currentSerie$: Types.RoutineSerie | null = $state(null)
-  const routine$ = $derived.by(() => {
-    return structuredClone(
-      trainingViewportContext.training$.routines.find(({ id }) => id === routineId),
-    )!
-  })
-  const groupedSeries$ = $derived.by(() => {
+  let newSerie$: Types.RoutineSerie | undefined = $state()
+  const groupedSeries$ = $derived.by(() => groupByMuscle(routine.series))
+
+  function groupByMuscle(series: Types.RoutineSerie[]) {
     const groupedSeries: { group: MuscleGroup; series: Types.RoutineSerie[] }[] = []
 
-    for (const serie of routine$.series) {
+    for (const serie of series) {
       let groupedSerie = groupedSeries.at(-1)
       if (!groupedSerie || groupedSerie.group.id !== serie.group) {
         const group = muscleGroups.find(({ id }) => id === serie.group)!
@@ -39,9 +36,7 @@
     }
 
     return groupedSeries
-  })
-
-  let newSerieId: string | undefined = $state()
+  }
 
   function getFromRegistry(elements: HTMLElement[]): Types.RoutineSerie[] {
     return elements.map((e) => {
@@ -66,19 +61,32 @@
   }
 
   function addSerie() {
-    newSerieId = crypto.randomUUID()
-    const newSerie = { ...routine$.series.at(-1)!, id: newSerieId, name: '' }
-    routine$.series = [...routine$.series, newSerie]
-    trainingViewportContext.updateRoutine(routine$)
+    newSerie$ = {
+      id: crypto.randomUUID(),
+      name: '',
+      group: '',
+      muscle: '',
+      steps: [{ type: 'repetitions', value: '8', delay: 60, weight: { unit: 'kg', value: 0 } }],
+    }
+  }
+
+  function deleteRutine(routineId: string) {
+    trainingViewportContext.deleteRoutine(routineId)
+  }
+
+  function updateSerie(serie: Types.RoutineSerie) {
+    trainingViewportContext.updateSerie(routine.id, serie)
   }
 
   function updateSeries(series: Types.RoutineSerie[]) {
-    routine$.series = series
-    trainingViewportContext.updateRoutine(routine$)
+    // document.startViewTransition(() => {
+    console.log('updateSeries', series)
+    trainingViewportContext.updateRoutine({ ...routine, series })
+    // })
   }
 
   function deleteSerie(serieId: string) {
-    trainingViewportContext.deleteSerie(routineId, serieId)
+    trainingViewportContext.deleteSerie(routine.id, serieId)
   }
 
   function startRoutine(routineId: string) {
@@ -86,23 +94,29 @@
   }
 </script>
 
-{#if newSerieId}
+{#if newSerie$}
   <TrainingSerieEditor
-    routineId={routine$.id}
-    serieId={newSerieId}
-    open={newSerieId !== undefined}
-    onclose={() => (newSerieId = undefined)}></TrainingSerieEditor>
+    serie={newSerie$}
+    open={newSerie$ !== undefined}
+    onclose={() => (newSerie$ = undefined)}></TrainingSerieEditor>
 {/if}
 
 <article
-  class="max-w-xl rounded-card border border-neutral-border bg-neutral py-2 text-neutral-fg"
-  id={`routine-${routine$.id}`}
+  class="max-w-xl rounded-card border border-neutral-line bg-neutral py-2 text-neutral-fg"
+  id={`routine-${routine.id}`}
   use:tocTarget>
   <header
-    class="sticky top-0 z-1 flex items-center gap-2 border-b border-neutral-border bg-inherit px-8 py-4">
-    <div class="grow text-xl font-bold">{routine$.name}</div>
-    <UiButton onclick={() => addSerie()}>Add Serie</UiButton>
-    <UiButton onclick={() => startRoutine(routine$.id)}>Start</UiButton>
+    class="sticky top-0 z-1 flex items-center gap-2 border-b border-neutral-line bg-inherit p-4 ps-8">
+    <div class="grow text-xl font-bold">{routine.name}</div>
+    <UiIconbutton label="Iniciar entrenamiento" onclick={() => startRoutine(routine.id)}>
+      <Fa icon={faPlay}></Fa></UiIconbutton>
+    <UiIconbutton label="Agregar serie" onclick={() => addSerie()}>
+      <Fa icon={faPlus}></Fa></UiIconbutton>
+    <UiIconbutton label="Más acciones" id={`routine-${routine.id}-actions`}>
+      <Fa icon={faEllipsisV}></Fa></UiIconbutton>
+    <UiMenu target={`routine-${routine.id}-actions`}>
+      <UiMenuitem onclick={() => deleteRutine(routine.id)}>Eliminar</UiMenuitem>
+    </UiMenu>
   </header>
   <ul
     use:sortlist={trainingViewportContext.training$.id}
@@ -112,9 +126,9 @@
 
       {#each groupedSerie.series as serie (serie.id)}
         <li
-          class="focusable-within group flex h-8 items-center gap-4 px-4 hover:bg-neutral-hover"
+          class="relative grid h-16 grid-cols-[auto,1fr,auto] items-center gap-4 px-4 transition-colors hover:bg-neutral-hover"
           use:sortitem={trainingViewportContext.training$.id}
-          data-routine-id={routine$.id}
+          data-routine-id={routine.id}
           data-serie-id={serie.id}>
           <button
             class="grid h-full w-4 shrink-0 cursor-grab place-content-center"
@@ -126,11 +140,16 @@
             <Fa icon={faGripLines}></Fa>
           </button>
           <button
-            class="flex h-full w-full grow items-center gap-2 text-left outline-none"
+            class="group flex h-full w-full items-center gap-2 overflow-hidden text-left outline-none"
             type="button"
             onclick={() => (currentSerie$ = serie)}>
-            <div class="grow">{serie.name}</div>
-            <div class="text-sm">{getStepsDescription(serie)}</div>
+            <div class="flex-1 overflow-hidden">
+              <div class="truncate">{serie.name}</div>
+              <div class="typescale-label truncate">{getStepsDescription(serie)}</div>
+            </div>
+            <div
+              class="absolute inset-0 -z-1 group-focus-visible:outline group-focus-visible:outline-2 group-focus-visible:-outline-offset-2 group-focus-visible:outline-ring">
+            </div>
           </button>
           <UiIconbutton class="shrink-0" id={`serie-${serie.id}-actions`} label="More actions">
             <Fa icon={faEllipsisV}></Fa>
@@ -140,10 +159,12 @@
           <UiMenuitem onclick={() => deleteSerie(serie.id)}>Eliminar</UiMenuitem>
         </UiMenu>
         <TrainingSerieEditor
-          routineId={routine$.id}
-          serieId={serie.id}
+          {serie}
           open={serie.id === currentSerie$?.id}
-          onclose={() => (currentSerie$ = null)}></TrainingSerieEditor>
+          onclose={(serie) => {
+            if (serie) updateSerie(serie)
+            currentSerie$ = null
+          }}></TrainingSerieEditor>
       {/each}
     {:else}
       <div class="grid place-content-center h-16 px-4 opacity-50">Empty list</div>

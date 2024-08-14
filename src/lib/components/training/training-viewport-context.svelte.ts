@@ -40,6 +40,14 @@ export class TrainingViewportContext {
     this.update(training)
   }
 
+  deleteRoutine(routineId: string) {
+    const training = { ...this.training$ }
+    const routineIndex = training.routines.findIndex(({ id }) => id === routineId)
+    if (routineIndex < 0) throw new TypeError(`Routine id '${routineId}' not found in training.`)
+    training.routines.splice(routineIndex, 1)
+    this.update(training)
+  }
+
   updateSerie(routineId: string, serie: Types.RoutineSerie) {
     const training = { ...this.training$ }
     const routine = training.routines.find(({ id }) => id === routineId)

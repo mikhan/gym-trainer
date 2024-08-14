@@ -2,26 +2,27 @@
   import type { HTMLButtonAttributes } from 'svelte/elements'
   import type { Snippet } from 'svelte'
   import { clsx } from 'clsx'
-  import UiTooltip from './ui-tooltip.svelte'
+  // import UiTooltip from './ui-tooltip.svelte'
 
   type Props = {
-    children: Snippet
+    children?: Snippet
     label: string
-    id?: string
   } & HTMLButtonAttributes
 
-  let { children, label, class: className, id = crypto.randomUUID(), ...props }: Props = $props()
+  let { children, label, class: className, ...props }: Props = $props()
   let element = $state() as HTMLButtonElement
 </script>
 
 <button
-  class={clsx('ui-iconbutton focusable', className)}
+  class={clsx('ui-button ui-button-circle focusable', className)}
   type="button"
   {...props}
   aria-label={label}
-  {id}
+  title={label}
   bind:this={element}>
-  {@render children()}
+  {#if children}
+    {@render children()}
+  {/if}
 </button>
 
-<UiTooltip target={element}>{label}</UiTooltip>
+<!-- <UiTooltip target={element}>{label}</UiTooltip> -->

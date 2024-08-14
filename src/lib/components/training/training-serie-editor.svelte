@@ -3,35 +3,22 @@
   import { getMuscles } from '$data/trainer/config'
   import { faTrash } from '@fortawesome/free-solid-svg-icons'
   import UiDialog from '../ui/ui-dialog.svelte'
-  import { TrainingViewportContext } from './training-viewport-context.svelte'
   import { onMount } from 'svelte'
   import UiIconbutton from '../ui/ui-iconbutton.svelte'
   import UiButton from '../ui/ui-button.svelte'
   import { convertUnit } from '$lib/utils/unit-converter'
 
   type Props = {
-    routineId: string
-    serieId: string
+    serie: Types.RoutineSerie
     open?: boolean
-    onclose?: () => void
+    onclose?: (serie?: Types.RoutineSerie) => void
   }
 
-  let { routineId, serieId, open = false, onclose }: Props = $props()
+  let { serie, open = false, onclose }: Props = $props()
 
   const muscles = getMuscles()
-  const trainingViewportContext = TrainingViewportContext.get()
-  const training$ = $state(structuredClone(trainingViewportContext.training$))
-  const serie$ = $derived(pickSerie(training$, routineId, serieId))
+  const serie$ = $derived(serie)
   let useSameDelay = $state(true)
-
-  function pickSerie(training: Types.Training, routineId: string, serieId: string) {
-    const routine = training.routines.find(({ id }) => id === routineId)
-    if (!routine) throw new Error(`Routine '${serieId}' not found.`)
-    const serie = routine?.series.find(({ id }) => id === serieId)
-    if (!serie) throw new Error(`Serie '${serieId}' not found.`)
-
-    return serie
-  }
 
   function deleteStep(index: number) {
     serie$.steps.splice(index, 1)
@@ -51,11 +38,6 @@
     serie$.steps.forEach((step) => (step.delay = globalDelay))
   }
 
-  function update() {
-    trainingViewportContext.updateSerie(routineId, $state.snapshot(serie$))
-    onclose?.()
-  }
-
   function changeUnit(step: Types.RoutineStep, unit: string) {
     step.weight.value = Math.round(convertUnit(step.weight.value, step.weight.unit, unit))
     step.weight.unit = unit
@@ -66,7 +48,7 @@
   })
 </script>
 
-<UiDialog bind:open onclose={update} title="Edit exercise">
+<UiDialog bind:open align="right" onclose={() => onclose?.()} title="Edit exercise">
   <div class="grid gap-4">
     <div class="flex"></div>
     <div class="flex flex-wrap gap-2">
@@ -148,6 +130,7 @@
 
   {#snippet actions()}
     <UiButton onclick={() => addStep()}>Add step</UiButton>
-    <UiButton onclick={() => update()}>Close</UiButton>
+    <UiButton onclick={() => onclose?.()}>Cancel</UiButton>
+    <UiButton variant="primary" onclick={() => onclose?.($state.snapshot(serie$))}>Save</UiButton>
   {/snippet}
 </UiDialog>

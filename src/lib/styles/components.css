@@ -20,12 +20,11 @@
     color: var(--surface-fg);
   }
 
-  .ui-button,
-  .ui-iconbutton {
-    padding: 0 theme('space.4');
-    height: theme('space.10');
+  .ui-button {
+    --component-height: theme('space.8');
+    height: var(--component-height);
     background-color: theme('colors.neutral.DEFAULT');
-    border: 1px solid theme('colors.neutral.border');
+    border: 2px solid theme('colors.neutral.line');
     color: theme('colors.neutral.fg');
     transition:
       background-color 150ms,
@@ -46,19 +45,39 @@
       opacity: 0.5;
       cursor: not-allowed;
     }
-  }
 
-  .ui-button {
-    font-weight: theme('fontWeight.bold');
-    padding-inline: theme('space.4');
-    border-radius: theme('borderRadius.button');
-  }
+    &:not(.ui-button-circle) {
+      font-weight: theme('fontWeight.bold');
+      padding-inline: theme('space.4');
+      border-radius: theme('borderRadius.button');
+      overflow: hidden;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+    }
 
-  .ui-iconbutton {
-    display: grid;
-    place-content: center;
-    aspect-ratio: 1 / 1;
-    border-radius: 100%;
+    &.ui-button-primary {
+      background-color: theme('colors.primary.DEFAULT');
+      border: 1px solid theme('colors.primary.line');
+      &:not(:disabled):hover {
+        background-color: theme('colors.primary.hover');
+      }
+    }
+
+    &.ui-button-sm {
+      --component-height: theme('space.6');
+    }
+
+    &.ui-button-lg {
+      --component-height: theme('space.10');
+    }
+
+    &.ui-button-circle {
+      display: grid;
+      place-content: center;
+      aspect-ratio: 1 / 1;
+      border-radius: 100%;
+      flex: none;
+    }
   }
 
   .field {
@@ -77,14 +96,15 @@
   .ui-input {
     background-color: theme('colors.neutral.lighter.DEFAULT');
     color: theme('colors.neutral.lighter.fg');
-    border: 1px solid theme('colors.neutral.lighter.border');
-    padding: 0 0.5rem;
-    height: theme('space.10');
+    border: 1px solid theme('colors.neutral.lighter.line');
+    padding: 0 0 0 theme('spacing.2');
+    height: theme('space.8');
+    line-height: theme('space.8');
     border-radius: var(--button-roundness);
     width: 100%;
 
     &:user-invalid {
-      border: 1px solid red;
+      border-color: red;
     }
   }
 }

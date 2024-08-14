@@ -1,3 +1,10 @@
+<script lang="ts" context="module">
+  export type ChangeEvent = CustomEvent<{
+    current: HTMLLIElement | null
+    previous: HTMLLIElement | null
+  }>
+</script>
+
 <script lang="ts">
   import type { HTMLAttributes } from 'svelte/elements'
   import { onMount, type Snippet } from 'svelte'
@@ -5,20 +12,22 @@
 
   type Props = {
     children: Snippet
+    label?: string
     direction?: 'horizontal' | 'vertical'
     snap?: 'start' | 'end' | 'center'
-    onchange?: (current: HTMLLIElement | null) => void
-  } & Omit<HTMLAttributes<HTMLOListElement>, 'onchange'>
+    onchange?: (event: ChangeEvent) => void
+  } & Omit<HTMLAttributes<HTMLElement>, 'onchange'>
 
   let {
     children,
+    label,
     direction = 'horizontal',
     snap = 'center',
     onchange,
     class: className,
     ...props
   }: Props = $props()
-  let element: HTMLOListElement
+  let root: HTMLElement
 
   const isLIElement = (node: Node): node is HTMLLIElement => node.nodeName === 'LI'
 
@@ -37,17 +46,18 @@
   function goto(children: HTMLLIElement[], index: number) {
     if (index < 0 || index >= children.length) return
     const target = children.at(index)
-    target?.scrollIntoView({ behavior: 'smooth' })
+    if (target) target.scrollIntoView({ behavior: 'smooth' })
   }
 
   function getChildren() {
-    return Array.from(element.children).filter(isLIElement)
+    return Array.from(root.children).filter(isLIElement)
   }
 
   function getCurrent(children: HTMLLIElement[]) {
+    const measure = direction === 'horizontal' ? 'x' : 'y'
     for (const child of children) {
       const rect = child.getBoundingClientRect()
-      if (rect.x >= 0 && rect.y >= 0) return child
+      if (rect[measure] >= 0) return child
     }
 
     return null
@@ -56,15 +66,20 @@
   onMount(() => {
     if (!onchange) return
 
-    let current: HTMLLIElement | null = null
-    const intersectionObserver = new IntersectionObserver(onIntersection, { threshold: [0, 1] })
+    let current: HTMLLIElement | null = root.querySelector(':scope > li[aria-current="true"]')
+    if (current) current.scrollIntoView({ behavior: 'instant' })
 
-    for (const child of element.children) {
+    const intersectionObserver = new IntersectionObserver(onIntersection, {
+      threshold: [0, 1],
+      root,
+    })
+
+    for (const child of root.children) {
       if (isLIElement(child)) intersectionObserver.observe(child)
     }
 
     const mutationObserver = new MutationObserver(onMutation)
-    mutationObserver.observe(element, { childList: true })
+    mutationObserver.observe(root, { childList: true })
 
     function onMutation(entries: MutationRecord[]) {
       for (const entry of entries) {
@@ -82,8 +97,13 @@
       for (const entry of entries) {
         if (entry.intersectionRatio !== 1) continue
         if (current === entry.target) continue
+        const previous = current
         current = entry.target as HTMLLIElement
-        onchange?.(current)
+
+        previous?.removeAttribute('aria-current')
+        current.setAttribute('aria-current', 'true')
+
+        if (onchange) onchange(new CustomEvent('change', { detail: { current, previous } }))
         break
       }
     }
@@ -95,18 +115,21 @@
   })
 </script>
 
-<ol
+<ui-carousel
   class={clsx('ui-carousel', className)}
+  role="region"
+  aria-roledescription="carousel"
+  aria-label={label}
   data-direction={direction}
   data-snap={snap}
   {...props}
-  bind:this={element}>
+  bind:this={root}>
   {@render children()}
-</ol>
+</ui-carousel>
 
 <style lang="postcss">
   :global {
-    .ui-carousel {
+    ui-carousel {
       width: 100%;
       height: 100%;
       display: grid;
@@ -139,12 +162,12 @@
         scroll-snap-align: center;
       }
 
-      &::-webkit-scrollbar {
-        display: none;
-      }
-
       & > li {
         scroll-snap-stop: always;
+      }
+
+      & > :not(li) {
+        display: none;
       }
     }
   }
