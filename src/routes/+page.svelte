@@ -20,8 +20,6 @@
     return currentTraining?.routines
   })
 
-  routines.then(console.log)
-
   // $effect(() => {
   //   if (session.currentRoutineId === currentRoutineId) return
 

@@ -79,10 +79,7 @@
   }
 
   function updateSeries(series: Types.RoutineSerie[]) {
-    // document.startViewTransition(() => {
-    console.log('updateSeries', series)
     trainingViewportContext.updateRoutine({ ...routine, series })
-    // })
   }
 
   function deleteSerie(serieId: string) {

@@ -1,9 +1,7 @@
 import { json } from '@sveltejs/kit'
 import type { RequestHandler } from './$types'
 
-export const GET: RequestHandler = async ({ locals, params, fetch: f }) => {
-  console.log(fetch)
-  console.log(f)
+export const GET: RequestHandler = async ({ locals, params }) => {
   const { data, error } = await locals.supabase
     .from('training')
     .select(

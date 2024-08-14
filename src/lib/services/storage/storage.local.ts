@@ -19,14 +19,10 @@ export function getItem<T>(name: string, getInitial?: Initializer<T>) {
     browser && window.localStorage.setItem(name, JSON.stringify(value))
   }
 
-  // console.log(`getItem(${name})`)
-  // console.log(value)
   return value
 }
 
 export function setItem<T>(name: string, value: T) {
-  // console.log(`setItem(${name})`)
-  // console.log(value)
   if (!browser) return
 
   window.localStorage.setItem(name, JSON.stringify(value))

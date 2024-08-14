@@ -41,7 +41,6 @@ export const actions = {
       const newValue = data.get(varName)
       return typeof newValue === 'string' ? text.replace(value, newValue) : text
     })
-    console.log(theme.path)
 
     await writeFile(theme.path, content)
   },
