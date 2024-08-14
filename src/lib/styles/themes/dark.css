@@ -1,5 +1,5 @@
 @import '@fontsource-variable/quicksand';
-@import '@fontsource-variable/inter';
+/* @import '@fontsource-variable/inter'; */
 
 @layer theme {
   [data-theme='dark'] {
