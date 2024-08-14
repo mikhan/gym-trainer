@@ -1,21 +1,9 @@
 import type { Config } from 'tailwindcss'
 import { fontFamily } from 'tailwindcss/defaultTheme'
-import { gridPlugin } from './tools/tailwind/plugins/grid'
-import { pointerPlugin } from './tools/tailwind/plugins/pointer'
-import { scrollbarPlugin } from './tools/tailwind/plugins/scrollbar'
-import { typescalePlugin } from './tools/tailwind/plugins/typescale'
-
-// import { buttonPlugin } from './tools/tailwind/plugins/button'
-// import { cssVariablesPlugin } from './tools/tailwind/plugins/css-variables'
-// import { elevationPlugin } from './tools/tailwind/plugins/elevation'
-// import { focusablePlugin } from './tools/tailwind/plugins/focusable'
-// import { formPlugin } from './tools/tailwind/plugins/form'
-// import { hocusPlugin } from './tools/tailwind/plugins/hocus'
-// import { layoutPlugin } from './tools/tailwind/plugins/layout'
-// import { linkPlugin } from './tools/tailwind/plugins/link'
-// import { surfacePlugin } from './tools/tailwind/plugins/surface'
-// import { textShadowPlugin } from './tools/tailwind/plugins/text-shadow'
-// import { textWrapPlugin } from './tools/tailwind/plugins/text-wrap'
+import { gridPlugin } from './src/tools/tailwind/plugins/grid'
+import { pointerPlugin } from './src/tools/tailwind/plugins/pointer'
+import { scrollbarPlugin } from './src/tools/tailwind/plugins/scrollbar'
+import { typescalePlugin } from './src/tools/tailwind/plugins/typescale'
 
 const varColor = (varName: string) => `oklch(from var(${varName}) l c h / <alpha-value>)`
 const colorHover = (varName: string) =>

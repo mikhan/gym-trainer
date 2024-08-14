@@ -6,8 +6,8 @@ const BASE_FONT = 16
 const BASE_LINE = BASE_FONT * 1.5
 
 const createFluidValue = (
-  minSize,
-  maxSize,
+  minSize: number,
+  maxSize: number,
   minScreenSize = DEFAULT_MIN_SCREEN,
   maxScreenSize = DEFAULT_MAX_SCREEN,
 ) => {
@@ -16,7 +16,12 @@ const createFluidValue = (
   )})`
 }
 
-const getPreferredValue = (minSize, maxSize, minScreenSize, maxScreenSize) => {
+const getPreferredValue = (
+  minSize: number,
+  maxSize: number,
+  minScreenSize: number,
+  maxScreenSize: number,
+) => {
   const vwCalc = cleanNumber((100 * (maxSize - minSize)) / (maxScreenSize - minScreenSize))
   const remCalc = cleanNumber(
     (minScreenSize * maxSize - maxScreenSize * minSize) / (minScreenSize - maxScreenSize),
@@ -25,18 +30,18 @@ const getPreferredValue = (minSize, maxSize, minScreenSize, maxScreenSize) => {
   return `${vwCalc}vw + ${rem(remCalc)}`
 }
 
-const rem = (px) => `${cleanNumber(Number(px) / 16)}rem`
+const rem = (px: number) => `${cleanNumber(Number(px) / 16)}rem`
 
-const cleanNumber = (num) => +num.toFixed(3)
+const cleanNumber = (num: number) => +num.toFixed(3)
 // const fontSize = (fontSize, lineHeight) => [
 //   pxToRem(fontSize),
 //   pxToRem(fontSize * lineHeight),
 // ]
 
 // const scaleFont = (base, step, scale) => base * scale ** step
-const fluidFontSize = (step) =>
+const fluidFontSize = (step: number) =>
   createFluidValue(BASE_FONT * 1.125 ** step, BASE_FONT * 1.333 ** step)
-const fluidLineHeight = (step) =>
+const fluidLineHeight = (step: number) =>
   createFluidValue(BASE_LINE * 1.125 ** step, BASE_LINE * 1.333 ** step)
 
 export function typescalePlugin() {

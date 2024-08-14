@@ -8,9 +8,9 @@ export function scrollbarPlugin() {
       {
         scrollbar: ([trackSize, thumbSize]) => {
           return {
-            '--scrollbar-track-size': trackSize,
+            '--scrollbar-track-size': trackSize ?? '',
             '--scrollbar-track-color': 'transparent',
-            '--scrollbar-thumb-size': thumbSize,
+            '--scrollbar-thumb-size': thumbSize ?? '',
             '--scrollbar-thumb-color': 'currentColor',
             '@media (hover: hover)': {
               '&::-webkit-scrollbar-thumb:hover': {
@@ -40,7 +40,7 @@ export function scrollbarPlugin() {
         values: {
           DEFAULT: ['16px', '8px'],
           thin: ['8px', '4px'],
-        },
+        } as Record<string, [string, string]>,
       },
     )
 
