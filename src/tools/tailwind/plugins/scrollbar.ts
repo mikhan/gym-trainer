@@ -4,43 +4,67 @@ import plugin from 'tailwindcss/plugin'
 
 export function scrollbarPlugin() {
   return plugin(function ({ matchUtilities, theme, addUtilities }) {
+    // const scrollbarWidth = {
+    //   auto: ['16px', '8px'],
+    //   thin: ['10px', '6px'],
+    // } as Record<string, [string, string]>
+
+    // matchUtilities(
+    //   {
+    //     scrollbar: (width) => {
+    //       const [trackSize, thumbSize] = scrollbarWidth[width] ?? ['0px', '0px']
+
+    //       return {
+    //         '--scrollbar-track-color': 'rgb(0 0 0 / 20%)',
+    //         '--scrollbar-thumb-color': 'rgb(255 255 255 / 25%)',
+    //         '@media (pointer: fine)': {
+    //           '&::-webkit-scrollbar-thumb:hover': {
+    //             'background-color': 'var(--scrollbar-thumb-color)',
+    //           },
+    //           '&::-webkit-scrollbar': {
+    //             'width': trackSize,
+    //             'height': trackSize,
+    //             'background-color': 'var(--scrollbar-track-color)',
+    //           },
+    //           '&::-webkit-scrollbar-corner ': {
+    //             'background-color': 'var(--scrollbar-track-color)',
+    //           },
+    //           '&::-webkit-scrollbar-thumb': {
+    //             'border': `calc(calc(${trackSize} - ${thumbSize}) / 2) solid transparent`,
+    //             'border-radius': `calc(${trackSize} / 2)`,
+    //             'background-color': 'var(--scrollbar-thumb-color)',
+    //             'background-clip': 'content-box',
+    //           },
+    //         },
+    //       }
+    //     },
+    //   },
+    //   {
+    //     values: {
+    //       DEFAULT: 'auto',
+    //       thin: 'thin',
+    //       none: 'none',
+    //     },
+    //   },
+    // )
+
     matchUtilities(
       {
-        scrollbar: ([trackSize, thumbSize]) => {
+        scrollbar: (width) => {
           return {
-            '--scrollbar-track-size': trackSize ?? '',
-            '--scrollbar-track-color': 'transparent',
-            '--scrollbar-thumb-size': thumbSize ?? '',
-            '--scrollbar-thumb-color': 'currentColor',
-            '@media (hover: hover)': {
-              '&::-webkit-scrollbar-thumb:hover': {
-                'background-color': 'var(--scrollbar-thumb-color)',
-              },
-              '&::-webkit-scrollbar': {
-                'width': 'var(--scrollbar-track-size)',
-                'height': 'var(--scrollbar-track-size)',
-                'background-color': 'var(--scrollbar-track-color)',
-              },
-              '&::-webkit-scrollbar-corner ': {
-                'background-color': 'var(--scrollbar-track-color)',
-              },
-              '&::-webkit-scrollbar-thumb': {
-                'border':
-                  'calc(calc(var(--scrollbar-track-size) - var(--scrollbar-thumb-size)) / 2) solid transparent',
-                'border-radius': 'calc(var(--scrollbar-track-size) / 2)',
-                'background-color':
-                  'color-mix(in oklch, var(--scrollbar-thumb-color) 50%, transparent)',
-                'background-clip': 'content-box',
-              },
-            },
+            '--scrollbar-track-color': 'rgb(0 0 0 / 0%)',
+            '--scrollbar-thumb-color': 'rgb(255 255 255 / 25%)',
+            'scrollbar-width': width,
+            'scrollbar-color': 'var(--scrollbar-thumb-color) var(--scrollbar-track-color)',
           }
         },
       },
       {
         values: {
-          DEFAULT: ['16px', '8px'],
-          thin: ['8px', '4px'],
-        } as Record<string, [string, string]>,
+          DEFAULT: 'auto',
+          thin: 'thin',
+          none: 'none',
+        },
       },
     )
 
@@ -66,30 +90,7 @@ export function scrollbarPlugin() {
       { values: flattenColorPalette(theme('colors')), type: 'color' },
     )
 
-    matchUtilities(
-      {
-        'scrollbar-border': (value) => {
-          return {
-            '@media (hover: hover)': {
-              '&::-webkit-scrollbar:vertical': {
-                'border-left': `1px solid ${toColorValue(value)}`,
-              },
-              '&::-webkit-scrollbar:horizontal': {
-                'border-top': `1px solid ${toColorValue(value)}`,
-              },
-            },
-          }
-        },
-      },
-      { values: flattenColorPalette(theme('colors')), type: 'color' },
-    )
-
     addUtilities({
-      '.scrollbar-none': {
-        '&::-webkit-scrollbar': {
-          display: 'none',
-        },
-      },
       '.scrollbar-stable': {
         'scrollbar-gutter': 'stable',
       },

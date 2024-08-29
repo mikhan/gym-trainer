@@ -42,7 +42,7 @@
 
 <dialog class={clsx('ui-dialog', className)} {...props} bind:this={dialog} data-align={align}>
   <div class="flex items-center gap-2 p-6 pb-4">
-    <div class="grow truncate text-2xl">
+    <div class="typescale-title grow truncate">
       {#if typeof title === 'function'}
         {@render title()}
       {:else}
@@ -72,96 +72,96 @@
 </dialog>
 
 <style lang="postcss">
-  .ui-dialog {
-    grid-template-rows: auto 1fr auto;
-    align-items: start;
-    background-color: theme('colors.neutral.DEFAULT');
-    color: theme('colors.neutral.fg');
-    box-shadow: theme('boxShadow.over');
-    overflow: visible;
-    margin: 0;
-    max-width: 100%;
-    max-height: 100%;
-    transform: translateY(20%);
-
-    &[open] {
-      display: grid;
-      transform: translateY(0);
-
-      @starting-style {
-        transform: translateY(-20%);
-      }
-    }
-
-    &[data-align='center'] {
-      margin: auto;
-      max-width: min(theme('screens.lg'), calc(100% - calc(theme('spacing.layout-gap') * 2)));
-      max-height: min(theme('screens.lg'), calc(100% - calc(theme('spacing.layout-gap') * 2)));
-      border-radius: theme('borderRadius.card');
-    }
-
-    &[data-align='top'] {
-      margin-block-end: auto;
-      width: 100%;
-      max-height: theme('screens.lg');
-      transform: translateY(-100%);
+  :global {
+    .ui-dialog {
+      @apply shadow-over color-neutral surface focusable-ring;
+      grid-template-rows: auto 1fr auto;
+      overflow: visible;
+      margin: 0;
+      max-width: 100%;
+      max-height: 100%;
+      transform: translateY(20%);
 
       &[open] {
+        display: grid;
         transform: translateY(0);
 
         @starting-style {
-          transform: translateY(-100%);
+          transform: translateY(-20%);
         }
       }
-    }
 
-    &[data-align='bottom'] {
-      margin-block-start: auto;
-      width: 100%;
-      max-height: theme('screens.lg');
-      transform: translateY(100%);
+      &[data-align='center'] {
+        margin: auto;
+        max-width: min(theme('screens.lg'), calc(100% - calc(theme('spacing.layout-gap') * 2)));
+        max-height: min(theme('screens.lg'), calc(100% - calc(theme('spacing.layout-gap') * 2)));
+        border-radius: theme('borderRadius.card');
+      }
 
-      &[open] {
-        transform: translateY(0);
+      &[data-align='top'] {
+        margin-block-end: auto;
+        width: 100dvw;
+        max-height: theme('screens.lg');
+        transform: translateY(-100%);
 
-        @starting-style {
-          transform: translateY(100%);
+        &[open] {
+          transform: translateY(0);
+
+          @starting-style {
+            transform: translateY(-100%);
+          }
         }
       }
-    }
 
-    &[data-align='left'] {
-      margin-inline-end: auto;
-      max-width: theme('screens.lg');
-      height: 100%;
-      transform: translatex(-100%);
+      &[data-align='bottom'] {
+        margin-block-start: auto;
+        width: 100dvw;
+        max-height: theme('screens.lg');
+        transform: translateY(100%);
 
-      &[open] {
-        transform: translateX(0);
+        &[open] {
+          transform: translateY(0);
 
-        @starting-style {
-          transform: translateX(-100%);
+          @starting-style {
+            transform: translateY(100%);
+          }
         }
       }
-    }
 
-    &[data-align='right'] {
-      margin-inline-start: auto;
-      max-width: theme('screens.lg');
-      height: 100%;
-      transform: translatex(100%);
+      &[data-align='left'] {
+        margin-inline-end: auto;
+        max-width: theme('screens.lg');
+        height: 100dvh;
+        transform: translatex(-100%);
 
-      &[open] {
-        transform: translateX(0);
+        &[open] {
+          transform: translateX(0);
 
-        @starting-style {
-          transform: translateX(100%);
+          @starting-style {
+            transform: translateX(-100%);
+          }
         }
       }
-    }
 
-    &::backdrop {
-      background-color: theme('colors.canvas.DEFAULT/50%');
+      &[data-align='right'] {
+        margin-inline-start: auto;
+        width: theme('screens.md');
+        height: 100dvh;
+        max-width: 100dvw;
+        transform: translatex(100%);
+
+        &[open] {
+          transform: translateX(0);
+
+          @starting-style {
+            transform: translateX(100%);
+          }
+        }
+      }
+
+      &::backdrop {
+        background-color: theme('colors.canvas.DEFAULT/50%');
+      }
     }
   }
 </style>

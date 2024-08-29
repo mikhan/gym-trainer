@@ -18,11 +18,14 @@ declare global {
     updateCallbackDone: Promise<void>
     ready: Promise<void>
     finished: Promise<void>
-    skipTransition: () => void
+    types: Set<string>
+    skipTransition(): void
   }
 
   interface Document {
-    startViewTransition(updateCallback: () => Promise<void> | void): ViewTransition
+    startViewTransition:
+      | ((config: { update: () => Promise<void> | void; types: string[] }) => ViewTransition)
+      | undefined
   }
 }
 

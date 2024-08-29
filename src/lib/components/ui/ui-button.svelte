@@ -1,20 +1,29 @@
 <script lang="ts">
-  import type { HTMLButtonAttributes } from 'svelte/elements'
+  import type { HTMLAnchorAttributes, HTMLButtonAttributes } from 'svelte/elements'
   import type { Snippet } from 'svelte'
   import { clsx } from 'clsx'
 
+  type IsButton = HTMLButtonAttributes
+  type IsLink = HTMLAnchorAttributes & { is: 'a' }
   type Props = {
-    children: Snippet
-    variant?: 'primary'
-  } & HTMLButtonAttributes
+    children?: Snippet
+    is?: 'button' | 'a'
+    variant?: keyof typeof variants
+  } & (IsButton | IsLink)
 
-  let { children, variant, class: className, id, ...props }: Props = $props()
+  let { children, is = 'button', variant, class: className, ...props }: Props = $props()
+
+  const variants = {
+    primary: 'color-primary',
+  }
 </script>
 
-<button
-  class={clsx('ui-button focusable', variant && `ui-button-${variant}`, className)}
-  type="button"
-  {id}
+<svelte:element
+  this={is}
+  class={clsx('ui-button', variant && variants[variant], className)}
+  type={is === 'button' ? 'button' : undefined}
   {...props}>
-  {@render children()}
-</button>
+  {#if children}
+    {@render children()}
+  {/if}
+</svelte:element>

@@ -1,5 +1,9 @@
 @import '@fontsource-variable/quicksand';
 /* @import '@fontsource-variable/inter'; */
+/* @import '@fontsource-variable/roboto-mono'; */
+/* @import '@fontsource-variable/source-code-pro'; */
+/* @import '@fontsource/space-mono'; */
+@import '@fontsource-variable/sometype-mono';
 
 @layer theme {
   [data-theme='dark'] {
@@ -7,24 +11,24 @@
 
     --font-family-sans: 'Quicksand Variable';
     /* --font-family-sans: 'Inter Variable'; */
+    /* --font-family-mono: 'Roboto Mono Variable'; */
+    /* --font-family-mono: 'Source Code Pro Variable'; */
+    /* --font-family-mono: 'Space Mono'; */
+    --font-family-mono: 'Sometype Mono Variable';
 
     --color-neutral-hue: 240;
     --color-primary-hue: 240;
     --color-secondary-hue: 267;
     --color-accent-hue: 183;
 
-    --layout-header-height: 0px;
+    /* --layout-header-height: 0px;
     --layout-footer-height: 0px;
-    --layout-gap-sm: 8px;
-    --layout-gap-md: 16px;
-    --layout-gap: var(--layout-gap-sm);
+    --layout-viewport-height: 0px; */
+    --layout-padding: 8px;
+    --layout-gap: 16px;
 
-    @media (min-width: theme('screens.md')) {
-      --layout-gap: var(--layout-gap-md);
-    }
-
-    --card-roundness: 8px;
-    --button-roundness: 4px;
+    --card-roundness: 12px;
+    --button-roundness: 6px;
 
     --color-selection: oklch(60% 0.15 80);
     --color-selection-fg: oklch(100% 0.02 80);
@@ -33,7 +37,7 @@
     --color-canvas-fg: oklch(85% 0.015 var(--color-neutral-hue));
     --color-canvas-line: oklch(38% 0.015 var(--color-neutral-hue));
     --color-neutral-darkest: oklch(19% 0.01 var(--color-neutral-hue));
-    --color-neutral-darkest-fg: oklch(80% 0.02 var(--color-neutral-hue));
+    --color-neutral-darkest-fg: oklch(100% 0.02 var(--color-neutral-hue));
     --color-neutral-darkest-line: oklch(30% 0.02 var(--color-neutral-hue));
     --color-neutral-darker: oklch(25% 0.015 var(--color-neutral-hue));
     --color-neutral-darker-fg: oklch(80% 0.02 var(--color-neutral-hue));
@@ -41,12 +45,12 @@
     --color-neutral: oklch(32% 0.02 var(--color-neutral-hue));
     --color-neutral-fg: oklch(87% 0.02 var(--color-neutral-hue));
     --color-neutral-line: oklch(40% 0.02 var(--color-neutral-hue));
-    --color-neutral-lighter: oklch(45% 0.02 var(--color-neutral-hue));
-    --color-neutral-lighter-fg: oklch(90% 0.02 var(--color-neutral-hue));
-    --color-neutral-lighter-line: oklch(55% 0.02 var(--color-neutral-hue));
-    --color-neutral-lightest: oklch(55% 0.02 var(--color-neutral-hue));
-    --color-neutral-lightest-fg: oklch(100% 0.02 var(--color-neutral-hue));
-    --color-neutral-lightest-line: oklch(65% 0.02 var(--color-neutral-hue));
+    --color-neutral-lighter: oklch(45% 0.03 var(--color-neutral-hue));
+    --color-neutral-lighter-fg: oklch(90% 0.03 var(--color-neutral-hue));
+    --color-neutral-lighter-line: oklch(55% 0.03 var(--color-neutral-hue));
+    --color-neutral-lightest: oklch(55% 0.035 var(--color-neutral-hue));
+    --color-neutral-lightest-fg: oklch(100% 0.03 var(--color-neutral-hue));
+    --color-neutral-lightest-line: oklch(65% 0.03 var(--color-neutral-hue));
     --color-primary-darker: oklch(46% 0.12 var(--color-primary-hue));
     --color-primary-darker-fg: oklch(95% 0.05 var(--color-primary-hue));
     --color-primary-darker-line: oklch(60% 0.1 var(--color-primary-hue));
@@ -75,15 +79,14 @@
     --color-accent-lighter-fg: oklch(100% 0.05 var(--color-accent-hue));
     --color-accent-lighter-line: oklch(75% 0.1 var(--color-accent-hue));
     --color-popover: oklch(20% 0.02 var(--color-neutral-hue));
-    --color-popover-fg: oklch(90% 0.02 var(--color-neutral-hue));
+    --color-popover-fg: oklch(100% 0.05 var(--color-neutral-hue));
     --color-popover-line: oklch(30% 0.02 var(--color-neutral-hue));
 
-    --shadow: 0px 1px 1px rgb(0 0 0 / 30%), 0px 2px 4px rgb(0 0 0 / 20%);
-    --shadow: inset 0 0 0.5px 1px hsla(0, 0%, 100%, 0.05), 0 0 0 1px hsla(0, 0%, 0%, 0.1),
-      0 0.3px 0.4px hsla(0, 0%, 0%, 0.02), 0 0.9px 1.5px hsla(0, 0%, 0%, 0.045),
-      0 3.5px 6px hsla(0, 0%, 0%, 0.09);
+    --shadow: inset 0px 0px 0.5px 1px rgb(255 255 255 / 5%), 0px 0px 0px 1px rgb(0 0 0 / 10%),
+      0px 1px 1px 0px rgb(0 0 0 / 2%), 0px 1px 2px 0px rgb(0 0 0 / 5%),
+      0px 4px 6px 0px rgb(0 0 0 / 10%);
 
-    --shadow-over: inset 0 0 0.5px 1px hsla(0, 0%, 100%, 0.05), 0 0 0 1px hsla(0, 0%, 0%, 0.1),
+    --shadow-over: inset 0px 0px 0.5px 1px rgb(255 255 255 / 5%), 0px 0px 0px 1px rgb(0 0 0 / 10%),
       0px 4px 4px -2px rgb(0 0 0 / 30%), 0px 10px 10px -4px rgb(0 0 0 / 20%),
       0px 20px 20px -8px rgb(0 0 0 / 20%);
   }

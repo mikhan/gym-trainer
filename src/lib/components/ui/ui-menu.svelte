@@ -1,6 +1,6 @@
 <script lang="ts">
   import { onMount, type Snippet } from 'svelte'
-  import { anchor } from '$lib/actions/anchor'
+  import { anchor } from '$lib/actions/anchor.action'
   import { UiMenuContext } from './ui-menu-context.svelte'
   import { clsx } from 'clsx'
   import type { HTMLMenuAttributes } from 'svelte/elements'
@@ -24,11 +24,7 @@
 </script>
 
 <menu
-  class={clsx(
-    'border-popover-line fixed rounded-card border bg-popover/80 p-1 text-popover-fg shadow-over backdrop-blur',
-    'ui-menu',
-    className,
-  )}
+  class={clsx('ui-menu', className)}
   id={context.id}
   popover="auto"
   use:anchor={target}
@@ -37,22 +33,44 @@
 </menu>
 
 <style lang="postcss">
-  .ui-menu {
-    position-visibility: anchors-visible;
-    position-try-options:
-      flip-block,
-      flip-inline,
-      flip-block flip-inline;
-    inset-area: bottom span-right;
-    min-width: anchor-size(inline);
-    /* transform: translateY(-1rem);
+  :global {
+    .ui-menu {
+      @apply w-max border bg-opacity-85 scrollbar color-popover surface;
+      @apply fixed rounded-card p-1 shadow-over backdrop-blur;
+      min-width: anchor-size(inline);
+      position-visibility: anchors-visible;
+      /* inset-area: bottom span-right;
+      position-try-options:
+        flip-block,
+        flip-inline,
+        flip-block flip-inline; */
+      left: anchor(left);
+      top: anchor(bottom);
+      position-try:
+        most-width --flip-block,
+        --flip-inline,
+        --flip-block-inline;
 
-    &:popover-open {
-      transform: translateY(0);
-
-      @starting-style {
-        transform: translateY(-1rem);
+      &:popover-open {
+        @apply grid grid-cols-[auto,auto];
       }
-    } */
+    }
+
+    @position-try --flip-block {
+      top: auto;
+      bottom: anchor(top);
+    }
+
+    @position-try --flip-inline {
+      left: auto;
+      right: anchor(right);
+    }
+
+    @position-try --flip-block-inline {
+      top: auto;
+      bottom: anchor(top);
+      left: auto;
+      right: anchor(right);
+    }
   }
 </style>

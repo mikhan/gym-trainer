@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
   import { website } from '$lib/config/website'
   const { themeColor } = website
 </script>

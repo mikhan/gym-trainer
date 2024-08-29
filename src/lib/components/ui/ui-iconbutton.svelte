@@ -2,7 +2,6 @@
   import type { HTMLButtonAttributes } from 'svelte/elements'
   import type { Snippet } from 'svelte'
   import { clsx } from 'clsx'
-  // import UiTooltip from './ui-tooltip.svelte'
 
   type Props = {
     children?: Snippet
@@ -10,19 +9,14 @@
   } & HTMLButtonAttributes
 
   let { children, label, class: className, ...props }: Props = $props()
-  let element = $state() as HTMLButtonElement
 </script>
 
 <button
-  class={clsx('ui-button ui-button-circle focusable', className)}
-  type="button"
+  class={clsx('ui-button ui-button-circle', className)}
   {...props}
   aria-label={label}
-  title={label}
-  bind:this={element}>
+  title={label}>
   {#if children}
     {@render children()}
   {/if}
 </button>
-
-<!-- <UiTooltip target={element}>{label}</UiTooltip> -->

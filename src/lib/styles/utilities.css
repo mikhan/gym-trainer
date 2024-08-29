@@ -3,28 +3,28 @@
     color-scheme: dark;
   }
 
-  .focusable {
-    &:focus-visible,
-    &.--focused {
-      outline: 2px solid theme('colors.ring.DEFAULT');
-      outline-offset: -2px;
-    }
-  }
+  /* .focusable:focus-visible,
+  .focusable-within:has(:focus-visible),
+  .focusable-focused {
+    outline: 2px solid theme('colors.ring.DEFAULT');
+    outline-offset: -2px;
+  } */
 
-  .focusable:focus-visible,
+  /* .focusable:focus-visible,
   .focusable.--focused,
   .focusable-within:focus-within,
   .focusable-within.--focused {
     outline: 2px solid theme('colors.ring.DEFAULT');
     outline-offset: -2px;
-  }
+  } */
 
   .scrollable-shadow {
     --scrollable-shadow-size: 2rem;
-    --scrollable-shadow-color: hsl(0 0 0 / 40%);
+    --scrollable-shadow-color: hsl(0 0 0 / 20%);
     display: grid;
     grid-template-rows: auto 1fr auto;
     align-items: flex-start;
+    background-color: inherit;
 
     &::before,
     &::after {

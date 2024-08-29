@@ -6,7 +6,7 @@
   import { type Routine } from '$data/trainer/trainings'
   import ActionCurrent from './action-current.svelte'
   // import TrainerTimer from './trainer-timer.svelte'
-  import AppTopbar from '../app/app-topbar.svelte'
+  import AppTopbar from '../app/AppTopbar.svelte'
 
   type Props = {
     routines: Routine[]

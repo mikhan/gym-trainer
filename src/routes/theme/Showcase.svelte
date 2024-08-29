@@ -2,16 +2,18 @@
   import clsx from 'clsx'
 
   type Props = {
-    color: { name: string; shades: string[] }
-    shade: string
+    class?: string
     showFocusAndSelection: boolean
   }
 
-  const { showFocusAndSelection }: Props = $props()
+  const { class: className, showFocusAndSelection }: Props = $props()
 </script>
 
 <div
-  class="grid cursor-default divide-y divide-surface-line rounded-card bg-surface text-surface-fg shadow">
+  class={clsx(
+    'grid cursor-default divide-y divide-default-line rounded-card shadow surface',
+    className,
+  )}>
   <div class="space-y-2 p-4">
     <p>
       <b>The quick brown fox</b> jumps over the
@@ -23,14 +25,14 @@
   </div>
   <div class="flex gap-2 p-2">
     <button
-      class="focusable grow rounded-button border border-surface-line p-2 transition-colors hover:bg-surface-hover active:bg-surface-active"
+      class="focusable grow rounded-button border border-default-line p-2 transition-colors hover:bg-default-hover active:bg-default-active"
       type="button">Button</button>
     <button
-      class="focusable grow rounded-button border border-surface-line bg-surface-hover p-2"
+      class="focusable grow rounded-button border border-default-line bg-default-hover p-2"
       type="button">Button</button>
     <button
       class={clsx(
-        'focusable grow rounded-button border border-surface-line bg-surface-active p-2',
+        'focusable grow rounded-button border border-default-line bg-default-active p-2',
         showFocusAndSelection && 'outline outline-2 -outline-offset-2 outline-ring',
       )}
       type="button">Button</button>

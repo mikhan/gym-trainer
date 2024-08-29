@@ -2,12 +2,11 @@ import type { Action } from 'svelte/action'
 
 function getAnchorName(element: HTMLElement) {
   return (
-    element
-      .computedStyleMap()
-      .get('anchor-name')
-      ?.toString()
+    // window.getComputedStyle(element)
+    element.style
+      .getPropertyValue('anchor-name')
       .split(',')
-      .map((e) => e.trim())[0] ?? 'none'
+      .map((e) => e.trim())[0] || 'none'
   )
 }
 

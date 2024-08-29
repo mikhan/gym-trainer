@@ -3,7 +3,7 @@ import { onDestroy } from 'svelte'
 
 type StorageType = 'local' | 'session'
 
-export class PersistedState<T> {
+class PersistedState<T> {
   static readonly namespace = 'state'
 
   #defaultValue: string
@@ -24,9 +24,12 @@ export class PersistedState<T> {
     const storedValue = storage.getItem(this.key)
     if (storedValue) this.value = this.deserialize(storedValue)
 
+    let persistValue = false
+
     const onStorage = (event: StorageEvent) => {
       if (event.storageArea !== storage) return
       if (event.key !== this.key) return
+      persistValue = false
       const newValue = typeof event.newValue === 'string' ? event.newValue : this.#defaultValue
       this.value = this.deserialize(newValue)
     }
@@ -34,7 +37,11 @@ export class PersistedState<T> {
     globalThis.addEventListener('storage', onStorage)
     onDestroy(() => globalThis.removeEventListener('storage', onStorage))
 
-    $effect(() => storage.setItem(this.key, this.serialize(this.value)))
+    $effect(() => {
+      const value = $state.snapshot(this.value)
+      if (persistValue) storage.setItem(this.key, this.serialize(value))
+      else persistValue = true
+    })
   }
 
   serialize(value: T): string {
@@ -43,6 +50,18 @@ export class PersistedState<T> {
 
   deserialize(item: string): T {
     return JSON.parse(item)
+  }
+}
+
+export class LocalStorageState<T> extends PersistedState<T> {
+  constructor(key: string, defaultValue: T) {
+    super(key, defaultValue, 'local')
+  }
+}
+
+export class SessionStorageState<T> extends PersistedState<T> {
+  constructor(key: string, defaultValue: T) {
+    super(key, defaultValue, 'session')
   }
 }
 

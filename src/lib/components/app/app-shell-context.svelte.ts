@@ -9,30 +9,23 @@ export class AppShellContext {
     return getContext<AppShellContext>(AppShellContext)
   }
 
-  #titles = $state.frozen<Snippet[]>([])
-  #footers = $state.frozen<Snippet[]>([])
+  #headers = $state.raw<Snippet[]>([])
+  #footers = $state.raw<Snippet[]>([])
 
-  public title: Snippet | undefined = $derived(this.#titles.at(-1))
+  public header: Snippet | undefined = $derived(this.#headers.at(-1))
   public footer: Snippet | undefined = $derived(this.#footers.at(-1))
-  public actions: ReadonlyArray<Snippet> = $state.frozen([])
-  public previous: string | URL | undefined = $state()
+
+  public headerLevel: number = $derived(this.#headers.length)
+  public footerLevel: number = $derived(this.#footers.length)
 
   private constructor() {}
 
-  addTitle(snippet: Snippet) {
-    this.#titles = [...this.#titles, snippet]
+  addHeader(snippet: Snippet) {
+    this.#headers = [...this.#headers, snippet]
   }
 
-  removeTitle(snippet: Snippet) {
-    this.#titles = this.#titles.filter((e) => e !== snippet)
-  }
-
-  addActions(snippet: Snippet) {
-    this.actions = [...this.actions, snippet]
-  }
-
-  removeActions(snippet: Snippet) {
-    this.actions = this.actions.filter((e) => e !== snippet)
+  removeHeader(snippet: Snippet) {
+    this.#headers = this.#headers.filter((e) => e !== snippet)
   }
 
   addFooter(snippet: Snippet) {

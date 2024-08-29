@@ -1,5 +1,5 @@
 <script lang="ts">
-  import TrainingViewport from '$lib/components/training/training-viewport.svelte'
+  import TrainingViewport from '$lib/components/training/TrainingViewport.svelte'
 
   const { data } = $props()
 </script>

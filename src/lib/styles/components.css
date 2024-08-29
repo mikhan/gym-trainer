@@ -1,43 +1,30 @@
 @layer components {
-  .surface-canvas {
-    --surface-bg: theme('colors.canvas.DEFAULT');
-    --surface-fg: theme('colors.canvas.fg');
-  }
-
-  .surface-primary {
-    --surface-bg: theme('colors.primary.DEFAULT');
-    --surface-fg: theme('colors.primary.fg');
-  }
-
   .variant-filled {
-    background-color: color-mix(in oklch, var(--surface-bg), var(--surface-fg) 25%);
-    color: color-mix(in oklch, var(--surface-fg), white 75%);
+    background-color: color-mix(in oklch, var(--color-default), var(--color-default-fg) 25%);
+    color: color-mix(in oklch, var(--color-default-fg), white 75%);
     border-color: transparent;
   }
 
-  .surface {
-    background-color: var(--surface-bg);
-    color: var(--surface-fg);
-  }
-
   .ui-button {
-    --component-height: theme('space.8');
+    --component-height: theme('space.10');
     height: var(--component-height);
-    background-color: theme('colors.neutral.DEFAULT');
-    border: 2px solid theme('colors.neutral.line');
-    color: theme('colors.neutral.fg');
-    transition:
-      background-color 150ms,
-      scale 150ms;
+    @apply grid flex-none place-content-center rounded-full surface;
+    @apply focusable-ring;
 
     &:not(:disabled) {
       &:hover {
-        background-color: theme('colors.neutral.hover');
+        @apply transition;
+        background-color: var(--color-default-hover);
+      }
+
+      &:focus {
+        @apply transition;
+        background-color: var(--color-default-active);
       }
 
       &:active {
-        scale: 0.95;
-        opacity: 0.95;
+        @apply transition;
+        transform: scale(0.95);
       }
     }
 
@@ -47,20 +34,7 @@
     }
 
     &:not(.ui-button-circle) {
-      font-weight: theme('fontWeight.bold');
-      padding-inline: theme('space.4');
-      border-radius: theme('borderRadius.button');
-      overflow: hidden;
-      white-space: nowrap;
-      text-overflow: ellipsis;
-    }
-
-    &.ui-button-primary {
-      background-color: theme('colors.primary.DEFAULT');
-      border: 1px solid theme('colors.primary.line');
-      &:not(:disabled):hover {
-        background-color: theme('colors.primary.hover');
-      }
+      @apply truncate px-6 font-bold;
     }
 
     &.ui-button-sm {
@@ -70,41 +44,144 @@
     &.ui-button-lg {
       --component-height: theme('space.10');
     }
-
-    &.ui-button-circle {
-      display: grid;
-      place-content: center;
-      aspect-ratio: 1 / 1;
-      border-radius: 100%;
-      flex: none;
-    }
   }
 
-  .field {
-    display: grid;
-    gap: 0.25rem;
+  .ui-button-circle {
+    @apply aspect-square;
   }
 
-  .field-label {
-    font-size: small;
-    display: block;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-    overflow: hidden;
+  .ui-field {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .ui-label {
+    @apply typescale-label flex items-center gap-1 p-1;
   }
 
   .ui-input {
-    background-color: theme('colors.neutral.lighter.DEFAULT');
-    color: theme('colors.neutral.lighter.fg');
-    border: 1px solid theme('colors.neutral.lighter.line');
+    @apply flex items-center gap-1 rounded-button px-2 py-1.5;
+    @apply border-2 border-default-line bg-default-under text-default-fg focusable-ring focusable-within-ring;
+    @apply transition-colors;
+    /* background-color: var(--color-default-under, theme('colors.neutral.under')); */
+    /* display: inline-block;
+    background-color: var(--color-default-contrast, theme('colors.neutral.contrast'));
+    background-color: var(--color-default-under, theme('colors.neutral.under'));
+    color: var(--color-default-fg, theme('colors.neutral.fg'));
+    border: 2px solid var(--color-default-line, theme('colors.neutral.line'));
     padding: 0 0 0 theme('spacing.2');
     height: theme('space.8');
     line-height: theme('space.8');
-    border-radius: var(--button-roundness);
+    border-radius: theme('borderRadius.button');
     width: 100%;
+    box-shadow: inset 1px 1px 4px rgb(0 0 0 / 25%);
 
     &:user-invalid {
       border-color: red;
+    } */
+  }
+
+  input::placeholder,
+  textarea::placeholder {
+    @apply text-default-fg/50;
+  }
+
+  :where(.ui-input) {
+    input,
+    select,
+    textarea {
+      @apply box-content h-[1lh] min-w-0 flex-auto appearance-none bg-transparent font-mono outline-0;
+    }
+
+    input {
+      &::-webkit-outer-spin-button,
+      &::-webkit-inner-spin-button {
+        appearance: none;
+        margin: 0;
+      }
+
+      &[type='number'] {
+        -moz-appearance: textfield;
+      }
+    }
+
+    textarea {
+      @apply resize-none scrollbar-thin;
+      field-sizing: content;
+    }
+
+    select {
+      @apply pr-3;
+      background-image: linear-gradient(45deg, transparent 50%, currentColor 50%),
+        linear-gradient(135deg, currentColor 50%, transparent 50%);
+      background-position:
+        calc(100% - 4px) 50%,
+        100% 50%;
+      background-size:
+        4px 4px,
+        4px 4px;
+      background-repeat: no-repeat;
+    }
+
+    option {
+      background-color: var(--color-default, theme('colors.neutral.DEFAULT'));
+      color: var(--color-default-fg, theme('colors.neutral.fg'));
+    }
+  }
+
+  .ui-toolbar {
+    @apply flex items-center gap-2;
+  }
+
+  .ui-checkbox {
+    --chkbg: theme('colors.accent.DEFAULT');
+    --chkfg: theme('colors.accent.fg');
+    appearance: none;
+    flex-shrink: 0;
+    width: theme('spacing.4');
+    height: theme('spacing.4');
+    cursor: pointer;
+    border-radius: theme('borderRadius.button');
+    border: 1px solid theme('colors.neutral.line');
+    vertical-align: middle;
+
+    &:checked {
+      border-color: var(--chkbg);
+      background-color: var(--chkbg);
+      background-repeat: no-repeat;
+      animation: --ui-checkbox-checkmark var(--animation-input, 0.2s) ease-out;
+      background-color: var(--chkbg);
+      background-image: linear-gradient(-45deg, transparent 65%, var(--chkbg) 65.99%),
+        linear-gradient(45deg, transparent 75%, var(--chkbg) 75.99%),
+        linear-gradient(-45deg, var(--chkbg) 40%, transparent 40.99%),
+        linear-gradient(
+          45deg,
+          var(--chkbg) 30%,
+          var(--chkfg) 30.99%,
+          var(--chkfg) 40%,
+          transparent 40.99%
+        ),
+        linear-gradient(-45deg, var(--chkfg) 50%, var(--chkbg) 50.99%);
+    }
+  }
+
+  @keyframes --ui-checkbox-checkmark {
+    0% {
+      background-position-y: 5px;
+    }
+    50% {
+      background-position-y: -2px;
+    }
+    100% {
+      background-position-y: 0;
+    }
+  }
+
+  .ui-avatar {
+    @apply inline-grid aspect-square flex-none overflow-hidden align-middle;
+
+    & img {
+      @apply block size-full object-cover;
     }
   }
 }

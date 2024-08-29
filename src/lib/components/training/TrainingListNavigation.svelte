@@ -12,8 +12,8 @@
 <UiToc>
   {#snippet children(active)}
     <nav
-      class="sticky left-0 top-0 hidden max-h-[100cqb] space-y-4 overflow-y-auto px-layout-gap py-10 scrollbar scrollbar-autohide lg:block">
-      <div class="font-bold">Rutinas</div>
+      class="sticky left-0 top-layout-header-height ms-auto hidden h-layout-viewport-height w-full max-w-80 space-y-4 overflow-y-auto py-layout-gap scrollbar scrollbar-autohide lg:block">
+      <div class="px-4 font-bold">Rutinas</div>
       <ul class="">
         {#each training.routines as routine}
           {@const id = `routine-${routine.id}`}
@@ -21,10 +21,8 @@
             <a
               href={`#${id}`}
               class={clsx(
-                '-mx-4 block rounded-s-button border-e-2 px-4 py-3 text-sm transition-colors',
-                active?.id === id
-                  ? 'border-primary-lighter bg-primary-darker text-primary-darker-fg'
-                  : 'border-canvas-line hover:text-primary-lighter',
+                'block rounded-button px-4 py-3 text-sm transition-colors focusable-ring',
+                active?.id === id ? 'color-primary-darker surface' : 'hover:text-primary-lighter',
               )}
               ondragover={() =>
                 document.getElementById(id)?.scrollIntoView({ behavior: 'instant' })}

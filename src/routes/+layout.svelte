@@ -4,15 +4,19 @@
   import AppDatabase from '$lib/components/app/app-database.svelte'
   import { invalidate } from '$app/navigation'
   import type { LayoutData } from './$types'
-  import AppPwa from '$lib/components/app/app-pwa.svelte'
+  import AppPwa from '$lib/components/app/AppPwa.svelte'
   import '$lib/styles/app.css'
-  import AppShell from '$lib/components/app/app-shell.svelte'
+  import AppShell from '$lib/components/app/AppShell.svelte'
   import AppNavigatingIndicator from '$lib/components/app/AppNavigatingIndicator.svelte'
   import AppViewTransition from '$lib/components/app/AppViewTransition.svelte'
+  import TrainerPlayer from './TrainerPlayer.svelte'
+  import { TrainerContext } from './trainer/TrainerContext.svelte'
 
   type Props = { children: Snippet; data: LayoutData }
 
   let { children, data }: Props = $props()
+
+  TrainerContext.setContext()
 
   onMount(() => {
     const {
@@ -34,4 +38,5 @@
   <AppDatabase client={data.supabase}>
     {@render children()}
   </AppDatabase>
+  <TrainerPlayer></TrainerPlayer>
 </AppShell>

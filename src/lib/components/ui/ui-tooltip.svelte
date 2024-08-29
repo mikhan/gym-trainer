@@ -1,6 +1,6 @@
 <script lang="ts">
   import { onMount, type Snippet } from 'svelte'
-  import { anchor } from '$lib/actions/anchor'
+  import { anchor } from '$lib/actions/anchor.action'
   import { clsx } from 'clsx'
   import type { HTMLAttributes } from 'svelte/elements'
   import { getElement } from '$lib/utils/element'
@@ -45,11 +45,7 @@
 </script>
 
 <div
-  class={clsx(
-    'rounded-card border border-popover-line bg-popover/60 px-4 py-1 text-sm text-popover-fg shadow-over backdrop-blur-lg',
-    'ui-tooltip',
-    className,
-  )}
+  class={clsx('ui-tooltip', className)}
   data-align={align}
   popover="manual"
   bind:this={element}
@@ -58,37 +54,41 @@
 </div>
 
 <style lang="postcss">
-  .ui-tooltip {
-    position: fixed;
-    position-visibility: anchors-visible;
-    position-try:
-      flip-block,
-      flip-inline,
-      flip-block flip-inline;
-    transition-delay: 0s;
+  :global {
+    .ui-tooltip {
+      @apply px-4 py-1 text-sm;
+      @apply rounded-card border bg-opacity-80 shadow-over backdrop-blur color-popover surface;
+      position: fixed;
+      position-visibility: anchors-visible;
+      position-try:
+        flip-block,
+        flip-inline,
+        flip-block flip-inline;
+      transition-delay: 0s;
 
-    &[data-align='block-start'] {
-      inset-area: block-start;
-      margin-block-end: 8px;
-    }
+      &[data-align='block-start'] {
+        inset-area: block-start;
+        margin-block-end: 8px;
+      }
 
-    &[data-align='block-end'] {
-      inset-area: block-end;
-      margin-block-start: 8px;
-    }
+      &[data-align='block-end'] {
+        inset-area: block-end;
+        margin-block-start: 8px;
+      }
 
-    &[data-align='inline-start'] {
-      inset-area: inline-start;
-      margin-inline-end: 8px;
-    }
+      &[data-align='inline-start'] {
+        inset-area: inline-start;
+        margin-inline-end: 8px;
+      }
 
-    &[data-align='inline-end'] {
-      inset-area: inline-end;
-      margin-inline-start: 8px;
-    }
+      &[data-align='inline-end'] {
+        inset-area: inline-end;
+        margin-inline-start: 8px;
+      }
 
-    &:popover-open {
-      transition-delay: 500ms;
+      &:popover-open {
+        transition-delay: 500ms;
+      }
     }
   }
 </style>

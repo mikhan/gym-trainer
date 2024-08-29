@@ -60,7 +60,7 @@ export function typescalePlugin() {
       '.typescale-title': {
         'font-size': fluidFontSize(1), //'1rem',
         'line-height': fluidLineHeight(1), //'1.5rem',
-        'font-weight': '500',
+        'font-weight': '700',
       },
       '.typescale-headline': {
         'font-size': fluidFontSize(2), //'1.75rem',

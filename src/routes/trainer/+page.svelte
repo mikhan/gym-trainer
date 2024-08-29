@@ -1,15 +1,23 @@
 <script lang="ts">
-  import TrainerViewport from './TrainerViewport.svelte'
-  import { page } from '$app/stores'
+  import TrainerRunning from './TrainerRunning.svelte'
+  import { TrainerContext } from './TrainerContext.svelte'
+  import { goto } from '$app/navigation'
+  import TrainerCompleted from './TrainerCompleted.svelte'
 
-  const { data } = $props()
-  const training = $derived(data.training)
-  const routineId = $derived($page.url.searchParams.get('routine'))
-  const routine = $derived(
-    (routineId && training.routines.find((routine) => routine.id === routineId)) || null,
-  )
+  const trainerContext = TrainerContext.getContext()
+
+  $effect(() => {
+    if (trainerContext.state.status === 'unset') {
+      goto('/trainings')
+    }
+  })
 </script>
 
-{#if routine}
-  <TrainerViewport {training} {routine}></TrainerViewport>
+{#if trainerContext.state.status === 'running'}
+  {@const { training, currentSerieIndex, currentRoutine, currentSerie } = trainerContext.state}
+  <TrainerRunning {training} {currentSerieIndex} {currentRoutine} {currentSerie}></TrainerRunning>
+{:else if trainerContext.state.status === 'completed'}
+  <TrainerCompleted
+    training={trainerContext.state.training}
+    currentRoutine={trainerContext.state.currentRoutine}></TrainerCompleted>
 {/if}

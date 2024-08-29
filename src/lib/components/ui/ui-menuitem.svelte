@@ -6,20 +6,26 @@
 
   type Props = {
     children: Snippet
+    icon?: Snippet
   } & Omit<HTMLButtonAttributes, 'type'>
 
-  const { children, class: className, ...props }: Props = $props()
+  const { children, icon, class: className, ...props }: Props = $props()
   const uiMenuContext = UiMenuContext.get()
 </script>
 
-<li>
+<li class="col-span-2 grid grid-cols-subgrid">
   <button
     class={clsx(
-      'menu-item h-10 w-full rounded-card px-4 pt-0 text-left hover:bg-popover-hover',
+      'col-span-2 grid h-10 w-full grid-cols-subgrid items-center rounded-button border border-transparent px-2 py-0 text-left hover:border-default-line hover:bg-popover-hover',
       className,
     )}
     type="button"
     {...props}
     popovertarget={uiMenuContext.id}
-    popovertargetaction="hide">{@render children()}</button>
+    popovertargetaction="hide">
+    {#if icon}
+      <div class="grid size-[1lh] place-content-center">{@render icon()}</div>
+    {/if}
+    <div class="col-start-2 px-2">{@render children()}</div>
+  </button>
 </li>

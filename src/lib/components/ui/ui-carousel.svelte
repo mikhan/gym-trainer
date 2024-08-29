@@ -1,7 +1,7 @@
 <script lang="ts" context="module">
-  export type ChangeEvent = CustomEvent<{
-    current: HTMLLIElement | null
-    previous: HTMLLIElement | null
+  export type ScrollSnapEvent = CustomEvent<{
+    snapTargetBlock: HTMLLIElement | null
+    snapTargetInline: HTMLLIElement | null
   }>
 </script>
 
@@ -15,15 +15,15 @@
     label?: string
     direction?: 'horizontal' | 'vertical'
     snap?: 'start' | 'end' | 'center'
-    onchange?: (event: ChangeEvent) => void
-  } & Omit<HTMLAttributes<HTMLElement>, 'onchange'>
+    onscrollsnapchange?: (event: ScrollSnapEvent) => void
+  } & HTMLAttributes<HTMLElement>
 
   let {
     children,
     label,
     direction = 'horizontal',
     snap = 'center',
-    onchange,
+    onscrollsnapchange,
     class: className,
     ...props
   }: Props = $props()
@@ -64,7 +64,7 @@
   }
 
   onMount(() => {
-    if (!onchange) return
+    if (!onscrollsnapchange) return
 
     let current: HTMLLIElement | null = root.querySelector(':scope > li[aria-current="true"]')
     if (current) current.scrollIntoView({ behavior: 'instant' })
@@ -103,7 +103,12 @@
         previous?.removeAttribute('aria-current')
         current.setAttribute('aria-current', 'true')
 
-        if (onchange) onchange(new CustomEvent('change', { detail: { current, previous } }))
+        if (onscrollsnapchange)
+          onscrollsnapchange(
+            new CustomEvent('change', {
+              detail: { snapTargetBlock: current, snapTargetInline: current },
+            }),
+          )
         break
       }
     }
@@ -137,17 +142,18 @@
       grid-template-rows: 100%;
       grid-auto-columns: 100%;
       grid-auto-rows: 100%;
-      overflow: auto;
       scroll-snap-type: both mandatory;
       scroll-behavior: smooth;
       container: carousel / size;
 
       &[data-direction='horizontal'] {
         grid-auto-flow: column;
+        overflow-x: scroll;
       }
 
       &[data-direction='vertical'] {
         grid-auto-flow: row;
+        overflow-y: scroll;
       }
 
       &[data-snap='start'] > li {

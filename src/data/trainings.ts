@@ -17,6 +17,7 @@ const routineSerieSchema = z.object({
   name: z.string(),
   group: z.string(),
   muscle: z.string(),
+  notes: z.string().default('Las notas'),
   steps: z.array(routineStepSchema),
 })
 

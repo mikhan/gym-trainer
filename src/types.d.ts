@@ -17,6 +17,7 @@ declare global {
       name: string
       group: string
       muscle: string
+      notes: string
       steps: RoutineStep[]
     }
 
@@ -24,7 +25,12 @@ declare global {
       type: 'repetitions' | 'failure'
       value: string
       delay: number
-      weight: { value: number; unit: string }
+      weight: Weight
+    }
+
+    type Weight = {
+      value: number
+      unit: string
     }
 
     type Action = {
