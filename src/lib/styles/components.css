@@ -47,7 +47,7 @@
   }
 
   .ui-button-circle {
-    @apply aspect-square;
+    width: var(--component-height);
   }
 
   .ui-field {

@@ -67,6 +67,11 @@
     {/each}
   </UiCarousel>
   <div class="col-span-3 mx-auto grid w-full max-w-screen-sm gap-layout-gap px-layout-gap">
+    <TrainerSerieImage
+      title="Ejecución de ejercicio"
+      src="https://ik.imagekit.io/mikhan/gym-trainer/exercises/00289eafca-v258577.gif"
+      alt={`Imagen demostrando como ejecutar el ejercicio ${currentSerie.name}`}
+    ></TrainerSerieImage>
     <TrainerSerieInstructions>
       <p>
         Amet ipsum sint duis ex nisi anim cupidatat labore proident do ullamco culpa consectetur.
@@ -77,10 +82,5 @@
         excepteur occaecat ullamco sit.
       </p>
     </TrainerSerieInstructions>
-    <TrainerSerieImage
-      title="Ejecución de ejercicio"
-      src="https://ik.imagekit.io/mikhan/gym-trainer/exercises/00289eafca-v258577.gif"
-      alt={`Imagen demostrando como ejecutar el ejercicio ${currentSerie.name}`}
-    ></TrainerSerieImage>
   </div>
 </div>

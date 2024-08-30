@@ -12,7 +12,7 @@
       <div class="container mx-auto flex items-center gap-2 px-layout-gap py-2">
         {#if trainerContext.state.status === 'running'}
           <a
-            class="mr-auto block overflow-hidden rounded-button px-4 py-2 focusable-ring hover:bg-default-hover"
+            class="-ms-2 mr-auto block overflow-hidden rounded-button p-2 focusable-ring hover:bg-default-hover"
             href="/trainer">
             <div class="typescale-label truncate">
               {trainerContext.state.training.name} / {trainerContext.state.currentRoutine.name}
@@ -24,7 +24,7 @@
           <TrainerTimer></TrainerTimer>
         {:else if trainerContext.state.status === 'completed'}
           <a
-            class="mr-auto block overflow-hidden rounded-button px-4 py-2 focusable-ring hover:bg-default-hover"
+            class="-ms-2 mr-auto block overflow-hidden rounded-button p-2 focusable-ring hover:bg-default-hover"
             href="/trainer">
             <div class="typescale-label truncate">Entrenamiento completado</div>
             <div class="truncate font-bold md:typescale-title">
