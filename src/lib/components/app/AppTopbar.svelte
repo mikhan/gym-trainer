@@ -42,7 +42,7 @@
 <style lang="postcss">
   :global {
     .app-topbar {
-      @apply flex justify-center border-b shadow color-canvas surface;
+      @apply flex justify-center transition color-canvas surface;
       animation-timeline: scroll(nearest);
       animation-name: app-topbar-color;
       animation-range-end: min(200px, 50%);
@@ -54,7 +54,7 @@
         @apply color-canvas;
       }
       to {
-        @apply color-neutral-darkest;
+        @apply shadow color-neutral-darkest;
       }
     }
   }

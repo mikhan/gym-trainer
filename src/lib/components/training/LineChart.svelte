@@ -7,14 +7,17 @@
 </script>
 
 <script lang="ts">
+  import clsx from 'clsx'
+  import type { HTMLAttributes } from 'svelte/elements'
+
   type Props = {
     data: ChartData[]
-  }
+  } & HTMLAttributes<HTMLDivElement>
 
-  const { data }: Props = $props()
+  const { data, class: className }: Props = $props()
 </script>
 
-<div class="flex flex-wrap gap-x-2">
+<div class={clsx('flex flex-wrap gap-x-2', className)}>
   <div
     class="flex h-2 w-full divide-x divide-black overflow-hidden rounded-button border border-black">
     {#each data as dataset (dataset.label)}

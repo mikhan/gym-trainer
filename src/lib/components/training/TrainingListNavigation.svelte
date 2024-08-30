@@ -12,7 +12,7 @@
 <UiToc>
   {#snippet children(active)}
     <nav
-      class="sticky left-0 top-layout-header-height ms-auto hidden h-layout-viewport-height w-full max-w-80 space-y-4 overflow-y-auto py-layout-gap scrollbar scrollbar-autohide lg:block">
+      class="sticky left-0 top-layout-header-height ms-auto hidden h-layout-viewport-height w-full space-y-4 overflow-y-auto py-layout-gap scrollbar scrollbar-autohide lg:block">
       <div class="px-4 font-bold">Rutinas</div>
       <ul class="">
         {#each training.routines as routine}

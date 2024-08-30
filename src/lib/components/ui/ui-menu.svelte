@@ -23,19 +23,20 @@
   })
 </script>
 
-<menu
+<ul
+  role="menu"
   class={clsx('ui-menu', className)}
   id={context.id}
   popover="auto"
   use:anchor={target}
   {...props}>
   {@render children()}
-</menu>
+</ul>
 
 <style lang="postcss">
   :global {
     .ui-menu {
-      @apply w-max border bg-opacity-85 scrollbar color-popover surface;
+      @apply w-max border bg-opacity-75 scrollbar color-popover surface;
       @apply fixed rounded-card p-1 shadow-over backdrop-blur;
       min-width: anchor-size(inline);
       position-visibility: anchors-visible;
@@ -46,17 +47,19 @@
         flip-block flip-inline; */
       left: anchor(left);
       top: anchor(bottom);
+      margin: theme('spacing.1') 0;
       position-try:
         most-width --flip-block,
         --flip-inline,
         --flip-block-inline;
 
       &:popover-open {
-        @apply grid grid-cols-[auto,auto];
+        @apply grid grid-cols-[min-content,auto];
       }
     }
 
     @position-try --flip-block {
+      margin: 0 theme('spacing.1');
       top: auto;
       bottom: anchor(top);
     }
@@ -67,6 +70,7 @@
     }
 
     @position-try --flip-block-inline {
+      margin: 0 theme('spacing.1');
       top: auto;
       bottom: anchor(top);
       left: auto;

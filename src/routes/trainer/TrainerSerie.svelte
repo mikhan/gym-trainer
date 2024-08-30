@@ -3,6 +3,9 @@
   import clsx from 'clsx'
   import { TrainerContext } from './TrainerContext.svelte'
   import { convertUnit } from '$lib/utils/unit-converter'
+  import Fa from 'svelte-fa'
+  import { faCheck } from '@fortawesome/free-solid-svg-icons'
+  import { faCircle } from '@fortawesome/free-regular-svg-icons'
 
   type Props = {
     serie: Types.RoutineSerie
@@ -29,9 +32,11 @@
     }
   }
 
-  function updateSerieNotes(value: string) {
-    trainerContext.updateSerieNotes(serieIndex, value)
-  }
+  let completed: boolean[] = $state([])
+
+  // function updateSerieNotes(value: string) {
+  //   trainerContext.updateSerieNotes(serieIndex, value)
+  // }
 </script>
 
 <li
@@ -44,7 +49,7 @@
   inert={!isCurrent}>
   <article
     class={clsx(
-      'flex size-full flex-col overflow-y-auto rounded-card pb-6 shadow transition-colors scrollbar-thin surface',
+      'flex size-full flex-col overflow-y-auto rounded-card shadow transition-colors scrollbar-thin surface',
       isCurrent ? 'color-secondary-darker' : 'color-neutral',
     )}>
     <header class="sticky top-0 z-1 mb-6 flex items-start bg-inherit p-6 pb-4">
@@ -58,7 +63,7 @@
         style="mask-image: linear-gradient(to bottom, black, transparent)">
       </div>
     </header>
-    <div class="px-6">
+    <!-- <div class="px-6">
       <label class="ui-field">
         <span class="ui-label">Notas</span>
         <div class="ui-input">
@@ -69,34 +74,42 @@
             onchange={(e) => updateSerieNotes(e.currentTarget.value)}></textarea>
         </div>
       </label>
-    </div>
-    <div class="mt-auto space-y-2 px-6">
+    </div> -->
+    <ul
+      class="mt-auto flex w-full flex-none snap-x snap-mandatory scroll-p-6 justify-between gap-4 overflow-x-auto px-6 pb-6 scrollbar-thin"
+      style="ask-image: linear-gradient(to right, transparent, black 2rem, black calc(100% - 2rem), transparent);">
       {#each serie.steps as step, stepIndex}
-        <div class="flex items-center gap-2">
-          <div class="mr-auto opacity-50">{stepIndex + 1}</div>
-          <div>{step.value}</div>
-          <div>{step.type}</div>
-          <div class="ui-input">
+        <li class="flex shrink-0 grow-0 basis-auto snap-start flex-col items-center gap-2">
+          <div>{step.value} {step.type === 'repetitions' ? 'reps' : ''}</div>
+          <label class="ui-input w-full flex-col rounded-card p-1 color-neutral-darkest">
+            <span class="typescale-label opacity-75">Peso</span>
             <input
-              class="w-[3ch]"
+              class="w-[5ch] text-center text-2xl"
               type="number"
               required
               use:autoselect
               value={step.weight.value}
               onchange={(e) => updateWeightValue(stepIndex, e.currentTarget.valueAsNumber)} />
-          </div>
-          <div class="ui-input">
             <select
-              class="w-[3ch]"
               value={step.weight.unit}
               onchange={(e) => updateWeightUnit(stepIndex, e.currentTarget.value)}>
               <option value="kg">Kg.</option>
               <option value="lb">Lb.</option>
             </select>
-          </div>
-        </div>
+          </label>
+          <button
+            class="flex w-full place-content-center items-center justify-between rounded-full border-2 p-1 transition-colors color-neutral-darkest surface"
+            onclick={() => {
+              completed[stepIndex] = !completed[stepIndex]
+            }}>
+            <span class="px-2 text-sm">{stepIndex + 1}</span>
+            <span class="grid size-5 place-content-center rounded-full">
+              <Fa icon={completed[stepIndex] ? faCheck : faCircle} size="sm"></Fa>
+            </span>
+          </button>
+        </li>
       {/each}
-    </div>
+    </ul>
   </article>
 </li>
 

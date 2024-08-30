@@ -8,6 +8,7 @@
   import UiButton from '../ui/ui-button.svelte'
   import { convertUnit } from '$lib/utils/unit-converter'
   import { autoselect } from '$lib/actions/autoselect.action'
+  import UiCheckbox from '../ui/ui-checkbox.svelte'
 
   type Props = {
     serie: Types.RoutineSerie
@@ -51,7 +52,7 @@
 
 <UiDialog bind:open align="right" onclose={() => onclose?.()} title="Editar ejercicio">
   <div class="space-y-4">
-    <div class="flex flex-wrap gap-2">
+    <div class="grid gap-2">
       <label class="ui-field flex-[3_1_40ch]">
         <div class="ui-label">Nombre</div>
         <div class="ui-input">
@@ -71,9 +72,11 @@
           </select>
         </div>
       </label>
-      <label>
-        <input type="checkbox" bind:checked={useSameDelay} onchange={() => setSameDelay()} />
-        Same delay
+      <label class="ui-field">
+        <div class="ui-label">
+          <UiCheckbox bind:checked={useSameDelay} onchange={() => setSameDelay()}></UiCheckbox>
+          <span class="cursor-pointer">Same delay</span>
+        </div>
       </label>
     </div>
 
@@ -83,18 +86,18 @@
       <div class="flex items-end gap-2">
         <div>{stepIndex + 1}</div>
         <label class="ui-field flex-auto">
-          <div class="ui-label">Value</div>
-          <div class="ui-input">
-            <input type="string" required use:autoselect bind:value={step.value} />
-          </div>
-        </label>
-        <label class="ui-field flex-auto">
           <div class="ui-label">Tipo</div>
           <div class="ui-input">
             <select required bind:value={step.type}>
               <option value="repetitions">Repeticiones</option>
               <option value="failure">Al fallo</option>
             </select>
+          </div>
+        </label>
+        <label class="ui-field flex-auto">
+          <div class="ui-label">Value</div>
+          <div class="ui-input">
+            <input type="string" required use:autoselect bind:value={step.value} />
           </div>
         </label>
         <!-- {#if !useSameDelay} -->

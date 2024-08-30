@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { ariaControls } from '$lib/actions/aria-controls.action'
   import TrainingSerieEditor from '$lib/components/training/TrainingSerieEditor.svelte'
   import Fa from 'svelte-fa'
   import { sortitem, sortlist } from '$lib/actions/sortable.action'
@@ -13,14 +14,16 @@
   import { goto } from '$app/navigation'
   import { TrainerContext } from '../../../routes/trainer/TrainerContext.svelte'
   import LineChart, { type ChartData } from './LineChart.svelte'
+  import UiCollapsibleText from '../ui/UiCollapsibleText.svelte'
 
   type Props = {
     training: Types.Training
     routine: Types.Routine
+    expanded?: boolean
     chartData?: ChartData[]
   }
 
-  let { training, routine, chartData }: Props = $props()
+  let { training, routine, expanded = false, chartData }: Props = $props()
   const muscleGroups = getMuscleGroups()
   const trainingViewportContext = TrainingViewportContext.get()
   let currentSerie$: Types.RoutineSerie | null = $state(null)
@@ -33,8 +36,8 @@
 
     for (const serie of series) {
       let groupedSerie = groupedSeries.at(-1)
-      if (!groupedSerie || groupedSerie.group.id !== serie.group) {
-        const group = muscleGroups.find(({ id }) => id === serie.group)!
+      if (!groupedSerie || groupedSerie.group.id !== serie.muscle) {
+        const group = muscleGroups.find(({ id }) => id === serie.muscle)!
         groupedSerie = { group, series: [] }
         groupedSeries.push(groupedSerie)
       }
@@ -74,7 +77,6 @@
       notes: '',
       steps: [{ type: 'repetitions', value: '8', delay: 60, weight: { unit: 'kg', value: 0 } }],
     }
-    console.log(newSerie$)
   }
 
   function deleteRutine(routineId: string) {
@@ -108,13 +110,17 @@
 {/if}
 
 <article
-  class="grid scroll-mt-layout-gap rounded-card border contain-paint color-neutral surface xl:grid-cols-[4fr,8fr] xl:grid-rows-[auto,1fr]"
-  id={`routine-${routine.id}`}
-  use:tocTarget>
+  class="group grid scroll-mt-layout-gap rounded-card border contain-paint color-neutral surface xl:grid-rows-[auto,1fr] xl:has-[[aria-expanded='true']]:grid-cols-[4fr,8fr]"
+  use:tocTarget
+  id={`routine-${routine.id}`}>
   <header
-    class="top-layout-viewport-top sticky z-1 border-default-line bg-inherit p-4 ps-8 xl:border-r">
+    class="sticky top-layout-viewport-top z-1 border-default-line bg-inherit p-4 ps-8 xl:group-has-[[aria-expanded='true']]:border-r">
     <div class="flex items-center gap-2">
-      <div class="typescale-title grow">{routine.name}</div>
+      <button
+        type="button"
+        class="typescale-title grow text-left"
+        use:ariaControls={`routine-${routine.id}`}
+        aria-expanded={expanded}>{routine.name}</button>
       <UiIconbutton label="Iniciar entrenamiento" onclick={() => startRoutine(routine.id)}>
         <Fa icon={faPlay}></Fa></UiIconbutton>
       <UiIconbutton label="Agregar serie" onclick={() => addSerie()}>
@@ -131,20 +137,17 @@
       </UiMenu>
     </div>
   </header>
-  <div class="col-start-1 row-start-2 space-y-4 border-default-line p-4 xl:border-r">
-    <p>
-      Duis deserunt dolore qui nisi ullamco eu aliqua amet occaecat non commodo pariatur mollit.
-      Eiusmod cillum esse amet sunt officia incididunt adipisicing exercitation voluptate in ex non
-      aliquip. Laborum reprehenderit eiusmod sint elit esse ipsum dolore ipsum veniam. Exercitation
-      aliquip irure eiusmod ipsum magna ad reprehenderit sint culpa occaecat. Magna mollit do in
-      aliqua nostrud dolore id sunt non voluptate esse sint nulla.
-    </p>
+  <div
+    class="col-start-1 row-start-2 flex flex-col gap-2 border-default-line px-4 group-has-[[aria-expanded='false']]:hidden xl:border-r">
     {#if chartData}
       <LineChart data={chartData}></LineChart>
     {/if}
+    {#if routine.description}
+      <p><UiCollapsibleText maxLines={4}>{routine.description}</UiCollapsibleText></p>
+    {/if}
   </div>
   <ul
-    class="row-span-2"
+    class="row-span-2 my-4 group-has-[[aria-expanded='false']]:hidden"
     use:sortlist={training.id}
     onsortend={(event) => updateSeries(getFromRegistry(event.detail.elements))}>
     {#each groupedSeries$ as groupedSerie}

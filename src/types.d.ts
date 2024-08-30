@@ -9,6 +9,7 @@ declare global {
     type Routine = {
       id: string
       name: string
+      description: string
       series: RoutineSerie[]
     }
 

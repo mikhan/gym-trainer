@@ -1,4 +1,8 @@
 <script lang="ts">
+  import TrainerSerieImage from './TrainerSerieImage.svelte'
+
+  import TrainerSerieInstructions from './TrainerSerieInstructions.svelte'
+
   import TrainerSerie from './TrainerSerie.svelte'
   import UiIconbutton from '$lib/components/ui/ui-iconbutton.svelte'
   import UiCarousel from '$lib/components/ui/ui-carousel.svelte'
@@ -30,7 +34,7 @@
 <AppTopbar previous={`/trainings/${training.id}`} title={currentRoutine.name}></AppTopbar>
 
 <div
-  class="relative grid size-full grid-cols-[auto,minmax(auto,480px),auto] grid-rows-[calc(var(--layout-viewport-height)*0.9)] pb-layout-gap">
+  class="relative grid size-full grid-cols-[auto,minmax(auto,480px),auto] grid-rows-[calc(var(--layout-viewport-height)-4rem)] pb-layout-gap">
   <div
     class="sticky left-0 top-40 z-1 col-start-1 row-start-1 mx-4 grid size-10 justify-self-end pointer-coarse:hidden">
     <UiIconbutton
@@ -63,8 +67,7 @@
     {/each}
   </UiCarousel>
   <div class="col-span-3 mx-auto grid w-full max-w-screen-sm gap-layout-gap px-layout-gap">
-    <article class="space-y-4 rounded-card p-4 shadow color-neutral surface">
-      <h1 class="typescale-title">Instrucciones</h1>
+    <TrainerSerieInstructions>
       <p>
         Amet ipsum sint duis ex nisi anim cupidatat labore proident do ullamco culpa consectetur.
         Sint minim quis amet voluptate nostrud sint fugiat duis pariatur ad anim sint. Ad ea laborum
@@ -73,15 +76,11 @@
         commodo non commodo esse ex. Excepteur aute voluptate anim mollit do amet officia dolore
         excepteur occaecat ullamco sit.
       </p>
-    </article>
-    <figure class="flex flex-col items-center overflow-hidden rounded-card bg-white shadow">
-      <img
-        class="aspect-square w-full"
-        src="https://ik.imagekit.io/mikhan/gym-trainer/exercises/00289eafca-v258577.gif"
-        alt={`Imagen demostrando como ejecutar el ejercicio ${currentSerie.name}`} />
-      <figcaption class="typescale-label m-4 rounded-full px-4 py-1 font-bold uppercase surface">
-        Ejecución de ejercicio
-      </figcaption>
-    </figure>
+    </TrainerSerieInstructions>
+    <TrainerSerieImage
+      title="Ejecución de ejercicio"
+      src="https://ik.imagekit.io/mikhan/gym-trainer/exercises/00289eafca-v258577.gif"
+      alt={`Imagen demostrando como ejecutar el ejercicio ${currentSerie.name}`}
+    ></TrainerSerieImage>
   </div>
 </div>

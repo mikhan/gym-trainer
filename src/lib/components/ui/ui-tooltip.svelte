@@ -57,7 +57,7 @@
   :global {
     .ui-tooltip {
       @apply px-4 py-1 text-sm;
-      @apply rounded-card border bg-opacity-80 shadow-over backdrop-blur color-popover surface;
+      @apply rounded-card border bg-opacity-75 shadow-over backdrop-blur color-popover surface;
       position: fixed;
       position-visibility: anchors-visible;
       position-try:

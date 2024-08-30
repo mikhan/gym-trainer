@@ -17,13 +17,14 @@ const routineSerieSchema = z.object({
   name: z.string(),
   group: z.string(),
   muscle: z.string(),
-  notes: z.string().default('Las notas'),
+  notes: z.string().default(''),
   steps: z.array(routineStepSchema),
 })
 
 const routineSchema = z.object({
   id: z.string(),
   name: z.string(),
+  description: z.string().default(''),
   series: z.array(routineSerieSchema),
 })
 

@@ -116,6 +116,16 @@
       );
       --layout-viewport-top: calc(var(--layout-header-top) + var(--layout-header-height));
 
+      @media (min-width: theme('screens.lg')) {
+        --layout-gap: calc(var(--layout-gap-default) * 2);
+        --layout-padding: calc(var(--layout-padding-default) * 2);
+      }
+
+      @media (min-width: theme('screens.3xl')) {
+        --layout-gap: calc(var(--layout-gap-default) * 3);
+        --layout-padding: calc(var(--layout-padding-default) * 3);
+      }
+
       @apply grid size-full select-none;
       @apply scroll-pt-layout-header-height overflow-y-scroll scroll-smooth scrollbar scrollbar-track-black scrollbar-stable;
       grid-template:
@@ -123,15 +133,6 @@
         'view' 1fr
         'foot' auto
         / 100%;
-
-      @media (min-width: theme('screens.md')) {
-        --layout-padding: calc(var(--layout-padding-default) * 2);
-        --layout-gap: calc(var(--layout-gap-default) * 2);
-      }
-
-      @media (min-width: theme('screens.xl')) {
-        --layout-padding: calc(var(--layout-padding-default) * 3);
-      }
     }
 
     .app-header {
