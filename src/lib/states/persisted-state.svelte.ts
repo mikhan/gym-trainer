@@ -13,13 +13,12 @@ class PersistedState<T> {
   value = $state<T>() as T
 
   constructor(key: string, defaultValue: T, type: StorageType) {
-    let initialized = false
-    key = `${PersistedState.namespace}:${key}`
-
     this.type = type
-    this.key = key
+    this.key = `${PersistedState.namespace}:${key}`
     this.value = defaultValue
     this.#defaultValue = this.serialize(defaultValue)
+
+    let initialized = false
 
     const storageArea = getStorageArea(type)
     if (!storageArea) return

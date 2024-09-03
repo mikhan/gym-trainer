@@ -5,8 +5,8 @@
     @apply grid flex-none place-content-center rounded-full surface;
     @apply focusable-ring;
 
-    @apply enabled:surface-hoverable enabled:surface-activable;
-    @apply disabled:cursor-not-allowed disabled:opacity-50;
+    @apply [&:not(:disabled)]:surface-hoverable [&:not(:disabled)]:surface-activable;
+    @apply disabled:cursor-not-allowed;
 
     &:not(.ui-button-circle) {
       @apply truncate px-6 font-bold;

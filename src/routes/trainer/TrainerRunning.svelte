@@ -49,7 +49,7 @@
     class="sticky left-0 top-40 z-1 col-start-1 row-start-1 mx-4 grid size-10 justify-self-end pointer-coarse:hidden">
     <UiIconbutton
       disabled={currentSerieIndex === 0}
-      class="ui-button-lg shadow color-neutral"
+      class="ui-button-lg surface-glass shadow color-neutral-lighter"
       label="Serie anterior"
       onclick={() => carousel.previous()}><Fa icon={faChevronLeft}></Fa></UiIconbutton>
   </div>
@@ -57,7 +57,7 @@
     class="sticky right-0 top-40 z-1 col-start-3 row-start-1 mx-4 grid size-10 justify-self-start pointer-coarse:hidden">
     <UiIconbutton
       disabled={currentSerieIndex === currentRoutine.series.length - 1}
-      class="ui-button-lg shadow color-neutral"
+      class="ui-button-lg surface-glass shadow color-neutral-lighter"
       label="Siguiente serie"
       onclick={() => carousel.next()}><Fa icon={faChevronRight}></Fa></UiIconbutton>
   </div>

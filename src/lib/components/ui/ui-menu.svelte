@@ -40,11 +40,6 @@
       @apply fixed rounded-card p-1 shadow-over backdrop-blur;
       min-width: anchor-size(inline);
       position-visibility: anchors-visible;
-      /* inset-area: bottom span-right;
-      position-try-options:
-        flip-block,
-        flip-inline,
-        flip-block flip-inline; */
       left: anchor(left);
       top: anchor(bottom);
       margin: theme('spacing.1') 0;

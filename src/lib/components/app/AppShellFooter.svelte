@@ -26,10 +26,10 @@
 
 <style lang="postcss">
   :where(.app-shell-footer) {
-    @apply transition surface;
+    @apply shadow transition surface;
 
     & > div {
-      @apply container mx-auto flex h-16 justify-between gap-2 px-layout-gap;
+      @apply container mx-auto flex h-20 justify-between gap-2 px-layout-gap;
 
       & > div {
         @apply flex items-center gap-2;

@@ -79,6 +79,9 @@ export function surfacePlugin() {
       '.surface-outlined': {
         '@apply outline outline-2 outline-default-line -outline-offset-2': '',
       },
+      '.surface-glass': {
+        '@apply bg-opacity-75 backdrop-blur': '',
+      },
     })
 
     const properties = {
