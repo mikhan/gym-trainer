@@ -1,9 +1,14 @@
 <script lang="ts">
-  import { ariaControls } from '$lib/actions/aria-controls.action'
   import TrainingSerieEditor from '$lib/components/training/TrainingSerieEditor.svelte'
   import Fa from 'svelte-fa'
   import { sortitem, sortlist } from '$lib/actions/sortable.action'
-  import { faEllipsisV, faGripLines, faPlay, faPlus } from '@fortawesome/free-solid-svg-icons'
+  import {
+    faChevronDown,
+    faChevronUp,
+    faEllipsisV,
+    faGripLines,
+    faPlay,
+  } from '@fortawesome/free-solid-svg-icons'
   import { faTrashAlt } from '@fortawesome/free-regular-svg-icons'
   import UiMenu from '$lib/components/ui/ui-menu.svelte'
   import UiMenuitem from '$lib/components/ui/ui-menuitem.svelte'
@@ -15,23 +20,31 @@
   import { TrainerContext } from '../../../routes/trainer/TrainerContext.svelte'
   import LineChart, { type ChartData } from './LineChart.svelte'
   import UiCollapsibleText from '../ui/UiCollapsibleText.svelte'
+  import clsx from 'clsx'
+  import UiButton from '../ui/ui-button.svelte'
 
   type Props = {
     training: Types.Training
-    routine: Types.Routine
+    routineIndex: number
     expanded?: boolean
     chartData?: ChartData[]
   }
 
-  let { training, routine, expanded = false, chartData }: Props = $props()
+  let { training, routineIndex, expanded = $bindable(), chartData }: Props = $props()
+
   const muscleGroups = getMuscleGroups()
   const trainingViewportContext = TrainingViewportContext.get()
   let currentSerie$: Types.RoutineSerie | null = $state(null)
   let newSerie$: Types.RoutineSerie | undefined = $state.raw()
+  const routine = $derived(training.routines[routineIndex]!)
   const groupedSeries$ = $derived.by(() => groupByMuscle(routine.series))
   const trainerContext = TrainerContext.getContext()
+  // $inspect(routine)
+  // $inspect(groupedSeries$)
 
   function groupByMuscle(series: Types.RoutineSerie[]) {
+    console.groupCollapsed()
+    console.log(series)
     const groupedSeries: { group: MuscleGroup; series: Types.RoutineSerie[] }[] = []
 
     for (const serie of series) {
@@ -44,6 +57,8 @@
       groupedSerie.series.push(serie)
     }
 
+    console.log(groupedSeries)
+    console.groupEnd()
     return groupedSeries
   }
 
@@ -97,7 +112,7 @@
 
   function startRoutine(routineId: string) {
     const routineIndex = training.routines.findIndex((routine) => routine.id === routineId)
-    trainerContext.startTraining($state.snapshot(training), routineIndex)
+    trainerContext.startTraining(training, routineIndex)
     goto(`/trainer`)
   }
 </script>
@@ -110,21 +125,23 @@
 {/if}
 
 <article
-  class="group grid scroll-mt-layout-gap rounded-card border contain-paint color-neutral surface xl:grid-rows-[auto,1fr] xl:has-[[aria-expanded='true']]:grid-cols-[4fr,8fr]"
+  class={clsx(
+    'grid scroll-mt-layout-gap items-center rounded-card border contain-paint color-neutral surface xl:grid-cols-[4fr,8fr]',
+    expanded && 'xl:grid-flow-col xl:grid-rows-[auto,auto,1fr] xl:items-stretch',
+  )}
   use:tocTarget
   id={`routine-${routine.id}`}>
-  <header
-    class="sticky top-layout-viewport-top z-1 border-default-line bg-inherit p-4 ps-8 xl:group-has-[[aria-expanded='true']]:border-r">
+  <header class={clsx('sticky top-layout-viewport-top z-1 bg-inherit p-4 ps-8')}>
     <div class="flex items-center gap-2">
       <button
         type="button"
-        class="typescale-title grow text-left"
-        use:ariaControls={`routine-${routine.id}`}
-        aria-expanded={expanded}>{routine.name}</button>
+        class="-m-2 flex grow items-center gap-2 rounded-button p-2 text-left focusable-ring"
+        onclick={() => (expanded = !expanded)}>
+        <Fa icon={expanded ? faChevronUp : faChevronDown}></Fa>
+        <span class="typescale-title">{routine.name}</span>
+      </button>
       <UiIconbutton label="Iniciar entrenamiento" onclick={() => startRoutine(routine.id)}>
         <Fa icon={faPlay}></Fa></UiIconbutton>
-      <UiIconbutton label="Agregar serie" onclick={() => addSerie()}>
-        <Fa icon={faPlus}></Fa></UiIconbutton>
       <UiIconbutton label="Más acciones" id={`routine-${routine.id}-actions`}>
         <Fa icon={faEllipsisV}></Fa></UiIconbutton>
       <UiMenu target={`routine-${routine.id}-actions`}>
@@ -137,70 +154,86 @@
       </UiMenu>
     </div>
   </header>
-  <div
-    class="col-start-1 row-start-2 flex flex-col gap-2 border-default-line px-4 group-has-[[aria-expanded='false']]:hidden xl:border-r">
+  <div class="px-4 max-lg:last:pb-4">
     {#if chartData}
       <LineChart data={chartData}></LineChart>
     {/if}
-    {#if routine.description}
-      <p><UiCollapsibleText maxLines={4}>{routine.description}</UiCollapsibleText></p>
-    {/if}
   </div>
-  <ul
-    class="row-span-2 my-4 group-has-[[aria-expanded='false']]:hidden"
-    use:sortlist={training.id}
-    onsortend={(event) => updateSeries(getFromRegistry(event.detail.elements))}>
-    {#each groupedSeries$ as groupedSerie}
-      <div class="px-8 py-4 text-sm font-bold">{groupedSerie.group.name}</div>
+  {#if expanded}
+    <div class={clsx('space-y-2 p-4', !expanded && 'hidden')}>
+      <!-- {#if routine.description} -->
+      <p>
+        <UiCollapsibleText maxLines={2}
+          >{'Laborum excepteur dolore do proident ullamco excepteur adipisicing dolor anim culpa eu nostrud deserunt. Aliquip nostrud ullamco eu ex et mollit occaecat commodo quis qui ea tempor adipisicing occaecat. Do anim nulla anim amet Lorem occaecat minim sit. Sit esse est amet amet pariatur aliqua nostrud aliquip eiusmod labore adipisicing. Labore ea elit Lorem consequat do aliquip occaecat sit. Incididunt Lorem excepteur qui minim culpa ullamco quis nostrud ut.'}</UiCollapsibleText>
+      </p>
+      <!-- {/if} -->
+    </div>
+    <div
+      class={clsx(
+        'border-default-line xl:row-span-3',
+        expanded && 'xl:border-l',
+        !expanded && 'hidden',
+      )}>
+      <div class="p-4">
+        <UiButton class="color-neutral-lighter max-md:mx-auto" onclick={() => addSerie()}
+          >Agregar serie</UiButton>
+      </div>
+      <ul
+        use:sortlist={training.id}
+        onsortend={(event) => updateSeries(getFromRegistry(event.detail.elements))}>
+        {#each groupedSeries$ as groupedSerie}
+          <li role="presentation" class="px-8 py-4 text-sm font-bold">{groupedSerie.group.name}</li>
 
-      {#each groupedSerie.series as serie (serie.id)}
-        <li
-          class="relative grid h-16 grid-cols-[auto,1fr,auto] items-center gap-4 px-4 transition-colors hover:bg-default-hover"
-          use:sortitem={training.id}
-          data-routine-id={routine.id}
-          data-serie-id={serie.id}>
-          <button
-            class="grid h-full w-4 shrink-0 cursor-grab place-content-center"
-            type="button"
-            draggable={true}
-            tabindex="-1"
-            title="Drag to sort"
-            aria-label="Drag to sort">
-            <Fa icon={faGripLines}></Fa>
-          </button>
-          <button
-            class="group flex h-full w-full items-center gap-2 overflow-hidden text-left outline-none"
-            type="button"
-            onclick={() => (currentSerie$ = serie)}>
-            <div class="flex-1 overflow-hidden">
-              <div class="truncate">{serie.name}</div>
-              <div class="typescale-label truncate">{getStepsDescription(serie)}</div>
-            </div>
-            <div
-              class="absolute inset-0 -z-1 group-focus-visible:outline group-focus-visible:outline-2 group-focus-visible:-outline-offset-2 group-focus-visible:outline-ring">
-            </div>
-          </button>
-          <UiIconbutton class="shrink-0" id={`serie-${serie.id}-actions`} label="More actions">
-            <Fa icon={faEllipsisV}></Fa>
-          </UiIconbutton>
-        </li>
-        <UiMenu target={`serie-${serie.id}-actions`}>
-          <UiMenuitem onclick={() => deleteSerie(serie.id)}>
-            {#snippet icon()}
-              <Fa icon={faTrashAlt}></Fa>
-            {/snippet}
-            Eliminar Serie</UiMenuitem>
-        </UiMenu>
-        <TrainingSerieEditor
-          {serie}
-          open={serie.id === currentSerie$?.id}
-          onclose={(serie) => {
-            if (serie) updateSerie(serie)
-            currentSerie$ = null
-          }}></TrainingSerieEditor>
-      {/each}
-    {:else}
-      <div class="grid place-content-center h-16 px-4 opacity-50">Empty list</div>
-    {/each}
-  </ul>
+          {#each groupedSerie.series as serie (serie.id)}
+            <li
+              class="relative grid h-16 grid-cols-[auto,1fr,auto] items-center gap-4 px-4 transition-colors hover:bg-default-hover"
+              use:sortitem={training.id}
+              data-routine-id={routine.id}
+              data-serie-id={serie.id}>
+              <button
+                class="grid h-full w-4 shrink-0 cursor-grab place-content-center"
+                type="button"
+                draggable={true}
+                tabindex="-1"
+                title="Drag to sort"
+                aria-label="Drag to sort">
+                <Fa icon={faGripLines}></Fa>
+              </button>
+              <button
+                class="group flex h-full w-full items-center gap-2 overflow-hidden text-left outline-none"
+                type="button"
+                onclick={() => (currentSerie$ = serie)}>
+                <div class="flex-1 overflow-hidden">
+                  <div class="truncate">{serie.name}</div>
+                  <div class="typescale-label truncate">{getStepsDescription(serie)}</div>
+                </div>
+                <div
+                  class="absolute inset-0 -z-1 group-focus-visible:outline group-focus-visible:outline-2 group-focus-visible:-outline-offset-2 group-focus-visible:outline-ring">
+                </div>
+              </button>
+              <UiIconbutton class="shrink-0" id={`serie-${serie.id}-actions`} label="More actions">
+                <Fa icon={faEllipsisV}></Fa>
+              </UiIconbutton>
+            </li>
+            <UiMenu target={`serie-${serie.id}-actions`}>
+              <UiMenuitem onclick={() => deleteSerie(serie.id)}>
+                {#snippet icon()}
+                  <Fa icon={faTrashAlt}></Fa>
+                {/snippet}
+                Eliminar Serie</UiMenuitem>
+            </UiMenu>
+            <TrainingSerieEditor
+              {serie}
+              open={serie.id === currentSerie$?.id}
+              onclose={(serie) => {
+                if (serie) updateSerie(serie)
+                currentSerie$ = null
+              }}></TrainingSerieEditor>
+          {/each}
+        {:else}
+          <div class="grid place-content-center h-16 px-4 opacity-50">Empty list</div>
+        {/each}
+      </ul>
+    </div>
+  {/if}
 </article>

@@ -1,106 +1,166 @@
 <script lang="ts">
-  import { TrainerContext } from './trainer/TrainerContext.svelte'
   import Fa from 'svelte-fa'
-  import { faAnglesRight, faStop } from '@fortawesome/free-solid-svg-icons'
+  import { faArrowRotateBack, faPlay, faStop } from '@fortawesome/free-solid-svg-icons'
   import UiIconbutton from '$lib/components/ui/ui-iconbutton.svelte'
-  import { onMount } from 'svelte'
+  import { onDestroy } from 'svelte'
+  import { wakeLock } from '$lib/stores/wakelock.store'
 
-  const trainerContext = TrainerContext.getContext()
+  type Time = { start: number; duration: number }
 
-  interface WakeLockSentinel extends EventTarget {
-    release(): Promise<void>
-  }
+  let timeStart: number | null = $state(null)
+  let timeDuration = $state(0)
+  let currentTime: Time | null = null
 
-  let wakeLock: null | WakeLockSentinel = null
-
-  function handleVisibilityChange() {
-    if (wakeLock !== null && document.visibilityState === 'visible') {
-      requestWakeLock()
-    }
-  }
-
-  async function requestWakeLock() {
-    if (!('wakeLock' in navigator)) return
-
-    wakeLock = await navigator.wakeLock.request('screen')
-
-    wakeLock.addEventListener('release', () => (wakeLock = null))
-    document.addEventListener('visibilitychange', handleVisibilityChange)
-  }
-
-  async function releaseWakeLock() {
-    if (!wakeLock) return
-    await wakeLock.release()
-    wakeLock = null
-    document.removeEventListener('visibilitychange', handleVisibilityChange)
-  }
-
-  onMount(() => {
-    requestWakeLock()
-
-    return () => releaseWakeLock()
+  const value = $state({
+    hours: '',
+    minutes: '',
+    seconds: '',
+    milliseconds: '',
   })
 
-  let timeStart = $state(0)
-  let timeCurrent = $state(0)
+  const history: Time[] = $state([])
+
+  $effect(() => {
+    update(timeDuration)
+  })
+
+  function update(timestamp: number) {
+    const duration = Math.floor(timestamp / 1000)
+
+    value.milliseconds = ((timestamp % 1000) / 10).toFixed(0).padStart(2, '0')
+    value.seconds = String(~~duration % 60).padStart(2, '0')
+    if (duration >= 60) value.minutes = `${~~(duration / 60)}:`
+  }
 
   function calculate() {
-    timeCurrent = Date.now() - timeStart
+    if (timeStart === null) return
+
+    timeDuration = performance.now() - timeStart
 
     requestAnimationFrame(calculate)
   }
 
   function start() {
-    timeStart = Date.now()
-    calculate()
+    value.hours = ''
+    value.minutes = ''
+    value.seconds = ''
+    value.milliseconds = ''
+    timeStart = performance.now()
+    wakeLock.request()
+    requestAnimationFrame(calculate)
   }
 
-  const pad = (number: number, length = 1) => String(number).padStart(length, '0')
-
-  function getTime(timestamp: number) {
-    const duration = Math.floor(timestamp / 1000)
-    const ms = Math.floor((timestamp % 1000) / 10)
-
-    const s = ~~duration % 60
-    if (duration < 60) return [pad(s, 2), pad(ms, 2)]
-
-    const m = ~~((duration % 3600) / 60)
-    if (duration < 3600) return [pad(m), pad(s, 2), pad(ms, 2)]
-
-    const h = ~~(duration / 3600)
-    return [pad(h), pad(m, 2), pad(s, 2), pad(ms, 2)]
+  function stop() {
+    timeStart = null
+    wakeLock.release()
   }
+
+  let isLongPress = false
+  let timeout: number | null = $state(null)
+
+  function onClick() {
+    if (isLongPress) return
+    start()
+  }
+
+  function onMousedown() {
+    isLongPress = false
+    if (timeStart === null) return
+    if (timeout) clearTimeout(timeout)
+
+    timeout = window.setTimeout(() => {
+      timeout = null
+      isLongPress = true
+      stop()
+    }, 3000)
+
+    document.addEventListener('mouseup', onMouseUp, { once: true })
+  }
+
+  function onMouseUp() {
+    if (timeout === null) return
+    clearTimeout(timeout)
+    timeout = null
+  }
+
+  onDestroy(() => {
+    wakeLock.release()
+    if (timeout !== null) clearTimeout(timeout)
+  })
 </script>
 
-<div class="flex flex-none flex-wrap items-baseline justify-end text-right font-mono">
-  {#each getTime(timeCurrent) as part}
-    <span>{part}</span>
-  {/each}
-</div>
-<div class="flex flex-col items-center gap-2">
-  <UiIconbutton class="size-12 color-primary" label="Siguiente ejercicio" onclick={start}>
-    <Fa icon={faAnglesRight}></Fa>
-  </UiIconbutton>
+<div class="flex items-center gap-2">
+  <div
+    class="grid flex-none items-baseline text-right font-mono"
+    class:invisible={timeStart === null}>
+    <span>{value.minutes}</span>
+    <span>{value.seconds}</span>
+    <span>{value.milliseconds}</span>
+  </div>
   <UiIconbutton
-    class="size-9 color-neutral"
-    label="Terminar entrenamiento"
-    onclick={() => trainerContext.terminateTraining()}>
-    <Fa icon={faStop}></Fa>
+    class="relative color-primary"
+    size="lg"
+    label="Siguiente ejercicio"
+    onclick={onClick}
+    onmousedown={onMousedown}>
+    <Fa size="lg" icon={timeStart === null ? faPlay : timeout === null ? faArrowRotateBack : faStop}
+    ></Fa>
+    {#if timeout !== null}
+      <svg viewBox="0 0 48 48" class="circular-progress pointer-events-none absolute inset-0">
+        <circle class="fg"></circle>
+      </svg>
+    {/if}
   </UiIconbutton>
 </div>
 
 <style lang="postcss">
-  span:nth-last-child(1) {
-    @apply w-full text-xs leading-3;
-  }
-  span:nth-last-child(2) {
-    @apply text-2xl leading-6;
+  span:nth-child(1) {
+    @apply h-4 min-w-[4ch] text-xl leading-4;
   }
 
-  span:nth-last-child(3),
-  span:nth-last-child(4) {
-    &::after {
-      content: ':';
+  span:nth-child(2) {
+    @apply h-6 min-w-[2ch] text-4xl font-bold leading-6;
+  }
+
+  span:nth-child(3) {
+    @apply col-span-3 h-4 text-xs leading-4;
+  }
+
+  .circular-progress {
+    --size: 48px;
+    --half-size: calc(var(--size) / 2);
+    --stroke-width: 4px;
+    --radius: calc((var(--size) - var(--stroke-width)) / 2);
+    --circumference: calc(var(--radius) * pi * 2);
+    --dash: calc((var(--progress) * var(--circumference)) / 100);
+    animation: progress-animation 3000ms linear 0s 1 forwards;
+  }
+
+  .circular-progress circle {
+    cx: var(--half-size);
+    cy: var(--half-size);
+    r: var(--radius);
+    stroke-width: var(--stroke-width);
+    fill: none;
+    stroke-linecap: round;
+    transform: rotate(-90deg);
+    transform-origin: center;
+    stroke-dasharray: var(--dash) calc(var(--circumference) - var(--dash));
+    stroke: currentColor;
+  }
+
+  @property --progress {
+    syntax: '<number>';
+    inherits: false;
+    initial-value: 0;
+  }
+
+  @keyframes progress-animation {
+    from {
+      --progress: 0;
+    }
+    to {
+      --progress: 100;
     }
   }
 </style>

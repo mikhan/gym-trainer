@@ -155,7 +155,7 @@
 
   {#snippet actions()}
     <UiButton onclick={() => onclose?.()}>Cancelar</UiButton>
-    <UiButton class="color-primary" onclick={() => onclose?.($state.snapshot(serie$))}
+    <UiButton class="color-primary" onclick={() => onclose?.(structuredClone(serie$))}
       >Listo</UiButton>
   {/snippet}
 </UiDialog>

@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { viewTransitionName } from '$lib/actions/transition.action'
   import type { Snippet } from 'svelte'
   import { onMount } from 'svelte'
   import AppDatabase from '$lib/components/app/app-database.svelte'
@@ -11,12 +12,20 @@
   import AppViewTransition from '$lib/components/app/AppViewTransition.svelte'
   import TrainerPlayer from './TrainerPlayer.svelte'
   import { TrainerContext } from './trainer/TrainerContext.svelte'
+  import { wakeLock, type WakeLockStatus } from '$lib/stores/wakelock.store'
 
   type Props = { children: Snippet; data: LayoutData }
 
   let { children, data }: Props = $props()
 
-  TrainerContext.setContext()
+  const trainerContext = TrainerContext.setContext()
+
+  const colors: Record<WakeLockStatus, string> = {
+    pending: 'gray',
+    locked: 'green',
+    denied: 'red',
+    released: 'yellow',
+  }
 
   onMount(() => {
     const {
@@ -34,9 +43,19 @@
 <AppPwa />
 <AppViewTransition />
 <AppNavigatingIndicator />
-<AppShell>
-  <AppDatabase client={data.supabase}>
+<AppDatabase client={data.supabase}>
+  <AppShell>
     {@render children()}
-  </AppDatabase>
-  <TrainerPlayer></TrainerPlayer>
-</AppShell>
+
+    {#if trainerContext.state.status === 'running'}
+      <TrainerPlayer state={trainerContext.state}></TrainerPlayer>
+    {/if}
+  </AppShell>
+</AppDatabase>
+
+<div
+  class="z-3 fixed left-0 top-0 rounded-br-button bg-default px-2 text-xs font-bold text-black"
+  use:viewTransitionName={'wakelock-status'}
+  style:--color-default={colors[$wakeLock]}>
+  {$wakeLock}
+</div>

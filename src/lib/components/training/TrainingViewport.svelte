@@ -7,7 +7,7 @@
   import Fa from 'svelte-fa'
   import { TrainingViewportContext } from './TrainingViewportContext.svelte'
   import { faList, faTableCells } from '@fortawesome/free-solid-svg-icons'
-  import { LocalStorageState } from '$lib/states/persisted-state.svelte'
+  import { getLocalState } from '$lib/states/persisted-state.svelte'
   import { startViewTransition } from '$lib/actions/transition.action'
   import AppEditTopbar from '../app/AppEditTopbar.svelte'
   import AppMetadata from '../app/AppMetadata.svelte'
@@ -19,13 +19,12 @@
 
   const { training }: Props = $props()
   const trainingViewportContext = TrainingViewportContext.create({ training })
-  const layout = new LocalStorageState<LayoutType>('layout', 'grid')
+  const layout = getLocalState('layout', 'grid' as LayoutType)
   const layoutTypeIcons = { list: faList, grid: faTableCells }
 
   function toggleLayout() {
     startViewTransition({
       update: () => (layout.value = layout.value === 'list' ? 'grid' : 'list'),
-      types: ['navigation'],
     })
   }
 </script>

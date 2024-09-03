@@ -12,20 +12,20 @@
   const { training, chartData }: Props = $props()
 
   const hash = $page.url.hash.replace(/^#routine-/, '')
-  const expandedStatus = $derived(
-    Object.fromEntries(training.routines.map(({ id }) => [id, hash ? id === hash : true])),
+  let expandedStatus: Record<string, boolean> = $state(
+    Object.fromEntries(training.routines.map(({ id }) => [id, hash ? id === hash : false])),
   )
 </script>
 
 <div
   class="container mx-auto grid grid-cols-1 gap-layout-gap px-layout-gap lg:grid-cols-[256px,1fr]">
   <TrainingListNavigation {training}></TrainingListNavigation>
-  <div class="space-y-layout-gap py-layout-gap">
-    {#each training.routines as routine (routine.id)}
+  <div class="flex flex-col gap-layout-gap py-layout-gap">
+    {#each training.routines as routine, routineIndex (routine.id)}
       <TrainingListItem
         {training}
-        {routine}
-        expanded={expandedStatus[routine.id]}
+        {routineIndex}
+        bind:expanded={expandedStatus[routine.id]}
         chartData={chartData[routine.id]}></TrainingListItem>
     {/each}
   </div>

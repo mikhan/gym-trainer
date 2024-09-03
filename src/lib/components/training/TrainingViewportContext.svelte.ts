@@ -74,7 +74,7 @@ export class TrainingViewportContext {
   }
 
   deleteRoutine(routineId: string) {
-    const training = { ...this.training$ }
+    const training = structuredClone(this.training$)
     const routineIndex = training.routines.findIndex(({ id }) => id === routineId)
     if (routineIndex < 0) throw new TypeError(`Routine id '${routineId}' not found in training.`)
     training.routines.splice(routineIndex, 1)

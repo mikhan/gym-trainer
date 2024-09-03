@@ -149,6 +149,8 @@
         height: 100dvh;
         max-width: 100dvw;
         transform: translatex(100%);
+        top: 0;
+        bottom: 0;
 
         &[open] {
           transform: translateX(0);

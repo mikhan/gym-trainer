@@ -1,6 +1,6 @@
 import { set } from 'es-toolkit/compat'
 import { getContext, setContext } from 'svelte'
-import { LocalStorageState } from '$lib/states/persisted-state.svelte'
+import { getLocalState } from '$lib/states/persisted-state.svelte'
 
 export type TrainerContextStateUnset = {
   status: 'unset'
@@ -43,7 +43,7 @@ export class TrainerContext {
     return setContext(TrainerContext, new TrainerContext())
   }
 
-  #state = new LocalStorageState<TrainerContextState>('trainer:state', {
+  #state = getLocalState<TrainerContextState>('TrainerContext.state', {
     status: 'unset',
     training: null,
     currentRoutineIndex: null,

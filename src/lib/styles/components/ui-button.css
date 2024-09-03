@@ -1,0 +1,35 @@
+@layer components {
+  .ui-button {
+    --component-height: theme('space.10');
+    height: var(--component-height);
+    @apply grid flex-none place-content-center rounded-full surface;
+    @apply focusable-ring;
+
+    @apply enabled:surface-hoverable enabled:surface-activable;
+    @apply disabled:cursor-not-allowed disabled:opacity-50;
+
+    &:not(.ui-button-circle) {
+      @apply truncate px-6 font-bold;
+    }
+  }
+
+  .ui-button-xs {
+    --component-height: theme('space.6');
+  }
+
+  .ui-button-sm {
+    --component-height: theme('space.8');
+  }
+
+  .ui-button-lg {
+    --component-height: theme('space.12');
+  }
+
+  .ui-button-outlined {
+    @apply surface-outlined;
+  }
+
+  .ui-button-circle {
+    width: var(--component-height);
+  }
+}

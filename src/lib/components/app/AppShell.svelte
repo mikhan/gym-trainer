@@ -1,47 +1,17 @@
 <script lang="ts">
-  import { transitionName } from '$lib/actions/transition.action'
+  import { viewTransitionName } from '$lib/actions/transition.action'
   import { type Snippet } from 'svelte'
-  import { AppShellContext } from '$lib/components/app/app-shell-context.svelte'
+  import { AppShellContext } from '$lib/components/app/AppShellContext.svelte'
   import { fly } from 'svelte/transition'
+  import { createStyler } from '$lib/actions/styler.action'
 
   type Props = { children: Snippet }
 
   let { children }: Props = $props()
 
   const appShellContext = AppShellContext.create()
-  let containerElement = $state() as HTMLElement
-  let containerStyles = $state({}) as Record<string, string>
 
-  $effect(() => {
-    for (const [name, value] of Object.entries(containerStyles)) {
-      containerElement.style.setProperty(name, value)
-    }
-  })
-
-  let resizeObserver: ResizeObserver
-  const elementNameMap = new Map<Element, string>()
-  function setContainerStyle(element: HTMLElement, name: string) {
-    const style = getComputedStyle(element)
-    if (style.getPropertyValue('position') !== 'sticky') return
-
-    resizeObserver ??= new ResizeObserver((entries) => {
-      for (const entry of entries) {
-        const name = elementNameMap.get(entry.target)
-        if (!name) continue
-        containerStyles[name] = `${(entry.target as HTMLElement).offsetHeight}px`
-      }
-    })
-
-    elementNameMap.set(element, name)
-    resizeObserver.observe(element, { box: 'border-box' })
-
-    return {
-      destroy() {
-        elementNameMap.delete(element)
-        resizeObserver.unobserve(element)
-      },
-    }
-  }
+  const { getStyle, setStyle } = createStyler()
 
   // function autohideHeader(element: HTMLElement) {
   //   const container = element.parentElement!
@@ -69,20 +39,43 @@
   // }
 </script>
 
-<div class="app-shell" bind:this={containerElement}>
+<div
+  class="app-shell"
+  use:setStyle
+  use:getStyle={(e) => ({
+    '--layout-width': `${e.clientWidth}px`,
+    '--layout-height': `${e.clientHeight}px`,
+  })}>
   {#if appShellContext.header}
     {#key appShellContext.headerLevel}
       <header
         class="app-header"
         transition:fly={{ duration: 200, y: '-100%' }}
-        use:setContainerStyle={'--layout-header-height'}
-        use:transitionName={{ type: 'navigation', name: 'app-header' }}>
+        use:viewTransitionName={'app-header'}
+        use:getStyle={(e) => ({
+          '--layout-header-width': 'calc(var(--layout-width) - var(--layout-aside-width))',
+          '--layout-header-height': `${e.offsetHeight}px`,
+        })}>
         {@render appShellContext.header()}
       </header>
     {/key}
   {/if}
 
-  <main class="app-viewport" use:transitionName={{ type: 'navigation', name: 'app-viewport' }}>
+  {#if appShellContext.aside}
+    {#key appShellContext.asideLevel}
+      <aside
+        class="app-aside"
+        use:viewTransitionName={'app-aside'}
+        use:getStyle={(e) => ({
+          '--layout-aside-width': `${e.offsetWidth}px`,
+          '--layout-aside-height': 'var(--layout-height)',
+        })}>
+        {@render appShellContext.aside()}
+      </aside>
+    {/key}
+  {/if}
+
+  <main class="app-viewport" use:viewTransitionName={'app-viewport'}>
     {@render children()}
   </main>
 
@@ -91,8 +84,11 @@
       <footer
         class="app-footer"
         transition:fly={{ duration: 200, y: '100%' }}
-        use:setContainerStyle={'--layout-footer-height'}
-        use:transitionName={{ type: 'navigation', name: 'app-footer' }}>
+        use:viewTransitionName={'app-footer'}
+        use:getStyle={(e) => ({
+          '--layout-footer-width': 'calc(var(--layout-width) - var(--layout-aside-width))',
+          '--layout-footer-height': `${e.offsetHeight}px`,
+        })}>
         {@render appShellContext.footer()}
       </footer>
     {/key}
@@ -108,6 +104,7 @@
 
     .app-shell {
       --layout-gap: var(--layout-gap-default);
+      --layout-height: 0px;
       --layout-header-height: 0px;
       --layout-header-top: 0px;
       --layout-footer-height: 0px;
@@ -129,36 +126,69 @@
       @apply grid size-full select-none;
       @apply scroll-pt-layout-header-height overflow-y-scroll scroll-smooth scrollbar scrollbar-track-black scrollbar-stable;
       grid-template:
-        'head' auto
-        'view' 1fr
-        'foot' auto
-        / 100%;
+        'aside head' auto
+        'aside view' 1fr
+        'aside foot' auto
+        / auto 1fr;
     }
 
     .app-header {
       grid-area: head;
-      @apply top-layout-header-top sticky z-2;
+      @apply sticky left-layout-aside-width top-layout-header-top z-1 w-layout-header-width;
+    }
+
+    .app-aside {
+      grid-area: aside;
+      @apply sticky left-0 top-0 z-2 h-layout-height bg-default;
     }
 
     .app-viewport {
+      @apply isolate;
       grid-area: view;
     }
 
     .app-footer {
       grid-area: foot;
-      @apply sticky bottom-0 z-2;
+      @apply sticky bottom-0 left-layout-aside-width z-1 w-layout-footer-width;
+    }
+
+    ::view-transition-group(app-viewport) {
+      overflow: clip;
     }
 
     ::view-transition-old(app-viewport) {
       animation:
         90ms cubic-bezier(0.4, 0, 1, 1) both fade-out,
-        300ms cubic-bezier(0.4, 0, 0.2, 1) both slide-to-left;
+        theme('transitionDuration.medium') cubic-bezier(0.4, 0, 0.2, 1) both slide-to-left;
     }
 
     ::view-transition-new(app-viewport) {
       animation:
         210ms cubic-bezier(0, 0, 0.2, 1) 90ms both fade-in,
-        300ms cubic-bezier(0.4, 0, 0.2, 1) both slide-from-right;
+        theme('transitionDuration.medium') cubic-bezier(0.4, 0, 0.2, 1) both slide-from-right;
+    }
+
+    ::view-transition-group(app-header),
+    ::view-transition-group(app-footer) {
+      animation-duration: theme('transitionDuration.medium');
+      animation-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+      contain: paint;
+    }
+
+    ::view-transition-old(app-header),
+    ::view-transition-new(app-header),
+    ::view-transition-old(app-footer),
+    ::view-transition-new(app-footer) {
+      height: 100%;
+      object-fit: none;
+    }
+
+    ::view-transition-old(app-aside):only-child {
+      animation: theme('transitionDuration.medium') cubic-bezier(0.4, 0, 0.2, 1) both slide-out;
+    }
+
+    ::view-transition-new(app-aside):only-child {
+      animation: theme('transitionDuration.medium') cubic-bezier(0.4, 0, 0.2, 1) both slide-in;
     }
 
     @keyframes fade-in {
@@ -182,6 +212,18 @@
     @keyframes slide-to-left {
       to {
         transform: translateX(-60px);
+      }
+    }
+
+    @keyframes slide-in {
+      from {
+        transform: translateX(-100%);
+      }
+    }
+
+    @keyframes slide-out {
+      to {
+        transform: translateX(-100%);
       }
     }
   }

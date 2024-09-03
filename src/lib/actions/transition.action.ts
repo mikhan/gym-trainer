@@ -3,12 +3,15 @@ import { type Writable, writable } from 'svelte/store'
 
 const transitioning: Writable<Set<string>> = writable(new Set())
 
-type StartViewTransitionConfig = {
-  update: () => Promise<unknown> | unknown
-  types?: string[]
-}
+type StartViewTransitionUpdater = () => Promise<unknown> | unknown
+type StartViewTransitionConfig =
+  | StartViewTransitionUpdater
+  | { update: StartViewTransitionUpdater; types?: string[] }
 
-export async function startViewTransition({ update, types = [] }: StartViewTransitionConfig) {
+export async function startViewTransition(config: StartViewTransitionConfig) {
+  const update = typeof config === 'object' ? config.update : config
+  const types = (typeof config === 'object' && config.types) || ['root']
+
   if (!document.startViewTransition) {
     await update()
     return
@@ -28,12 +31,14 @@ export async function startViewTransition({ update, types = [] }: StartViewTrans
   transitioning.update((transitions) => transitions.difference(new Set(types)))
 }
 
-type TransitionNameParams = { type: string; name: string }
+type TransitionNameParams = string | { name: string; type: string }
 
-export const transitionName: Action<HTMLElement, TransitionNameParams> = (element, params) => {
+export const viewTransitionName: Action<HTMLElement, TransitionNameParams> = (element, params) => {
+  const { type, name } = typeof params === 'string' ? { type: 'root', name: params } : params
+
   const unsubscribe = transitioning.subscribe((transitioning) => {
-    if (transitioning.has(params.type)) {
-      element.style.setProperty('view-transition-name', params.name)
+    if (transitioning.has(type)) {
+      element.style.setProperty('view-transition-name', name)
     } else {
       element.style.removeProperty('view-transition-name')
     }

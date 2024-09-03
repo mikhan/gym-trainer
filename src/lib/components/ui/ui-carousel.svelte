@@ -134,7 +134,7 @@
 
 <style lang="postcss">
   :global {
-    ui-carousel {
+    :where(ui-carousel) {
       width: 100%;
       height: 100%;
       display: grid;

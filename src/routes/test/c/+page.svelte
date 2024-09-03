@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { transitionName } from '$lib/actions/transition.action'
+  import { viewTransitionName } from '$lib/actions/transition.action'
 </script>
 
 <div class="grid size-full">
@@ -10,7 +10,7 @@
   </p>
   <div
     class="m-16 mt-auto box-content flex size-40 flex-col gap-4 rounded-card border border-default-line p-8 shadow-over color-accent surface"
-    use:transitionName={{ type: 'navigation', name: 'card' }}>
+    use:viewTransitionName={'card'}>
     <div class="typescale-title">Página C</div>
     <ul class="list-disc">
       <li class="underline">

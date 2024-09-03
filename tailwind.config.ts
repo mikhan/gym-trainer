@@ -3,6 +3,7 @@ import { fontFamily } from 'tailwindcss/defaultTheme'
 import { developmentPlugin } from './src/tools/tailwind/plugins/development'
 import { focusablePlugin } from './src/tools/tailwind/plugins/focusable'
 import { gridPlugin } from './src/tools/tailwind/plugins/grid'
+import { hocusPlugin } from './src/tools/tailwind/plugins/hocus'
 import { pointerPlugin } from './src/tools/tailwind/plugins/pointer'
 import { scrollbarPlugin } from './src/tools/tailwind/plugins/scrollbar'
 import { surfacePlugin } from './src/tools/tailwind/plugins/surface'
@@ -35,6 +36,7 @@ const safelist = [
   'color-accent-lighter',
   'color-popover',
 ]
+
 export default {
   content: ['./src/**/*.{html,js,svelte,ts}'],
   darkMode: 'selector',
@@ -240,14 +242,27 @@ export default {
     zIndex: {
       1: '1',
       2: '2',
+      3: '3',
     },
     extend: {
       spacing: {
         'layout-padding': 'var(--layout-padding)',
         'layout-gap': 'var(--layout-gap)',
+
+        'layout-width': 'var(--layout-width)',
+        'layout-height': 'var(--layout-height)',
+
+        'layout-header-width': 'var(--layout-header-width)',
         'layout-header-height': 'var(--layout-header-height)',
         'layout-header-top': 'var(--layout-header-top)',
+
+        'layout-aside-width': 'var(--layout-aside-width)',
+        'layout-aside-height': 'var(--layout-aside-height)',
+
+        'layout-footer-width': 'var(--layout-footer-width)',
         'layout-footer-height': 'var(--layout-footer-height)',
+
+        'layout-viewport-width': 'var(--layout-viewport-width)',
         'layout-viewport-height': 'var(--layout-viewport-height)',
         'layout-viewport-top': 'var(--layout-viewport-top)',
       },
@@ -262,5 +277,6 @@ export default {
     surfacePlugin(),
     focusablePlugin(),
     developmentPlugin(),
+    hocusPlugin(),
   ],
 } satisfies Config

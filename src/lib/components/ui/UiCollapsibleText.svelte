@@ -45,11 +45,11 @@
   <span>{@render children()}</span>
 </div>
 {#if contentLines > maxLines}
-  <button onclick={() => (collapsed = !collapsed)}>
+  <button class="mt-2 block rounded-button focusable-ring" onclick={() => (collapsed = !collapsed)}>
     {#if toggler}
       {@render toggler({ collapsed })}
     {:else}
-      <div class="mt-2 flex items-center gap-1 text-sm font-bold text-primary-lighter">
+      <div class="flex items-center gap-1 text-sm font-bold text-primary-lighter">
         <span>{collapsed ? 'Mostrar más' : 'Mostrar menos'}</span>
         <Fa icon={collapsed ? faChevronDown : faChevronUp} size="xs"></Fa>
       </div>

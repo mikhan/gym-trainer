@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { transitionName, startViewTransition } from '$lib/actions/transition.action'
+  import { viewTransitionName, startViewTransition } from '$lib/actions/transition.action'
 
   let state = $state(1)
 
@@ -22,7 +22,7 @@
       {#if state === 1}
         <div
           class="rounded-card p-8 shadow-over color-primary surface"
-          use:transitionName={{ type: 'test-update', name: 'card' }}>
+          use:viewTransitionName={{ type: 'test-update', name: 'card' }}>
           A
         </div>
       {/if}
@@ -31,7 +31,7 @@
       {#if state === 2}
         <div
           class="rounded-card p-8 shadow-over color-secondary surface"
-          use:transitionName={{ type: 'test-update', name: 'card' }}>
+          use:viewTransitionName={{ type: 'test-update', name: 'card' }}>
           B
         </div>
       {/if}
@@ -40,7 +40,7 @@
       {#if state === 3}
         <div
           class="rounded-card p-8 shadow-over color-accent surface"
-          use:transitionName={{ type: 'test-update', name: 'card' }}>
+          use:viewTransitionName={{ type: 'test-update', name: 'card' }}>
           C
         </div>
       {/if}
@@ -50,21 +50,21 @@
     {#if state === 1}
       <div
         class="rounded-card p-8 shadow-over color-primary surface"
-        use:transitionName={{ type: 'test-update', name: 'card2' }}>
+        use:viewTransitionName={{ type: 'test-update', name: 'card2' }}>
         A
       </div>
     {/if}
     {#if state === 2}
       <div
         class="rounded-card p-8 shadow-over color-secondary surface"
-        use:transitionName={{ type: 'test-update', name: 'card2' }}>
+        use:viewTransitionName={{ type: 'test-update', name: 'card2' }}>
         B
       </div>
     {/if}
     {#if state === 3}
       <div
         class="rounded-card p-8 shadow-over color-accent surface"
-        use:transitionName={{ type: 'test-update', name: 'card2' }}>
+        use:viewTransitionName={{ type: 'test-update', name: 'card2' }}>
         C
       </div>
     {/if}

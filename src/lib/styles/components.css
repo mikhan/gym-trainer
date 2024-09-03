@@ -1,55 +1,6 @@
+@import './components/ui-button.css';
+
 @layer components {
-  .variant-filled {
-    background-color: color-mix(in oklch, var(--color-default), var(--color-default-fg) 25%);
-    color: color-mix(in oklch, var(--color-default-fg), white 75%);
-    border-color: transparent;
-  }
-
-  .ui-button {
-    --component-height: theme('space.10');
-    height: var(--component-height);
-    @apply grid flex-none place-content-center rounded-full surface;
-    @apply focusable-ring;
-
-    &:not(:disabled) {
-      &:hover {
-        @apply transition;
-        background-color: var(--color-default-hover);
-      }
-
-      &:focus {
-        @apply transition;
-        background-color: var(--color-default-active);
-      }
-
-      &:active {
-        @apply transition;
-        transform: scale(0.95);
-      }
-    }
-
-    &:disabled {
-      opacity: 0.5;
-      cursor: not-allowed;
-    }
-
-    &:not(.ui-button-circle) {
-      @apply truncate px-6 font-bold;
-    }
-
-    &.ui-button-sm {
-      --component-height: theme('space.6');
-    }
-
-    &.ui-button-lg {
-      --component-height: theme('space.10');
-    }
-  }
-
-  .ui-button-circle {
-    width: var(--component-height);
-  }
-
   .ui-field {
     display: flex;
     flex-direction: column;
@@ -61,7 +12,7 @@
 
   .ui-input {
     @apply flex items-center gap-1 rounded-button px-2 py-1.5;
-    @apply border-2 border-default-line bg-default-under text-default-fg focusable-ring focusable-within-ring;
+    @apply surface-editable surface-outlined surface focusable-ring focusable-within-ring;
     @apply transition-colors;
     /* background-color: var(--color-default-under, theme('colors.neutral.under')); */
     /* display: inline-block;
@@ -130,7 +81,7 @@
   }
 
   .ui-toolbar {
-    @apply flex items-center gap-2;
+    @apply flex min-h-10 flex-wrap items-center gap-2;
   }
 
   .ui-checkbox {

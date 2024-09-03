@@ -2,7 +2,7 @@ import { writeFile } from 'node:fs/promises'
 import { join } from 'node:path'
 import type { Actions, PageServerLoad } from './$types'
 
-const regexp = /^ *(?<name>--[a-z0-9-]+) *: *(?<value>[^;]+);/gim
+const regexp = /^\s*(?<name>--[a-z0-9-]+)\s*:\s*(?<value>[^;]+);/gim
 
 const modules = import.meta.glob<{ default: string }>('$lib/styles/themes/*.css', { query: '?raw' })
 const themes = Object.entries(modules).map(([path, module]) => ({
@@ -25,7 +25,13 @@ export const load = (async ({ url }) => {
     ]),
   ) as Record<string, string>
 
-  return { theme: { name, tokens } }
+  return {
+    theme: {
+      name,
+      tokens,
+      // tokens: { '--color-canvas': tokens['--color-canvas'] } as Record<string, string>,
+    },
+  }
 }) satisfies PageServerLoad
 
 export const actions = {

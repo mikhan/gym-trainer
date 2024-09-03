@@ -52,12 +52,12 @@
       'flex size-full flex-col overflow-y-auto rounded-card shadow transition-colors scrollbar-thin surface',
       isCurrent ? 'color-secondary-darker' : 'color-neutral',
     )}>
-    <header class="sticky top-0 z-1 mb-6 flex items-start bg-inherit p-6 pb-4">
-      <h1 class="typescale-headline grow">{serie.name}</h1>
+    <header class="sticky top-0 z-1 mb-6 flex items-start gap-4 bg-inherit p-6 pb-4">
       <div class="flex items-center gap-1">
         <span class="text-6xl font-light leading-10">{serieIndex + 1}</span>
         <span class="text-lg leading-5 opacity-75">DE<br />{total}</span>
       </div>
+      <h1 class="typescale-headline grow">{serie.name}</h1>
       <div
         class="pointer-events-none absolute -bottom-6 left-0 h-6 w-full bg-inherit"
         style="mask-image: linear-gradient(to bottom, black, transparent)">
@@ -80,8 +80,17 @@
       style="ask-image: linear-gradient(to right, transparent, black 2rem, black calc(100% - 2rem), transparent);">
       {#each serie.steps as step, stepIndex}
         <li class="flex shrink-0 grow-0 basis-auto snap-start flex-col items-center gap-2">
-          <div>{step.value} {step.type === 'repetitions' ? 'reps' : ''}</div>
-          <label class="ui-input w-full flex-col rounded-card p-1 color-neutral-darkest">
+          <div class="text-center">
+            {#if step.type === 'failure'}
+              <div class="typescale-label opacity-75">Al fallo</div>
+            {/if}
+            <div>{step.value} reps</div>
+          </div>
+          <label
+            class={clsx(
+              'ui-input w-full flex-col rounded-card p-1',
+              completed[stepIndex] && 'color-neutral-darkest',
+            )}>
             <span class="typescale-label opacity-75">Peso</span>
             <input
               class="w-[5ch] text-center text-2xl"
@@ -98,7 +107,10 @@
             </select>
           </label>
           <button
-            class="flex w-full place-content-center items-center justify-between rounded-full border-2 p-1 transition-colors color-neutral-darkest surface"
+            class={clsx(
+              'surface-editable flex w-full place-content-center items-center justify-between rounded-full border-2 p-1 transition-colors surface',
+              completed[stepIndex] && 'color-neutral-darkest',
+            )}
             onclick={() => {
               completed[stepIndex] = !completed[stepIndex]
             }}>

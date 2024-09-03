@@ -3,10 +3,11 @@
 
   type Props = {
     class?: string
-    showFocusAndSelection: boolean
+    showFocus: boolean
+    showSelection: boolean
   }
 
-  const { class: className, showFocusAndSelection }: Props = $props()
+  const { class: className, showFocus, showSelection }: Props = $props()
 </script>
 
 <div
@@ -17,7 +18,7 @@
   <div class="space-y-2 p-4">
     <p>
       <b>The quick brown fox</b> jumps over the
-      <span class={clsx(showFocusAndSelection && 'bg-selection text-selection-fg')}>lazy dog</span>.
+      <span class={clsx(showSelection && 'bg-selection text-selection-fg')}>lazy dog</span>.
     </p>
     <p>
       <small><b>Sphinx of black</b> quartz, judge my vow</small>
@@ -33,7 +34,7 @@
     <button
       class={clsx(
         'focusable grow rounded-button border border-default-line bg-default-active p-2',
-        showFocusAndSelection && 'outline outline-2 -outline-offset-2 outline-ring',
+        showFocus && 'outline outline-2 -outline-offset-2 outline-ring',
       )}
       type="button">Button</button>
   </div>

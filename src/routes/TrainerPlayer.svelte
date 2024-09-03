@@ -1,38 +1,28 @@
 <script lang="ts">
-  import { TrainerContext } from './trainer/TrainerContext.svelte'
-  import AppFooter from '$lib/components/app/app-footer.svelte'
+  import { type TrainerContextStateRunning } from './trainer/TrainerContext.svelte'
   import TrainerTimer from './TrainerTimer.svelte'
+  import AppShellSection from '$lib/components/app/AppShellSection.svelte'
+  import AppShellFooter from '$lib/components/app/AppShellFooter.svelte'
 
-  const trainerContext = TrainerContext.getContext()
+  type Props = { state: TrainerContextStateRunning }
+  const { state }: Props = $props()
 </script>
 
-{#if trainerContext.state.status !== 'unset'}
-  <AppFooter>
-    <div class="flex w-full items-center color-neutral-darkest surface">
-      <div class="container mx-auto flex items-center gap-2 px-layout-gap py-2">
-        {#if trainerContext.state.status === 'running'}
-          <a
-            class="-ms-2 mr-auto block overflow-hidden rounded-button p-2 focusable-ring hover:bg-default-hover"
-            href="/trainer">
-            <div class="typescale-label truncate">
-              {trainerContext.state.training.name} / {trainerContext.state.currentRoutine.name}
-            </div>
-            <div class="truncate font-bold md:typescale-title">
-              {trainerContext.state.currentSerie.name}
-            </div>
-          </a>
-          <TrainerTimer></TrainerTimer>
-        {:else if trainerContext.state.status === 'completed'}
-          <a
-            class="-ms-2 mr-auto block overflow-hidden rounded-button p-2 focusable-ring hover:bg-default-hover"
-            href="/trainer">
-            <div class="typescale-label truncate">Entrenamiento completado</div>
-            <div class="truncate font-bold md:typescale-title">
-              {trainerContext.state.training.name}
-            </div>
-          </a>
-        {/if}
-      </div>
-    </div>
-  </AppFooter>
-{/if}
+<AppShellSection name="footer">
+  <AppShellFooter class="color-neutral-darkest">
+    {#snippet start()}
+      <a
+        class="-ml-2 grid h-12 place-content-center rounded-button px-2 focusable-ring hover:bg-default-hover md:-ml-4 md:px-4"
+        href="/trainer">
+        <div
+          class="line-clamp-2 text-balance font-bold leading-4 md:typescale-title md:line-clamp-1">
+          {state.currentSerie.name}
+        </div>
+      </a>
+    {/snippet}
+
+    {#snippet end()}
+      <TrainerTimer></TrainerTimer>
+    {/snippet}
+  </AppShellFooter>
+</AppShellSection>

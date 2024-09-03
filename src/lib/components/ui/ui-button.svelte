@@ -8,19 +8,31 @@
   type Props = {
     children?: Snippet
     is?: 'button' | 'a'
-    variant?: keyof typeof variants
+    size?: keyof typeof sizeClasses
+    variant?: keyof typeof variantClasses
   } & (IsButton | IsLink)
 
-  let { children, is = 'button', variant, class: className, ...props }: Props = $props()
+  let { children, is = 'button', variant, size, class: className, ...props }: Props = $props()
 
-  const variants = {
-    primary: 'color-primary',
+  const sizeClasses = {
+    xs: 'ui-button-xs',
+    sm: 'ui-button-sm',
+    lg: 'ui-button-lg',
+  }
+
+  const variantClasses = {
+    outlined: 'ui-button-outlined',
   }
 </script>
 
 <svelte:element
   this={is}
-  class={clsx('ui-button', variant && variants[variant], className)}
+  class={clsx(
+    'ui-button',
+    size && sizeClasses[size],
+    variant && variantClasses[variant],
+    className,
+  )}
   type={is === 'button' ? 'button' : undefined}
   {...props}>
   {#if children}

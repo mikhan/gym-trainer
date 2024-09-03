@@ -9,7 +9,6 @@
           resolve()
           await navigation.complete
         },
-        types: ['navigation'],
       })
     })
   })

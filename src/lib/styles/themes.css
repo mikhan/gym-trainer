@@ -1,0 +1,36 @@
+@import './themes/dark.css';
+
+@import '@fontsource-variable/quicksand';
+/* @import '@fontsource-variable/inter'; */
+/* @import '@fontsource-variable/roboto-mono'; */
+/* @import '@fontsource-variable/source-code-pro'; */
+/* @import '@fontsource/space-mono'; */
+@import '@fontsource-variable/sometype-mono';
+
+@layer theme {
+  :root {
+    --font-family-sans: 'Quicksand Variable';
+    /* --font-family-sans: 'Inter Variable'; */
+    /* --font-family-mono: 'Roboto Mono Variable'; */
+    /* --font-family-mono: 'Source Code Pro Variable'; */
+    /* --font-family-mono: 'Space Mono'; */
+    --font-family-mono: 'Sometype Mono Variable';
+
+    /* --layout-header-height: 0px;
+    --layout-footer-height: 0px;
+    --layout-viewport-height: 0px; */
+    --layout-padding: 8px;
+    --layout-gap: 16px;
+
+    --card-roundness: 12px;
+    --button-roundness: 6px;
+
+    --shadow: inset 0px 0px 0.5px 1px rgb(255 255 255 / 5%), 0px 0px 0px 1px rgb(0 0 0 / 10%),
+      0px 1px 1px 0px rgb(0 0 0 / 2%), 0px 1px 2px 0px rgb(0 0 0 / 5%),
+      0px 4px 6px 0px rgb(0 0 0 / 10%);
+
+    --shadow-over: inset 0px 0px 0.5px 1px rgb(255 255 255 / 5%), 0px 0px 0px 1px rgb(0 0 0 / 10%),
+      0px 4px 4px -2px rgb(0 0 0 / 30%), 0px 10px 10px -4px rgb(0 0 0 / 20%),
+      0px 20px 20px -8px rgb(0 0 0 / 20%);
+  }
+}

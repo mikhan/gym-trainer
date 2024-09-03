@@ -65,9 +65,19 @@ export function surfacePlugin() {
 
     addUtilities({
       '.surface': {
-        'background-color': 'var(--color-default)',
-        'color': 'var(--color-default-fg)',
-        'border-color': 'var(--color-default-line)',
+        '@apply bg-default text-default-fg border-default-line': '',
+      },
+      '.surface-editable': {
+        '@apply bg-default-under': '',
+      },
+      '.surface-hoverable': {
+        '@apply hocus:bg-default-hover hocus:transition-colors': '',
+      },
+      '.surface-activable': {
+        '@apply active:scale-95 active:bg-default-active active:transition': '',
+      },
+      '.surface-outlined': {
+        '@apply outline outline-2 outline-default-line -outline-offset-2': '',
       },
     })
 

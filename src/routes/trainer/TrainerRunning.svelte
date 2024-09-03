@@ -10,6 +10,8 @@
   import { faChevronLeft, faChevronRight } from '@fortawesome/free-solid-svg-icons'
   import { TrainerContext } from './TrainerContext.svelte'
   import AppTopbar from '$lib/components/app/AppTopbar.svelte'
+  import UiButton from '$lib/components/ui/ui-button.svelte'
+  import { startViewTransition } from '$lib/actions/transition.action'
 
   type Props = {
     training: Types.Training
@@ -28,10 +30,18 @@
     }
   }
 
+  function terminate() {
+    startViewTransition(() => trainerContext.terminateTraining())
+  }
+
   let carousel: UiCarousel
 </script>
 
-<AppTopbar previous={`/trainings/${training.id}`} title={currentRoutine.name}></AppTopbar>
+<AppTopbar previous={`/trainings/${training.id}`} title={currentRoutine.name}>
+  {#snippet actions()}
+    <UiButton class="color-neutral" variant="outlined" onclick={terminate}>Terminar</UiButton>
+  {/snippet}
+</AppTopbar>
 
 <div
   class="relative grid size-full grid-cols-[auto,minmax(auto,480px),auto] grid-rows-[calc(var(--layout-viewport-height)-4rem)] pb-layout-gap">
