@@ -1,0 +1,73 @@
+@layer components {
+  @property --progress {
+    syntax: '<number>';
+    inherits: true;
+    initial-value: 0;
+  }
+
+  @property --stroke {
+    syntax: '<number>';
+    inherits: true;
+    initial-value: 0;
+  }
+
+  .ui-circular-progress {
+    --progress: 0;
+    --stroke: 25;
+    display: inline-block;
+    width: 1rem;
+    aspect-ratio: 1/1;
+
+    & svg {
+      width: 100%;
+      aspect-ratio: 1/1;
+      --size: 100px;
+      --stroke-width: calc(var(--stroke) / 100 * 50px);
+      --half-size: calc(var(--size) / 2);
+      --radius: calc((var(--size) - var(--stroke-width)) / 2);
+      --circumference: calc(var(--radius) * pi * 2);
+      --dash: calc((var(--progress) * var(--circumference)) / 100);
+    }
+
+    & circle {
+      cx: var(--half-size);
+      cy: var(--half-size);
+      r: var(--radius);
+      stroke-width: var(--stroke-width);
+      fill: none;
+    }
+
+    & circle.bg {
+      stroke: var(--color-default-under);
+    }
+
+    & circle.fg {
+      transform: rotate(-90deg);
+      transform-origin: center;
+      stroke-dasharray: var(--dash) calc(var(--circumference) - var(--dash));
+      stroke: var(--color-default-fg, currentColor);
+      transition: stroke-dasharray 250ms ease-in-out 0s;
+    }
+  }
+
+  .ui-circular-progress-duration {
+    --duration: 0s;
+
+    & svg {
+      animation: --circular-progress-linear var(--duration) linear 0s 1 forwards;
+    }
+
+    & circle.fg {
+      transition: none;
+    }
+  }
+
+  @keyframes --circular-progress-linear {
+    from {
+      --progress: 0;
+    }
+    to {
+      --progress: 100;
+    }
+  }
+}

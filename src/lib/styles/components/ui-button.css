@@ -6,7 +6,7 @@
     @apply focusable-ring;
 
     @apply [&:not(:disabled)]:surface-hoverable [&:not(:disabled)]:surface-activable;
-    @apply disabled:cursor-not-allowed;
+    @apply disabled:cursor-not-allowed disabled:opacity-50;
 
     &:not(.ui-button-circle) {
       @apply truncate px-6 font-bold;

@@ -8,17 +8,17 @@ export const longpress: Action<HTMLElement, number, LongclickAttributes> = (elem
   let isLongpress = false
   let timeout: number | null = null
 
-  element.addEventListener('mousedown', onMousedown)
+  element.addEventListener('pointerdown', onPointerdown)
   element.addEventListener('click', onClick)
 
   return {
     destroy() {
       if (timeout !== null) clearTimeout(timeout)
-      document.removeEventListener('mouseup', onDocumentMouseup)
+      document.removeEventListener('pointerup', onDocumentPointerup)
     },
   }
 
-  function onMousedown() {
+  function onPointerdown() {
     isLongpress = false
     if (timeout) clearTimeout(timeout)
 
@@ -30,7 +30,7 @@ export const longpress: Action<HTMLElement, number, LongclickAttributes> = (elem
       element.dispatchEvent(longpressEvent)
     }, duration)
 
-    document.addEventListener('mouseup', onDocumentMouseup, { once: true })
+    document.addEventListener('pointerup', onDocumentPointerup, { once: true })
   }
 
   function onClick(event: MouseEvent) {
@@ -40,7 +40,7 @@ export const longpress: Action<HTMLElement, number, LongclickAttributes> = (elem
     }
   }
 
-  function onDocumentMouseup() {
+  function onDocumentPointerup() {
     if (timeout) clearTimeout(timeout)
     timeout = null
   }
