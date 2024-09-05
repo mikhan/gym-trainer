@@ -19,7 +19,6 @@
   import { goto } from '$app/navigation'
   import { TrainerContext } from '../../../routes/trainer/TrainerContext.svelte'
   import LineChart, { type ChartData } from './LineChart.svelte'
-  import UiCollapsibleText from '../ui/UiCollapsibleText.svelte'
   import clsx from 'clsx'
   import UiButton from '../ui/ui-button.svelte'
 
@@ -39,12 +38,10 @@
   const routine = $derived(training.routines[routineIndex]!)
   const groupedSeries$ = $derived.by(() => groupByMuscle(routine.series))
   const trainerContext = TrainerContext.getContext()
-  // $inspect(routine)
-  // $inspect(groupedSeries$)
 
   function groupByMuscle(series: Types.RoutineSerie[]) {
-    console.groupCollapsed()
-    console.log(series)
+    // console.groupCollapsed()
+    // console.log(series)
     const groupedSeries: { group: MuscleGroup; series: Types.RoutineSerie[] }[] = []
 
     for (const serie of series) {
@@ -57,8 +54,8 @@
       groupedSerie.series.push(serie)
     }
 
-    console.log(groupedSeries)
-    console.groupEnd()
+    // console.log(groupedSeries)
+    // console.groupEnd()
     return groupedSeries
   }
 
@@ -159,81 +156,66 @@
       <LineChart data={chartData}></LineChart>
     {/if}
   </div>
-  {#if expanded}
-    <div class={clsx('space-y-2 p-4', !expanded && 'hidden')}>
-      <!-- {#if routine.description} -->
-      <p>
-        <UiCollapsibleText maxLines={2}
-          >{'Laborum excepteur dolore do proident ullamco excepteur adipisicing dolor anim culpa eu nostrud deserunt. Aliquip nostrud ullamco eu ex et mollit occaecat commodo quis qui ea tempor adipisicing occaecat. Do anim nulla anim amet Lorem occaecat minim sit. Sit esse est amet amet pariatur aliqua nostrud aliquip eiusmod labore adipisicing. Labore ea elit Lorem consequat do aliquip occaecat sit. Incididunt Lorem excepteur qui minim culpa ullamco quis nostrud ut.'}</UiCollapsibleText>
-      </p>
-      <!-- {/if} -->
+  <div class={clsx('border-default-line xl:row-span-3 xl:border-l', !expanded && 'hidden')}>
+    <div class="p-4">
+      <UiButton class="color-neutral-lighter max-md:mx-auto" onclick={() => addSerie()}
+        >Agregar serie</UiButton>
     </div>
-    <div
-      class={clsx(
-        'border-default-line xl:row-span-3',
-        expanded && 'xl:border-l',
-        !expanded && 'hidden',
-      )}>
-      <div class="p-4">
-        <UiButton class="color-neutral-lighter max-md:mx-auto" onclick={() => addSerie()}
-          >Agregar serie</UiButton>
-      </div>
-      <ul
-        use:sortlist={training.id}
-        onsortend={(event) => updateSeries(getFromRegistry(event.detail.elements))}>
-        {#each groupedSeries$ as groupedSerie}
-          <li role="presentation" class="px-8 py-4 text-sm font-bold">{groupedSerie.group.name}</li>
+    <ul
+      use:sortlist={training.id}
+      onsortend={(event) => updateSeries(getFromRegistry(event.detail.elements))}>
+      {#each groupedSeries$ as groupedSerie}
+        <li role="presentation" class="px-8 py-4 text-sm font-bold">{groupedSerie.group.name}</li>
 
-          {#each groupedSerie.series as serie (serie.id)}
-            <li
-              class="relative grid h-16 grid-cols-[auto,1fr,auto] items-center gap-4 px-4 transition-colors hover:bg-default-hover"
-              use:sortitem={training.id}
-              data-routine-id={routine.id}
-              data-serie-id={serie.id}>
-              <button
-                class="grid h-full w-4 shrink-0 cursor-grab place-content-center"
-                type="button"
-                draggable={true}
-                tabindex="-1"
-                title="Drag to sort"
-                aria-label="Drag to sort">
-                <Fa icon={faGripLines}></Fa>
-              </button>
-              <button
-                class="group flex h-full w-full items-center gap-2 overflow-hidden text-left outline-none"
-                type="button"
-                onclick={() => (currentSerie$ = serie)}>
-                <div class="flex-1 overflow-hidden">
-                  <div class="truncate">{serie.name}</div>
-                  <div class="typescale-label truncate">{getStepsDescription(serie)}</div>
-                </div>
-                <div
-                  class="absolute inset-0 -z-1 group-focus-visible:outline group-focus-visible:outline-2 group-focus-visible:-outline-offset-2 group-focus-visible:outline-ring">
-                </div>
-              </button>
-              <UiIconbutton class="shrink-0" id={`serie-${serie.id}-actions`} label="More actions">
-                <Fa icon={faEllipsisV}></Fa>
-              </UiIconbutton>
-            </li>
-            <UiMenu target={`serie-${serie.id}-actions`}>
-              <UiMenuitem onclick={() => deleteSerie(serie.id)}>
-                {#snippet icon()}
-                  <Fa icon={faTrashAlt}></Fa>
-                {/snippet}
-                Eliminar Serie</UiMenuitem>
-            </UiMenu>
-            <TrainingSerieEditor
-              {serie}
-              open={serie.id === currentSerie$?.id}
-              onclose={(serie) => {
-                if (serie) updateSerie(serie)
-                currentSerie$ = null
-              }}></TrainingSerieEditor>
-          {/each}
-        {:else}
-          <div class="grid place-content-center h-16 px-4 opacity-50">Empty list</div>
+        {#each groupedSerie.series as serie (serie.id)}
+          <li
+            class="relative grid h-16 grid-cols-[auto,1fr,auto] items-center gap-4 px-4 transition-colors hover:bg-default-hover"
+            use:sortitem={training.id}
+            data-routine-id={routine.id}
+            data-serie-id={serie.id}>
+            <button
+              class="grid h-full w-4 shrink-0 cursor-grab place-content-center"
+              type="button"
+              draggable={true}
+              tabindex="-1"
+              title="Drag to sort"
+              aria-label="Drag to sort">
+              <Fa icon={faGripLines}></Fa>
+            </button>
+            <button
+              class="group flex h-full w-full items-center gap-2 overflow-hidden text-left outline-none"
+              type="button"
+              onclick={() => (currentSerie$ = serie)}>
+              <div class="flex-1 overflow-hidden">
+                <div class="truncate">{serie.name}</div>
+                <div class="typescale-label truncate">{getStepsDescription(serie)}</div>
+              </div>
+              <div
+                class="absolute inset-0 -z-1 group-focus-visible:outline group-focus-visible:outline-2 group-focus-visible:-outline-offset-2 group-focus-visible:outline-ring">
+              </div>
+            </button>
+            <UiIconbutton class="shrink-0" id={`serie-${serie.id}-actions`} label="More actions">
+              <Fa icon={faEllipsisV}></Fa>
+            </UiIconbutton>
+          </li>
+          <UiMenu target={`serie-${serie.id}-actions`}>
+            <UiMenuitem onclick={() => deleteSerie(serie.id)}>
+              {#snippet icon()}
+                <Fa icon={faTrashAlt}></Fa>
+              {/snippet}
+              Eliminar Serie</UiMenuitem>
+          </UiMenu>
+          <TrainingSerieEditor
+            {serie}
+            open={serie.id === currentSerie$?.id}
+            onclose={(serie) => {
+              if (serie) updateSerie(serie)
+              currentSerie$ = null
+            }}></TrainingSerieEditor>
         {/each}
-      </ul>
-    </div>
-  {/if}
+      {:else}
+        <div class="grid place-content-center h-16 px-4 opacity-50">Empty list</div>
+      {/each}
+    </ul>
+  </div>
 </article>

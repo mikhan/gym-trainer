@@ -26,7 +26,7 @@
 
 <style lang="postcss">
   :where(.app-shell-header) {
-    @apply transition surface;
+    @apply flex items-center transition surface;
 
     & > div {
       @apply container mx-auto flex h-16 justify-between gap-2 px-layout-gap;
@@ -41,6 +41,7 @@
   ::view-transition-group(app-shell-header-end) {
     animation-duration: theme('transitionDuration.medium');
     animation-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+    z-index: 1;
   }
 
   ::view-transition-old(app-shell-header-start),

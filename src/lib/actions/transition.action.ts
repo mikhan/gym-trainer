@@ -33,7 +33,10 @@ export async function startViewTransition(config: StartViewTransitionConfig) {
 
 type TransitionNameParams = string | { name: string; type: string }
 
-export const viewTransitionName: Action<HTMLElement, TransitionNameParams> = (element, params) => {
+export const viewTransitionName: Action<HTMLElement, TransitionNameParams> = (
+  element,
+  params: TransitionNameParams,
+) => {
   const { type, name } = typeof params === 'string' ? { type: 'root', name: params } : params
 
   const unsubscribe = transitioning.subscribe((transitioning) => {
@@ -41,6 +44,30 @@ export const viewTransitionName: Action<HTMLElement, TransitionNameParams> = (el
       element.style.setProperty('view-transition-name', name)
     } else {
       element.style.removeProperty('view-transition-name')
+    }
+  })
+
+  return {
+    destroy() {
+      unsubscribe()
+    },
+  }
+}
+
+type TransitionClassParams = string | { class: string; type: string }
+
+export const viewTransitionClass: Action<HTMLElement, TransitionClassParams> = (
+  element,
+  params: TransitionClassParams,
+) => {
+  const { type, class: className } =
+    typeof params === 'string' ? { type: 'root', class: params } : params
+
+  const unsubscribe = transitioning.subscribe((transitioning) => {
+    if (transitioning.has(type)) {
+      element.style.setProperty('view-transition-class', className)
+    } else {
+      element.style.removeProperty('view-transition-class')
     }
   })
 

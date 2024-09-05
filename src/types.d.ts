@@ -34,6 +34,19 @@ declare global {
       unit: string
     }
 
+    type TrainerRecords = {
+      [serieId: string]: {
+        [stepIndex: string]: TrainerRecord
+      }
+    }
+
+    type TrainerRecord = {
+      type: 'repetitions' | 'failure'
+      value: string
+      delay: number
+      weight: Weight
+    }
+
     type Action = {
       id: string
       name: string

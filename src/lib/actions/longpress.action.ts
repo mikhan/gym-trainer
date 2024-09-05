@@ -4,9 +4,13 @@ type LongclickAttributes = {
   onlongpress?: (event: CustomEvent) => void
 }
 
-export const longpress: Action<HTMLElement, number, LongclickAttributes> = (element, duration) => {
+export const longpress: Action<HTMLElement, number, LongclickAttributes> = (
+  element,
+  duration: number,
+) => {
   let isLongpress = false
   let timeout: number | null = null
+  let controller: AbortController | undefined
 
   element.addEventListener('pointerdown', onPointerdown)
   element.addEventListener('click', onClick)
@@ -14,7 +18,6 @@ export const longpress: Action<HTMLElement, number, LongclickAttributes> = (elem
   return {
     destroy() {
       if (timeout !== null) clearTimeout(timeout)
-      document.removeEventListener('pointerup', onDocumentPointerup)
     },
   }
 
@@ -30,7 +33,11 @@ export const longpress: Action<HTMLElement, number, LongclickAttributes> = (elem
       element.dispatchEvent(longpressEvent)
     }, duration)
 
-    document.addEventListener('pointerup', onDocumentPointerup, { once: true })
+    controller = new AbortController()
+    element.addEventListener('pointerup', onPointerup, { signal: controller.signal })
+    element.addEventListener('pointercancel', onPointerup, { signal: controller.signal })
+    element.addEventListener('contextmenu', onContextmenu, { signal: controller.signal })
+    document.addEventListener('mouseup', onPointerup, { signal: controller.signal })
   }
 
   function onClick(event: MouseEvent) {
@@ -40,8 +47,14 @@ export const longpress: Action<HTMLElement, number, LongclickAttributes> = (elem
     }
   }
 
-  function onDocumentPointerup() {
+  function onPointerup() {
     if (timeout) clearTimeout(timeout)
     timeout = null
+    controller?.abort()
+  }
+
+  function onContextmenu(event: MouseEvent) {
+    event.preventDefault()
+    return false
   }
 }

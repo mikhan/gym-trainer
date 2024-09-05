@@ -1,38 +1,20 @@
 <script lang="ts">
-  import { autoselect } from '$lib/actions/autoselect.action'
   import clsx from 'clsx'
-  import { TrainerContext } from './TrainerContext.svelte'
-  import { convertUnit } from '$lib/utils/unit-converter'
-  import Fa from 'svelte-fa'
-  import { faCheck } from '@fortawesome/free-solid-svg-icons'
-  import { faCircle } from '@fortawesome/free-regular-svg-icons'
+  import TrainerStep from './TrainerStep.svelte'
+  // import { TrainerContext } from './TrainerContext.svelte'
 
   type Props = {
     serie: Types.RoutineSerie
     serieIndex: number
     total: number
     isCurrent: boolean
+    records?: Record<string, Types.TrainerRecord>
   }
 
-  let { serie, serieIndex, total, isCurrent }: Props = $props()
-  const trainerContext = TrainerContext.getContext()
+  let { serie, serieIndex, total, isCurrent, records }: Props = $props()
 
-  function updateWeightUnit(stepIndex: number, unit: string) {
-    const step = serie.steps.at(stepIndex)
-    if (step) {
-      const value = Math.round(convertUnit(step.weight.value, step.weight.unit, unit))
-      trainerContext.setStepWeight(serieIndex, stepIndex, { value, unit })
-    }
-  }
-
-  function updateWeightValue(stepIndex: number, value: number) {
-    const step = serie.steps.at(stepIndex)
-    if (step) {
-      trainerContext.setStepWeight(serieIndex, stepIndex, { ...step.weight, value })
-    }
-  }
-
-  let completed: boolean[] = $state([])
+  const registered = $derived(records ? Object.keys(records) : [])
+  const completed = $derived(Object.keys(serie.steps).every((index) => registered.includes(index)))
 
   // function updateSerieNotes(value: string) {
   //   trainerContext.updateSerieNotes(serieIndex, value)
@@ -50,7 +32,7 @@
   <article
     class={clsx(
       'flex size-full flex-col overflow-y-auto rounded-card shadow transition-colors scrollbar-thin surface',
-      isCurrent ? 'color-secondary-darker' : 'color-neutral',
+      completed ? 'color-secondary-darker' : 'color-neutral',
     )}>
     <header class="sticky top-0 z-1 mb-6 flex items-start gap-4 bg-inherit p-6 pb-4">
       <div class="flex items-center gap-1">
@@ -76,50 +58,11 @@
       </label>
     </div> -->
     <ul
-      class="mt-auto flex w-full flex-none snap-x snap-mandatory scroll-p-6 justify-between gap-4 overflow-x-auto px-6 pb-6 scrollbar-thin"
-      style="ask-image: linear-gradient(to right, transparent, black 2rem, black calc(100% - 2rem), transparent);">
+      class="mt-auto flex w-full flex-none snap-x snap-mandatory scroll-p-6 justify-start gap-4 overflow-x-auto px-6 pb-6 scrollbar-thin"
+      style="_mask-image: linear-gradient(to right, transparent, black 2rem, black calc(100% - 2rem), transparent);">
+      <!-- eslint-disable-next-line @typescript-eslint/no-unused-vars -->
       {#each serie.steps as step, stepIndex}
-        <li class="flex shrink-0 grow-0 basis-auto snap-start flex-col items-center gap-2">
-          <div class="text-center">
-            {#if step.type === 'failure'}
-              <div class="typescale-label opacity-75">Al fallo</div>
-            {/if}
-            <div>{step.value} reps</div>
-          </div>
-          <label
-            class={clsx(
-              'ui-input w-full flex-col rounded-card p-1',
-              completed[stepIndex] && 'color-neutral-darkest',
-            )}>
-            <span class="typescale-label opacity-75">Peso</span>
-            <input
-              class="w-[5ch] text-center text-2xl"
-              type="number"
-              required
-              use:autoselect
-              value={step.weight.value}
-              onchange={(e) => updateWeightValue(stepIndex, e.currentTarget.valueAsNumber)} />
-            <select
-              value={step.weight.unit}
-              onchange={(e) => updateWeightUnit(stepIndex, e.currentTarget.value)}>
-              <option value="kg">Kg.</option>
-              <option value="lb">Lb.</option>
-            </select>
-          </label>
-          <button
-            class={clsx(
-              'surface-editable flex w-full place-content-center items-center justify-between rounded-full border-2 p-1 transition-colors surface',
-              completed[stepIndex] && 'color-neutral-darkest',
-            )}
-            onclick={() => {
-              completed[stepIndex] = !completed[stepIndex]
-            }}>
-            <span class="px-2 text-sm">{stepIndex + 1}</span>
-            <span class="grid size-5 place-content-center rounded-full">
-              <Fa icon={completed[stepIndex] ? faCheck : faCircle} size="sm"></Fa>
-            </span>
-          </button>
-        </li>
+        <TrainerStep {serieIndex} {stepIndex} record={records?.[stepIndex]}></TrainerStep>
       {/each}
     </ul>
   </article>

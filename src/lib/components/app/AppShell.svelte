@@ -80,18 +80,17 @@
   </main>
 
   {#if appShellContext.footer}
-    {#key appShellContext.footerLevel}
-      <footer
-        class="app-footer"
-        transition:fly={{ duration: 200, y: '100%' }}
-        use:viewTransitionName={'app-footer'}
-        use:getStyle={(e) => ({
-          '--layout-footer-width': 'calc(var(--layout-width) - var(--layout-aside-width))',
-          '--layout-footer-height': `${e.offsetHeight}px`,
-        })}>
-        {@render appShellContext.footer()}
-      </footer>
-    {/key}
+    <!-- {#key appShellContext.footerLevel} -->
+    <footer
+      class="app-footer"
+      use:viewTransitionName={'app-footer'}
+      use:getStyle={(e) => ({
+        '--layout-footer-width': 'calc(var(--layout-width) - var(--layout-aside-width))',
+        '--layout-footer-height': `${e.offsetHeight}px`,
+      })}>
+      {@render appShellContext.footer()}
+    </footer>
+    <!-- {/key} -->
   {/if}
 </div>
 
@@ -173,6 +172,7 @@
       animation-duration: theme('transitionDuration.medium');
       animation-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
       contain: paint;
+      z-index: 1;
     }
 
     ::view-transition-old(app-header),

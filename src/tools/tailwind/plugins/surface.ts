@@ -74,7 +74,7 @@ export function surfacePlugin() {
         '@apply hocus:bg-default-hover hocus:transition-colors': '',
       },
       '.surface-activable': {
-        '@apply active:scale-95 active:bg-default-active active:transition': '',
+        '@apply active:bg-default-active active:transition-colors': '',
       },
       '.surface-outlined': {
         '@apply outline outline-2 outline-default-line -outline-offset-2': '',

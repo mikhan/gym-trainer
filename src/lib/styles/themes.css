@@ -8,6 +8,12 @@
 @import '@fontsource-variable/sometype-mono';
 
 @layer theme {
+  @property --button-height {
+    syntax: '<number>';
+    inherits: true;
+    initial-value: 2.5rem;
+  }
+
   :root {
     --font-family-sans: 'Quicksand Variable';
     /* --font-family-sans: 'Inter Variable'; */
@@ -22,8 +28,10 @@
     --layout-padding: 8px;
     --layout-gap: 16px;
 
+    --widget-height: 2.5rem;
+
     --card-roundness: 12px;
-    --button-roundness: 6px;
+    --button-roundness: calc(var(--widget-height) / 2);
 
     --shadow: inset 0px 0px 0.5px 1px rgb(255 255 255 / 5%), 0px 0px 0px 1px rgb(0 0 0 / 10%),
       0px 1px 1px 0px rgb(0 0 0 / 2%), 0px 1px 2px 0px rgb(0 0 0 / 5%),

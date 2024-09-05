@@ -1,28 +1,29 @@
 @layer components {
   .ui-button {
-    --component-height: theme('space.10');
-    height: var(--component-height);
-    @apply grid flex-none place-content-center rounded-full surface;
+    --height: var(--widget-height);
+    --padding: round(calc(var(--height) * 0.6), 2px);
+    --min-width: calc(var(--height) * 2);
+    @apply flex h-[--height] flex-none items-center justify-center gap-2 rounded-full surface;
     @apply focusable-ring;
 
     @apply [&:not(:disabled)]:surface-hoverable [&:not(:disabled)]:surface-activable;
     @apply disabled:cursor-not-allowed disabled:opacity-50;
 
     &:not(.ui-button-circle) {
-      @apply truncate px-6 font-bold;
+      @apply min-w-[--min-width] truncate px-[--padding] font-bold;
     }
   }
 
   .ui-button-xs {
-    --component-height: theme('space.6');
+    --height: calc(var(--widget-height) - 1rem);
   }
 
   .ui-button-sm {
-    --component-height: theme('space.8');
+    --height: calc(var(--widget-height) - 0.5rem);
   }
 
   .ui-button-lg {
-    --component-height: theme('space.12');
+    --height: calc(var(--widget-height) + 0.5rem);
   }
 
   .ui-button-outlined {
@@ -30,6 +31,6 @@
   }
 
   .ui-button-circle {
-    width: var(--component-height);
+    width: var(--height);
   }
 }

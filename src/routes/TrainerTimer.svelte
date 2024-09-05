@@ -1,24 +1,20 @@
 <script lang="ts">
-  import UiCircularProgress from './UiCircularProgress.svelte'
-
   import Fa from 'svelte-fa'
-  import {
-    faArrowRotateBack,
-    faClockRotateLeft,
-    faPause,
-    faPlay,
-  } from '@fortawesome/free-solid-svg-icons'
+  import { faArrowRotateBack, faPause, faPlay } from '@fortawesome/free-solid-svg-icons'
   import UiIconbutton from '$lib/components/ui/ui-iconbutton.svelte'
+  import UiCircularProgress from './UiCircularProgress.svelte'
   import { onDestroy } from 'svelte'
   import { wakeLock } from '$lib/stores/wakelock.store'
   import { longpress } from '$lib/actions/longpress.action'
-  import UiPopup from '$lib/components/ui/ui-popup.svelte'
   import clsx from 'clsx'
 
   type Time = { start: number; duration: number }
   type State = 'stopped' | 'playing' | 'paused'
+  type Props = { ontime?: (time: Time) => void }
 
-  const pausePressDuration = 1000
+  const { ontime }: Props = $props()
+
+  const pausePressDuration = 3000
   const history: Time[] = $state([])
   const defaultValue = {
     minutes: '0',
@@ -45,25 +41,20 @@
 
   function calculate() {
     if (status !== 'playing') return
-    if (currentTime) currentTime.duration = performance.now() - currentTime.start
+    if (currentTime) currentTime.duration = ~~(performance.now() - currentTime.start)
     requestAnimationFrame(calculate)
-  }
-
-  function formatTime(timestamp: number) {
-    timestamp = ~~(timestamp / 1000)
-    const minutes = ~~(timestamp / 60)
-    const seconds = timestamp % 60
-    return minutes.toString() + ':' + seconds.toString().padStart(2, '0')
   }
 
   function start() {
     if (status === 'playing' && currentTime) {
       history.push(currentTime)
+      ontime?.(currentTime)
     }
 
     if (status === 'paused' && currentTime) {
       currentTime.start += performance.now() - (currentTime.start + currentTime.duration)
     } else {
+      value = { ...defaultValue }
       currentTime = { start: performance.now(), duration: 0 }
     }
 
@@ -83,31 +74,12 @@
   })
 </script>
 
-<svelte:document onmouseup={() => (pressing = false)} />
+<svelte:document
+  on:mouseup={() => {
+    pressing = false
+  }} />
 
-<div
-  class="grid grid-cols-[3rem,auto,3rem] items-center gap-2 rounded-full p-1 color-neutral surface">
-  <div class="grid place-content-center">
-    {#if history.length > 0}
-      <UiIconbutton id="trainer-timer-history-button" label="Historial de tiempos">
-        <Fa icon={faClockRotateLeft}></Fa>
-      </UiIconbutton>
-      <UiPopup class="w-40" target="trainer-timer-history-button">
-        <div class="flex max-h-80 flex-col">
-          <div class="mb-4 p-4 pb-0 text-center font-bold">Historial</div>
-          <ul
-            class="grid grow grid-cols-[auto,auto] justify-between gap-x-4 overflow-auto p-4 pt-0 text-right font-mono scrollbar-thin">
-            {#each history as { duration }, index}
-              <li class="col-span-2 grid grid-cols-subgrid">
-                <span>{index + 1}</span>
-                <time>{formatTime(duration)}</time>
-              </li>
-            {/each}
-          </ul>
-        </div>
-      </UiPopup>
-    {/if}
-  </div>
+<div class="grid grid-cols-[auto,3rem] items-center gap-2 rounded-full p-1 color-neutral surface">
   <div
     class={clsx(
       'grid h-full content-end items-end text-right font-mono',
@@ -122,28 +94,31 @@
     class="relative color-primary"
     size="lg"
     label={currentTime ? 'Reiniciar temporizador' : 'Iniciar temporizador'}
-    onclick={() => {
-      start()
-    }}
+    onclick={() => start()}
     onpointerdown={() => {
       pressing = status === 'playing'
-    }}>
+    }}
+    onpointerup={() => (pressing = false)}
+    onpointercancel={() => (pressing = false)}>
     <Fa size="lg" icon={status !== 'playing' ? faPlay : pressing ? faPause : faArrowRotateBack}
     ></Fa>
     <div
-      class={clsx(
-        'absolute -inset-2 opacity-0 transition-opacity delay-100',
-        pressing && 'opacity-100',
-      )}
+      class={clsx('absolute -inset-2')}
       use:longpress={pausePressDuration}
       onlongpress={() => {
         pause()
         pressing = false
       }}>
-      <UiCircularProgress
-        class={clsx('size-full', !pressing && 'hidden')}
-        duration={`${pausePressDuration}ms`}
-        stroke={16}></UiCircularProgress>
+      <div
+        class={clsx(
+          'pointer-events-none grid place-content-center transition-opacity delay-100 max-sm:fixed max-sm:inset-0 max-sm:bg-black/50',
+          pressing ? 'opacity-100' : 'opacity-0',
+        )}>
+        <UiCircularProgress
+          class={clsx('size-24 sm:size-full', !pressing && 'hidden')}
+          duration={`${pausePressDuration}ms`}
+          stroke={16}></UiCircularProgress>
+      </div>
     </div>
   </UiIconbutton>
 </div>

@@ -51,7 +51,6 @@
   </AppEditTopbar>
 {/if}
 
-<!-- <div class="mx-auto max-w-screen-xl"> -->
 {#if layout.value === 'list'}
   <TrainingRoutineList
     training={trainingViewportContext.training$}
@@ -61,4 +60,3 @@
     training={trainingViewportContext.training$}
     chartData={trainingViewportContext.graphData}></TrainingRoutineGrid>
 {/if}
-<!-- </div> -->
