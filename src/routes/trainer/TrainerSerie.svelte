@@ -31,7 +31,7 @@
   inert={!isCurrent}>
   <article
     class={clsx(
-      'flex size-full flex-col overflow-y-auto rounded-card shadow transition-colors scrollbar-thin surface',
+      'mx-auto flex size-full max-w-screen-sm flex-col overflow-y-auto rounded-card shadow transition-colors scrollbar-thin surface',
       completed ? 'color-secondary-darker' : 'color-neutral',
     )}>
     <header class="sticky top-0 z-1 mb-6 flex items-start gap-4 bg-inherit p-6 pb-4">
@@ -40,10 +40,10 @@
         <span class="text-lg leading-5 opacity-75">DE<br />{total}</span>
       </div>
       <h1 class="typescale-headline grow">{serie.name}</h1>
-      <div
+      <!-- <div
         class="pointer-events-none absolute -bottom-6 left-0 h-6 w-full bg-inherit"
         style="mask-image: linear-gradient(to bottom, black, transparent)">
-      </div>
+      </div> -->
     </header>
     <!-- <div class="px-6">
       <label class="ui-field">
@@ -85,6 +85,95 @@
     60% {
       scale: 1;
       opacity: 1;
+    }
+  }
+  @property --scrollable-shadow-1 {
+    syntax: '<percentage>';
+    inherits: false;
+    initial-value: 0%;
+  }
+  @property --scrollable-shadow-2 {
+    syntax: '<percentage>';
+    inherits: false;
+    initial-value: 100%;
+  }
+
+  .scrollable-xxx {
+    position: relative;
+    --scrollable-shadow-size: 2rem;
+    --scrollable-shadow-color: hsl(0 0 0 / 90%);
+    /* display: grid;
+    grid-template-rows: auto 1fr auto;
+    align-items: flex-start;
+    background-color: inherit; */
+    contain: layout;
+    background-image: linear-gradient(
+      to right,
+      color-mix(in oklch, var(--scrollable-shadow-color) var(--scrollable-shadow-1), transparent),
+      transparent 2rem,
+      transparent calc(100% - 2rem),
+      color-mix(in oklch, var(--scrollable-shadow-color) var(--scrollable-shadow-2), transparent)
+    );
+    animation-timeline: scroll(inline self);
+    animation-name: --scrollable-shadow-fade;
+
+    /* &::before, */
+    &::before {
+      content: '';
+      display: block;
+      position: absolute;
+      left: 0;
+      inset: 0;
+      border: 1px solid red;
+      /* flex: none;
+      pointer-events: none; */
+      /*  */
+      /* position: sticky;
+      height: var(--scrollable-shadow-size);
+      background-color: inherit;
+      margin-block-start: calc(var(--scrollable-shadow-size) * -1);
+      opacity: 0;
+      z-index: 1; */
+    }
+
+    /* &::before {
+      top: 0;
+      background-image: radial-gradient(
+        farthest-side at top center,
+        var(--scrollable-shadow-color) 33%,
+        transparent
+      );
+      mask-image: linear-gradient(to bottom, black, transparent);
+    } */
+
+    /* &::after {
+      bottom: 0;
+      background-image: radial-gradient(
+        farthest-side at bottom center,
+        var(--scrollable-shadow-color) 33%,
+        transparent
+      );
+      mask-image: linear-gradient(to top, black, transparent);
+      animation-direction: reverse;
+    } */
+  }
+
+  @keyframes --scrollable-shadow-fade {
+    0% {
+      --scrollable-shadow-1: 0%;
+      --scrollable-shadow-2: 100%;
+    }
+    10% {
+      --scrollable-shadow-1: 100%;
+      --scrollable-shadow-2: 100%;
+    }
+    90% {
+      --scrollable-shadow-1: 100%;
+      --scrollable-shadow-2: 100%;
+    }
+    100% {
+      --scrollable-shadow-1: 100%;
+      --scrollable-shadow-2: 0%;
     }
   }
 </style>

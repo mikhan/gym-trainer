@@ -2,7 +2,7 @@
   import Fa from 'svelte-fa'
   import { faArrowRotateBack, faPause, faPlay } from '@fortawesome/free-solid-svg-icons'
   import UiIconbutton from '$lib/components/ui/ui-iconbutton.svelte'
-  import UiCircularProgress from './UiCircularProgress.svelte'
+  import UiCircularProgress from '../../lib/components/ui/UiCircularProgress.svelte'
   import { onDestroy } from 'svelte'
   import { wakeLock } from '$lib/stores/wakelock.store'
   import { longpress } from '$lib/actions/longpress.action'
@@ -79,21 +79,21 @@
     pressing = false
   }} />
 
-<div class="grid grid-cols-[auto,3rem] items-center gap-2 rounded-full p-1 color-neutral surface">
+<div
+  class="grid grid-cols-[auto,3rem] items-center gap-2 rounded-full p-1 color-neutral surface [zoom:1.25]">
   <div
     class={clsx(
-      'grid h-full content-end items-end text-right font-mono',
+      'grid h-full content-end items-end pl-2 text-right font-mono',
       status === 'paused' && 'animate-paused',
     )}>
-    <span class="h-4 min-w-[4ch] text-xl leading-4" class:opacity-50={value.minutes === '0'}
-      >{value.minutes}:</span>
-    <span class="h-6 min-w-[2ch] text-4xl font-bold leading-6">{value.seconds}</span>
-    <span class="col-span-3 h-4 text-xs leading-4">{value.milliseconds}</span>
+    <span class="h-6 w-[4ch] text-3xl/6">{value.minutes}:</span>
+    <span class="h-6 w-[2ch] text-3xl/6">{value.seconds}</span>
+    <span class="col-span-2 h-4 text-base/4">{value.milliseconds}</span>
   </div>
   <UiIconbutton
     class="relative color-primary"
     size="lg"
-    label={currentTime ? 'Reiniciar temporizador' : 'Iniciar temporizador'}
+    label={currentTime ? 'Reiniciar cronómetro' : 'Iniciar cronómetro'}
     onclick={() => start()}
     onpointerdown={() => {
       pressing = status === 'playing'
@@ -103,7 +103,7 @@
     <Fa size="lg" icon={status !== 'playing' ? faPlay : pressing ? faPause : faArrowRotateBack}
     ></Fa>
     <div
-      class={clsx('absolute -inset-2')}
+      class="absolute inset-0"
       use:longpress={pausePressDuration}
       onlongpress={() => {
         pause()
@@ -111,13 +111,14 @@
       }}>
       <div
         class={clsx(
-          'pointer-events-none grid place-content-center transition-opacity delay-100 max-sm:fixed max-sm:inset-0 max-sm:bg-black/50',
-          pressing ? 'opacity-100' : 'opacity-0',
+          'pointer-events-none fixed inset-0 grid place-content-center place-items-center gap-4 bg-black/50 transition-opacity sm:absolute sm:-inset-3 sm:bg-transparent',
+          pressing ? 'opacity-100 delay-200' : 'opacity-0 delay-0',
         )}>
         <UiCircularProgress
           class={clsx('size-24 sm:size-full', !pressing && 'hidden')}
           duration={`${pausePressDuration}ms`}
           stroke={16}></UiCircularProgress>
+        <div class="sm:hidden">Pausar cronómetro</div>
       </div>
     </div>
   </UiIconbutton>

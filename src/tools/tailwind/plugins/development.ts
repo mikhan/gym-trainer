@@ -13,7 +13,7 @@ export function developmentPlugin() {
                   'outline': '1px solid rgb(255 0 255)',
                   'outline-offset': '-1px',
                   '& > *': {
-                    'outline': '1px dashed rgb(255 255 0 / 50%)',
+                    'outline': '2px dashed rgb(255 255 0 / 50%)',
                     'outline-offset': '-2px',
                     '&:hover': {
                       'background-image':

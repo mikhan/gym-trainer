@@ -12,6 +12,7 @@
   import AppShellSection from '$lib/components/app/AppShellSection.svelte'
   import AppShellHeader from '$lib/components/app/AppShellHeader.svelte'
   import { goto } from '$app/navigation'
+  import clsx from 'clsx'
 
   type Props = {
     training: Types.Training
@@ -56,25 +57,10 @@
 </AppShellSection>
 
 <div
-  class="relative grid size-full grid-cols-[auto,minmax(auto,480px),auto] grid-rows-[calc(var(--layout-viewport-height)-4rem)] pb-layout-gap surface">
-  <div
-    class="sticky left-0 top-40 z-1 col-start-1 row-start-1 mx-4 grid size-10 justify-self-end pointer-coarse:hidden">
-    <UiIconbutton
-      disabled={currentSerieIndex === 0}
-      class="ui-button-lg shadow color-neutral-lighter surface-glass"
-      label="Serie anterior"
-      onclick={() => carousel.previous()}><Fa icon={faChevronLeft}></Fa></UiIconbutton>
-  </div>
-  <div
-    class="sticky right-0 top-40 z-1 col-start-3 row-start-1 mx-4 grid size-10 justify-self-start pointer-coarse:hidden">
-    <UiIconbutton
-      disabled={currentSerieIndex === currentRoutine.series.length - 1}
-      class="ui-button-lg shadow color-neutral-lighter surface-glass"
-      label="Siguiente serie"
-      onclick={() => carousel.next()}><Fa icon={faChevronRight}></Fa></UiIconbutton>
-  </div>
+  class="relative grid size-full content-start surface"
+  style:--carousel-height="calc(var(--layout-viewport-height) * .8)">
   <UiCarousel
-    class="col-span-3 col-start-1 row-start-1 scrollbar-none"
+    class="size-auto h-[--carousel-height] max-h-[50rem] min-h-[25rem] scrollbar-none"
     direction="horizontal"
     snap="center"
     label="Ejercicios"
@@ -89,7 +75,36 @@
         records={records[serie.id]}></TrainerSerie>
     {/each}
   </UiCarousel>
-  <div class="col-span-3 mx-auto grid w-full max-w-screen-sm gap-layout-gap px-layout-gap">
+  <div
+    class="sticky bottom-layout-footer-height mx-auto -mt-layout-gap w-full max-w-screen-sm space-y-layout-gap p-layout-gap pointer-coarse:hidden">
+    <div
+      class="flex items-center justify-between gap-1 rounded-full p-2 shadow color-neutral-darker surface sm:gap-2">
+      <UiIconbutton
+        disabled={currentSerieIndex === 0}
+        class="color-neutral-lighter"
+        size="sm"
+        label="Serie anterior"
+        onclick={() => carousel.previous()}><Fa icon={faChevronLeft}></Fa></UiIconbutton>
+      {#each currentRoutine.series as serie}
+        {@const isCurrent = serie.id === currentSerie.id}
+        <div
+          class={clsx(
+            'rounded-full p-1 transition-all surface',
+            isCurrent
+              ? 'grid size-6 place-content-center color-primary sm:size-8'
+              : 'aspect-square size-3 color-neutral-lighter sm:size-4',
+          )}>
+        </div>
+      {/each}
+      <UiIconbutton
+        disabled={currentSerieIndex === currentRoutine.series.length - 1}
+        size="sm"
+        class="color-neutral-lighter"
+        label="Siguiente serie"
+        onclick={() => carousel.next()}><Fa icon={faChevronRight}></Fa></UiIconbutton>
+    </div>
+  </div>
+  <div class="mx-auto -mt-layout-gap w-full max-w-screen-sm space-y-layout-gap p-layout-gap">
     <TrainerSerieImage
       title="Ejecución de ejercicio"
       src="https://ik.imagekit.io/mikhan/gym-trainer/exercises/00289eafca-v258577.gif"

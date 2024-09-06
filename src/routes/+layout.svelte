@@ -10,9 +10,9 @@
   import AppShell from '$lib/components/app/AppShell.svelte'
   import AppNavigatingIndicator from '$lib/components/app/AppNavigatingIndicator.svelte'
   import AppViewTransition from '$lib/components/app/AppViewTransition.svelte'
-  import TrainerPlayer from './TrainerPlayer.svelte'
   import { TrainerContext } from './trainer/TrainerContext.svelte'
   import { wakeLock, type WakeLockStatus } from '$lib/stores/wakelock.store'
+  import TrainerPlayer from './trainer/TrainerPlayer.svelte'
 
   type Props = { children: Snippet; data: LayoutData }
 
@@ -54,7 +54,7 @@
 </AppDatabase>
 
 <div
-  class="z-3 fixed left-0 top-0 rounded-br-button bg-default px-2 text-xs font-bold text-black"
+  class="fixed left-0 top-0 z-3 rounded-br-button bg-default px-2 text-xs font-bold text-black"
   use:viewTransitionName={'wakelock-status'}
   style:--color-default={colors[$wakeLock]}>
   {$wakeLock}

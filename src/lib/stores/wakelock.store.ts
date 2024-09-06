@@ -14,7 +14,6 @@ function onVisibilityChange() {
 
 function onRelease() {
   wakelockSentinel = null
-  document.removeEventListener('visibilitychange', onVisibilityChange)
   statusStore.set('released')
 }
 
@@ -40,6 +39,7 @@ async function release() {
   if (!wakelockSentinel) return
 
   await wakelockSentinel.release()
+  document.removeEventListener('visibilitychange', onVisibilityChange)
 }
 
 export type WakeLockStore = Readable<WakeLockStatus> & {

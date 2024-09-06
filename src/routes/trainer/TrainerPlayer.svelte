@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { type TrainerContextStateRunning } from './trainer/TrainerContext.svelte'
+  import { type TrainerContextStateRunning } from './TrainerContext.svelte'
   import TrainerTimer from './TrainerTimer.svelte'
   import AppShellSection from '$lib/components/app/AppShellSection.svelte'
   import AppShellFooter from '$lib/components/app/AppShellFooter.svelte'
@@ -28,27 +28,25 @@
 </script>
 
 <AppShellSection name="footer">
-  <!-- <AppShellFooter
-    class={clsx('-mb-2 transition-all color-neutral-darkest', showHistory ? 'h-36' : 'h-0')}>
+  <AppShellFooter
+    class={clsx('transition-all color-neutral-darkest', showHistory ? 'h-36' : 'h-0')}>
     {#snippet end()}
-      <div class="flex h-full max-h-80 justify-start">
-        <div class="flex flex-col items-center gap-2 text-right font-bold">
-          <ul
-            class="grid flex-1 grid-cols-[auto,auto] content-start justify-end gap-x-4 overflow-auto px-2 text-right font-mono leading-5 scrollbar-thin">
-            {#each history as duration, index}
-              <li class="col-span-2 grid grid-cols-subgrid">
-                <time>{formatTime(duration)}</time>
-                <span>{index + 1}</span>
-              </li>
-            {/each}
-          </ul>
-        </div>
+      <div class="flex h-full max-h-80 grow justify-start">
+        <ul
+          class="grid flex-1 grid-cols-[auto,auto] content-start justify-end gap-x-4 overflow-auto px-2 text-right font-mono leading-5 scrollbar-thin scrollbar-stable">
+          {#each history as duration, index}
+            <li class="col-span-2 grid grid-cols-subgrid">
+              <time>{formatTime(duration)}</time>
+              <span>{index + 1}</span>
+            </li>
+          {/each}
+        </ul>
         <UiIconbutton label="Eliminar historial" onclick={clearHistory}>
           <Fa icon={faTrash}></Fa>
         </UiIconbutton>
       </div>
     {/snippet}
-  </AppShellFooter> -->
+  </AppShellFooter>
   <AppShellFooter class="color-neutral-darkest">
     {#snippet start()}
       <a
