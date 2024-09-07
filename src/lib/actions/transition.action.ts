@@ -8,6 +8,8 @@ type StartViewTransitionConfig =
   | StartViewTransitionUpdater
   | { update: StartViewTransitionUpdater; types?: string[] }
 
+let transition: ViewTransition | null = null
+
 export async function startViewTransition(config: StartViewTransitionConfig) {
   const update = typeof config === 'object' ? config.update : config
   const types = (typeof config === 'object' && config.types) || ['root']
@@ -17,9 +19,11 @@ export async function startViewTransition(config: StartViewTransitionConfig) {
     return
   }
 
+  if (transition) transition.skipTransition()
+
   transitioning.update((transitions) => transitions.union(new Set(types)))
 
-  const transition = document.startViewTransition({
+  transition = document.startViewTransition({
     update: async () => {
       await update()
     },

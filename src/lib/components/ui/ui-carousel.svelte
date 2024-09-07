@@ -34,29 +34,29 @@
   export function previous() {
     const children = getChildren()
     const current = getCurrent(children)
-    if (current) scrollTo(children, children.indexOf(current) - 1)
+    if (current) scrollToChild(children, children.indexOf(current) - 1)
   }
 
   export function next() {
     const children = getChildren()
     const current = getCurrent(children)
-    if (current) scrollTo(children, children.indexOf(current) + 1)
+    if (current) scrollToChild(children, children.indexOf(current) + 1)
   }
 
   export function goto(index: number) {
     const children = getChildren()
-    scrollTo(children, index)
+    scrollToChild(children, index)
   }
 
-  function scrollTo(children: HTMLLIElement[], index: number) {
-    if (index < 0 || index >= children.length) return
-    const target = children.at(index)
-    if (target) {
-      const behavior = window.getComputedStyle(root).getPropertyValue('scroll-behavior') as
-        | 'auto'
-        | 'smooth'
-      target.scrollIntoView({ behavior })
-    }
+  function scrollToChild(children: HTMLLIElement[], childIndex: number) {
+    if (childIndex < 0 || childIndex >= children.length) return
+    const child = children.at(childIndex)
+    if (child) scrollTo(child)
+  }
+
+  function scrollTo(element: HTMLElement) {
+    if (direction === 'horizontal') root.scrollLeft = element.offsetLeft
+    if (direction === 'vertical') root.scrollTop = element.offsetTop
   }
 
   function getChildren() {
@@ -77,8 +77,7 @@
     if (!onscrollsnapchange) return
 
     let current: HTMLLIElement | null = root.querySelector(':scope > li[aria-current="true"]')
-    if (current && direction === 'horizontal') root.scrollLeft = current.offsetLeft
-    if (current && direction === 'vertical') root.scrollTop = current.offsetTop
+    if (current) scrollTo(current)
 
     const intersectionObserver = new IntersectionObserver(onIntersection, {
       threshold: [0, 1],

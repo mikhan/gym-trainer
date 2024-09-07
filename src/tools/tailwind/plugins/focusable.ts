@@ -3,11 +3,18 @@ import toColorValue from 'tailwindcss/lib/util/toColorValue'
 import plugin from 'tailwindcss/plugin'
 
 export function focusablePlugin() {
-  return plugin(function ({ matchUtilities, theme }) {
+  return plugin(function ({ addUtilities, matchUtilities, theme }) {
     const getStyle = (value: string) => ({
       'outline': `2px solid ${toColorValue(value)}`,
-      'outline-offset': '-2px',
+      'outline-offset': 'var(--focusable-offset, -2px)',
     })
+
+    addUtilities({
+      '.focusable-outside': {
+        '--focusable-offset': '0',
+      },
+    })
+
     matchUtilities(
       {
         'focusable': (value) => ({ '&:focus-visible': getStyle(value) }),

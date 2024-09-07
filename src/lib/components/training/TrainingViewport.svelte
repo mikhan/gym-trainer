@@ -33,7 +33,7 @@
 <AppMetadata title={`Entrenamiento ${trainingViewportContext.training$.name}`}></AppMetadata>
 
 <AppShellSection name="header">
-  <AppTopbar class="color-primary" previous="/" title={trainingViewportContext.training$.name}>
+  <AppTopbar previous="/" title={trainingViewportContext.training$.name}>
     {#snippet actions()}
       <UiIconbutton label="Layout" onclick={toggleLayout}>
         <Fa icon={layoutTypeIcons[layout.value]}></Fa>

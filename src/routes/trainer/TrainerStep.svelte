@@ -34,10 +34,7 @@
   }
 </script>
 
-<li class="flex shrink-0 grow-0 basis-auto snap-start flex-col items-center gap-2 font-mono">
-  <div class="text-center text-2xl opacity-50">
-    {stepIndex + 1}
-  </div>
+<li class="row-span-4 grid grid-rows-subgrid font-mono">
   <div class="typescale-label text-center">
     {#if step.type === 'failure'}
       <div class="opacity-75">Al fallo</div>
@@ -53,14 +50,17 @@
       use:autoselect
       value={step.weight.value}
       onchange={(e) => updateWeightValue(e.currentTarget.valueAsNumber)} />
-    <select value={step.weight.unit} onchange={(e) => updateWeightUnit(e.currentTarget.value)}>
+    <select
+      class="focusable-ring"
+      value={step.weight.unit}
+      onchange={(e) => updateWeightUnit(e.currentTarget.value)}>
       <option value="kg">Kg.</option>
       <option value="lb">Lb.</option>
     </select>
   </label>
   <button
     class={clsx(
-      'flex w-full place-content-center items-center rounded-full border-2 p-1 transition-colors surface surface-editable',
+      'flex w-full place-content-center items-center rounded-full border-2 p-1 transition-colors surface focusable-ring',
       record ? 'justify-end color-neutral-darker' : 'justify-start color-neutral-lighter',
     )}
     onclick={() => (record ? deleteRecord() : setRecord())}>

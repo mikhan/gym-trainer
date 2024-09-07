@@ -7,15 +7,16 @@
   import AppShellHeader from './AppShellHeader.svelte'
   import clsx from 'clsx'
 
-  type Props = { previous?: string | URL; actions?: Snippet; class?: string } & (
+  type Props = { previous?: string | URL; actions?: Snippet; class?: string; docked?: boolean } & (
     | { title: string }
     | { children: Snippet }
   )
 
-  let { previous, actions, class: className, ...other }: Props = $props()
+  let { previous, actions, class: className, docked = true, ...other }: Props = $props()
+  console.log('topbar')
 </script>
 
-<AppShellHeader class={clsx('app-topbar', className)}>
+<AppShellHeader class={clsx('app-topbar', docked && 'app-topbar-docked', className)}>
   {#snippet start()}
     {#if previous}
       <UiIconlink href={previous.toString()} label="Previous">
@@ -41,7 +42,7 @@
 
 <style lang="postcss">
   :global {
-    .app-topbar {
+    .app-topbar-docked {
       @apply color-canvas;
       animation-timeline: scroll(nearest);
       animation-name: app-topbar-color;

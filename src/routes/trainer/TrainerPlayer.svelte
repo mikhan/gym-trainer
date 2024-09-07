@@ -6,7 +6,7 @@
   import UiIconbutton from '$lib/components/ui/ui-iconbutton.svelte'
   import { faAnglesDown, faAnglesUp, faTrash } from '@fortawesome/free-solid-svg-icons'
   import Fa from 'svelte-fa'
-  import clsx from 'clsx'
+  import { slide } from 'svelte/transition'
 
   type Props = { state: TrainerContextStateRunning }
 
@@ -28,25 +28,28 @@
 </script>
 
 <AppShellSection name="footer">
-  <AppShellFooter
-    class={clsx('transition-all color-neutral-darkest', showHistory ? 'h-36' : 'h-0')}>
-    {#snippet end()}
-      <div class="flex h-full max-h-80 grow justify-start">
-        <ul
-          class="grid flex-1 grid-cols-[auto,auto] content-start justify-end gap-x-4 overflow-auto px-2 text-right font-mono leading-5 scrollbar-thin scrollbar-stable">
-          {#each history as duration, index}
-            <li class="col-span-2 grid grid-cols-subgrid">
-              <time>{formatTime(duration)}</time>
-              <span>{index + 1}</span>
-            </li>
-          {/each}
-        </ul>
-        <UiIconbutton label="Eliminar historial" onclick={clearHistory}>
-          <Fa icon={faTrash}></Fa>
-        </UiIconbutton>
-      </div>
-    {/snippet}
-  </AppShellFooter>
+  {#if showHistory}
+    <div transition:slide={{ axis: 'y', duration: 100 }}>
+      <AppShellFooter class="max-h-36 color-neutral-darkest">
+        {#snippet end()}
+          <div class="flex h-full max-h-80 grow justify-start">
+            <ul
+              class="grid flex-1 grid-cols-[auto,auto] content-start justify-end gap-x-4 overflow-auto px-2 text-right font-mono leading-5 scrollbar-thin scrollbar-stable">
+              {#each history as duration, index}
+                <li class="col-span-2 grid grid-cols-subgrid">
+                  <time>{formatTime(duration)}</time>
+                  <span>{index + 1}</span>
+                </li>
+              {/each}
+            </ul>
+            <UiIconbutton label="Eliminar historial" onclick={clearHistory}>
+              <Fa icon={faTrash}></Fa>
+            </UiIconbutton>
+          </div>
+        {/snippet}
+      </AppShellFooter>
+    </div>
+  {/if}
   <AppShellFooter class="color-neutral-darkest">
     {#snippet start()}
       <a

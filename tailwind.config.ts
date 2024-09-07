@@ -269,6 +269,7 @@ export default {
     },
   },
   plugins: [
+    require('@tailwindcss/typography'),
     require('@tailwindcss/container-queries'),
     scrollbarPlugin(),
     gridPlugin(),

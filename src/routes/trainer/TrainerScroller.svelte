@@ -2,15 +2,17 @@
   import UiIconbutton from '$lib/components/ui/ui-iconbutton.svelte'
   import Fa from 'svelte-fa'
   import { faChevronLeft, faChevronRight } from '@fortawesome/free-solid-svg-icons'
+  import clsx from 'clsx'
 
   type Props = {
     value?: number
     min?: number
     max?: number
+    class?: string
     onchange?: (value: number) => unknown
   }
 
-  let { value = $bindable(0), min = 0, max = 100, onchange }: Props = $props()
+  let { value = $bindable(0), min = 0, max = 100, class: className, onchange }: Props = $props()
   const ticks = $derived(Array.from({ length: max + 1 }, (_, index) => index))
 
   function previous() {
@@ -29,7 +31,10 @@
 </script>
 
 <section
-  class="flex items-center justify-between gap-1 rounded-full p-1 shadow color-neutral-darker surface surface-outlined sm:gap-2">
+  class={clsx(
+    'flex touch-pan-y items-center justify-between gap-1 rounded-full p-1 shadow color-neutral-darker surface surface-outlined sm:gap-2',
+    className,
+  )}>
   <UiIconbutton label="Serie anterior" onclick={previous}>
     <Fa icon={faChevronLeft}></Fa>
   </UiIconbutton>
@@ -43,7 +48,7 @@
     </div>
 
     <input
-      class="absolute inset-0 w-full cursor-pointer appearance-none bg-transparent align-middle"
+      class="absolute inset-0 w-full cursor-pointer appearance-none rounded-full bg-transparent align-middle !outline-offset-4 focusable-ring"
       type="range"
       bind:value
       {min}

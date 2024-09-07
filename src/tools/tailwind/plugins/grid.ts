@@ -10,6 +10,12 @@ export function gridPlugin() {
         'grid-cols-fit': (value) => ({
           gridTemplateColumns: `repeat(auto-fit, minmax(min(${value}, 100%), 1fr))`,
         }),
+        'grid-rows-fill': (value) => ({
+          gridTemplateRows: `repeat(auto-fill, minmax(min(${value}, 100%), 1fr))`,
+        }),
+        'grid-rows-fit': (value) => ({
+          gridTemplateRows: `repeat(auto-fit, minmax(min(${value}, 100%), 1fr))`,
+        }),
       },
       {
         values: theme('width', {}),

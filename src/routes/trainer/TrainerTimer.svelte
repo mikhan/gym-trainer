@@ -10,11 +10,13 @@
 
   type Time = { start: number; duration: number }
   type State = 'stopped' | 'playing' | 'paused'
-  type Props = { ontime?: (time: Time) => void }
+  type Props = {
+    pausePressDuration?: number
+    ontime?: (time: Time) => void
+  }
 
-  const { ontime }: Props = $props()
+  const { pausePressDuration = 1000, ontime }: Props = $props()
 
-  const pausePressDuration = 3000
   const history: Time[] = $state([])
   const defaultValue = {
     minutes: '0',
@@ -79,14 +81,11 @@
     pressing = false
   }} />
 
-<div
-  class="grid grid-cols-[auto,3rem] items-center gap-2 rounded-full p-1 color-neutral surface [zoom:1.25]">
+<div class="grid grid-cols-[auto,3rem] items-center gap-2 rounded-full p-1 color-neutral surface">
   {#key value}
     <div
-      class={clsx(
-        'grid h-full content-end items-end pl-2 text-right font-mono',
-        status === 'paused' && 'animate-paused',
-      )}>
+      class="grid h-full content-end items-end pl-2 text-right font-mono"
+      class:animate-paused={status === 'paused'}>
       <span class="h-6 w-[4ch] text-3xl/6">{value.minutes}:</span>
       <span class="h-6 w-[2ch] text-3xl/6">{value.seconds}</span>
       <span class="col-span-2 h-4 text-base/4">{value.milliseconds}</span>
@@ -117,7 +116,8 @@
           pressing ? 'opacity-100 delay-200' : 'opacity-0 delay-0',
         )}>
         <div
-          class="flex flex-col items-center gap-4 rounded-card p-4 shadow-over color-canvas surface sm:contents">
+          class="flex flex-col items-center gap-4 rounded-card p-4 shadow-over color-canvas surface sm:contents"
+          class:hidden={!pressing}>
           <UiCircularProgress
             class={clsx('size-24 color-primary sm:size-full', !pressing && 'hidden')}
             duration={`${pausePressDuration}ms`}
@@ -131,11 +131,23 @@
 
 <style lang="postcss">
   .animate-paused {
-    animation: paused 1.5s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+    animation-name: --intermitent;
+    animation-duration: 1s;
+    animation-timing-function: linear;
+    animation-iteration-count: infinite;
   }
 
-  @keyframes paused {
-    50% {
+  @keyframes --intermitent {
+    0% {
+      opacity: 1;
+    }
+    60% {
+      opacity: 1;
+    }
+    70% {
+      opacity: 0;
+    }
+    100% {
       opacity: 0;
     }
   }
