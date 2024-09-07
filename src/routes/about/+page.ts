@@ -1,3 +1,4 @@
+import { building } from '$app/environment'
 import type { PageLoad } from './$types'
 
 type Build = {
@@ -7,7 +8,8 @@ type Build = {
 }
 
 export const load = (async ({ fetch }) => {
-  return {
-    build: (await (await fetch('/build.json')).json()) as Build,
-  }
+  const build: Build = await (await fetch('/build.json')).json()
+  if (!building) build.commitRef = Date.now().toString(16)
+
+  return { build }
 }) satisfies PageLoad

@@ -4,7 +4,6 @@
   import type { PageData } from './$types'
 
   export let data: PageData
-  console.log(data.build)
 </script>
 
 <AppShellSection name="header">
@@ -15,10 +14,10 @@
   <h1 class="typescale-title">Build</h1>
   <dl class="grid grid-cols-[auto,1fr] gap-x-4 gap-y-2">
     <dt class="font-bold">Build date</dt>
-    <dd>{new Date(data.build.buildDate).toLocaleString()}</dd>
+    <dd class="text-right">{new Date(data.build.buildDate).toLocaleString()}</dd>
     <dt class="font-bold">Branch</dt>
-    <dd>{data.build.branch}</dd>
+    <dd class="text-right">{data.build.branch}</dd>
     <dt class="font-bold">Commit ref</dt>
-    <dd>{data.build.commitRef}</dd>
+    <dd class="text-right">{data.build.commitRef.substring(0, 8)}</dd>
   </dl>
 </div>
