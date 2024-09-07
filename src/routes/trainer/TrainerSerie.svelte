@@ -8,13 +8,11 @@
     serieIndex: number
     total: number
     isCurrent: boolean
+    isCompleted?: boolean
     records?: Record<string, Types.TrainerRecord>
   }
 
-  let { serie, serieIndex, total, isCurrent, records }: Props = $props()
-
-  const registered = $derived(records ? Object.keys(records) : [])
-  const completed = $derived(Object.keys(serie.steps).every((index) => registered.includes(index)))
+  let { serie, serieIndex, total, isCurrent, isCompleted, records }: Props = $props()
 
   // function updateSerieNotes(value: string) {
   //   trainerContext.updateSerieNotes(serieIndex, value)
@@ -22,7 +20,7 @@
 </script>
 
 <li
-  class="mx-auto grid size-full max-w-screen-sm p-layout-gap"
+  class="mx-auto grid size-full max-w-[--max-width] p-layout-gap"
   role="group"
   aria-roledescription="Slide"
   aria-label={serie.name}
@@ -31,8 +29,8 @@
   inert={!isCurrent}>
   <article
     class={clsx(
-      'mx-auto flex size-full max-w-screen-sm flex-col overflow-y-auto rounded-card shadow transition-colors scrollbar-thin surface',
-      completed ? 'color-secondary-darker' : 'color-neutral',
+      'mx-auto flex size-full flex-col overflow-y-auto rounded-card shadow transition-colors scrollbar-thin surface',
+      isCompleted ? 'color-secondary-darker' : 'color-neutral-lighter',
     )}>
     <header class="sticky top-0 z-1 mb-6 flex items-start gap-4 bg-inherit p-6 pb-4">
       <div class="flex items-center gap-1">
@@ -40,10 +38,10 @@
         <span class="text-lg leading-5 opacity-75">DE<br />{total}</span>
       </div>
       <h1 class="typescale-headline grow">{serie.name}</h1>
-      <!-- <div
+      <div
         class="pointer-events-none absolute -bottom-6 left-0 h-6 w-full bg-inherit"
         style="mask-image: linear-gradient(to bottom, black, transparent)">
-      </div> -->
+      </div>
     </header>
     <!-- <div class="px-6">
       <label class="ui-field">
@@ -57,14 +55,15 @@
         </div>
       </label>
     </div> -->
-    <ul
-      class="mt-auto flex w-full flex-none snap-x snap-mandatory scroll-p-6 justify-start gap-4 overflow-x-auto px-6 pb-6 scrollbar-thin"
-      style="_mask-image: linear-gradient(to right, transparent, black 2rem, black calc(100% - 2rem), transparent);">
-      <!-- eslint-disable-next-line @typescript-eslint/no-unused-vars -->
-      {#each serie.steps as step, stepIndex}
-        <TrainerStep {serieIndex} {stepIndex} record={records?.[stepIndex]}></TrainerStep>
-      {/each}
-    </ul>
+    <div
+      class="mt-auto flex w-full flex-none snap-x snap-mandatory scroll-p-6 justify-start gap-4 overflow-x-scroll p-6 scrollbar-thin">
+      <ul class={clsx('-m-4 flex grow gap-4 rounded-card p-4')}>
+        <!-- eslint-disable-next-line @typescript-eslint/no-unused-vars -->
+        {#each serie.steps as step, stepIndex}
+          <TrainerStep {serieIndex} {stepIndex} record={records?.[stepIndex]}></TrainerStep>
+        {/each}
+      </ul>
+    </div>
   </article>
 </li>
 

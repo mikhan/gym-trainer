@@ -42,6 +42,7 @@
 <div
   class="app-shell"
   use:setStyle
+  use:viewTransitionName={'app-viewport'}
   use:getStyle={(e) => ({
     '--layout-width': `${e.clientWidth}px`,
     '--layout-height': `${e.clientHeight}px`,
@@ -50,8 +51,8 @@
     {#key appShellContext.headerLevel}
       <header
         class="app-header"
-        transition:fly={{ duration: 200, y: '-100%' }}
         use:viewTransitionName={'app-header'}
+        transition:fly={{ duration: 200, y: '-100%' }}
         use:getStyle={(e) => ({
           '--layout-header-width': 'calc(var(--layout-width) - var(--layout-aside-width))',
           '--layout-header-height': `${e.offsetHeight}px`,
@@ -75,22 +76,22 @@
     {/key}
   {/if}
 
-  <main class="app-viewport" use:viewTransitionName={'app-viewport'}>
+  <main class="app-viewport">
     {@render children()}
   </main>
 
   {#if appShellContext.footer}
-    <!-- {#key appShellContext.footerLevel} -->
-    <footer
-      class="app-footer"
-      use:viewTransitionName={'app-footer'}
-      use:getStyle={(e) => ({
-        '--layout-footer-width': 'calc(var(--layout-width) - var(--layout-aside-width))',
-        '--layout-footer-height': `${e.offsetHeight}px`,
-      })}>
-      {@render appShellContext.footer()}
-    </footer>
-    <!-- {/key} -->
+    {#key appShellContext.footerLevel}
+      <footer
+        class="app-footer"
+        use:viewTransitionName={'app-footer'}
+        use:getStyle={(e) => ({
+          '--layout-footer-width': 'calc(var(--layout-width) - var(--layout-aside-width))',
+          '--layout-footer-height': `${e.offsetHeight}px`,
+        })}>
+        {@render appShellContext.footer()}
+      </footer>
+    {/key}
   {/if}
 </div>
 
@@ -167,7 +168,7 @@
         theme('transitionDuration.medium') cubic-bezier(0.4, 0, 0.2, 1) both slide-from-right;
     }
 
-    ::view-transition-group(app-header),
+    /* ::view-transition-group(app-header),
     ::view-transition-group(app-footer) {
       animation-duration: theme('transitionDuration.medium');
       animation-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
@@ -181,7 +182,7 @@
     ::view-transition-new(app-footer) {
       height: 100%;
       object-fit: none;
-    }
+    } */
 
     ::view-transition-old(app-aside):only-child {
       animation: theme('transitionDuration.medium') cubic-bezier(0.4, 0, 0.2, 1) both slide-out;

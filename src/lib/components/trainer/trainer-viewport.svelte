@@ -7,6 +7,7 @@
   import ActionCurrent from './action-current.svelte'
   // import TrainerTimer from './trainer-timer.svelte'
   import AppTopbar from '../app/AppTopbar.svelte'
+  import AppShellSection from '../app/AppShellSection.svelte'
 
   type Props = {
     routines: Routine[]
@@ -25,11 +26,13 @@
   }
 </script>
 
-<AppTopbar>
-  {#if routines && currentRoutine}
-    <RoutineSwitcher {routines} bind:currentRoutineId></RoutineSwitcher>
-  {/if}
-</AppTopbar>
+<AppShellSection name="header">
+  <AppTopbar>
+    {#if routines && currentRoutine}
+      <RoutineSwitcher {routines} bind:currentRoutineId></RoutineSwitcher>
+    {/if}
+  </AppTopbar>
+</AppShellSection>
 
 <div>
   {#if $currentAction$}

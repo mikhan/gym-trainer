@@ -14,12 +14,7 @@
 </script>
 
 {#if trainerContext.state.status === 'running'}
-  {@const { training, currentSerieIndex, currentRoutine, currentSerie, records } =
-    trainerContext.state}
-  <TrainerRunning {training} {currentSerieIndex} {currentRoutine} {currentSerie} {records}
-  ></TrainerRunning>
+  <TrainerRunning data={trainerContext.state}></TrainerRunning>
 {:else if trainerContext.state.status === 'completed'}
-  <TrainerCompleted
-    training={trainerContext.state.training}
-    currentRoutine={trainerContext.state.currentRoutine}></TrainerCompleted>
+  <TrainerCompleted state={trainerContext.state}></TrainerCompleted>
 {/if}

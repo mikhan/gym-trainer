@@ -83,7 +83,9 @@
 
 <AppMetadata title="Theme Editor"></AppMetadata>
 
-<AppTopbar title="Theme Editor"></AppTopbar>
+<AppShellSection name="header">
+  <AppTopbar title="Theme Editor"></AppTopbar>
+</AppShellSection>
 
 <AppShellSection name="aside">
   <AppAside class="color-neutral surface" title="Variables">

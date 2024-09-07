@@ -11,6 +11,7 @@
   import { startViewTransition } from '$lib/actions/transition.action'
   import AppEditTopbar from '../app/AppEditTopbar.svelte'
   import AppMetadata from '../app/AppMetadata.svelte'
+  import AppShellSection from '../app/AppShellSection.svelte'
 
   type Props = {
     training: Types.Training
@@ -31,13 +32,15 @@
 
 <AppMetadata title={`Entrenamiento ${trainingViewportContext.training$.name}`}></AppMetadata>
 
-<AppTopbar previous="/trainings" title={trainingViewportContext.training$.name}>
-  {#snippet actions()}
-    <UiIconbutton label="Layout" onclick={toggleLayout}>
-      <Fa icon={layoutTypeIcons[layout.value]}></Fa>
-    </UiIconbutton>
-  {/snippet}
-</AppTopbar>
+<AppShellSection name="header">
+  <AppTopbar class="color-primary" previous="/" title={trainingViewportContext.training$.name}>
+    {#snippet actions()}
+      <UiIconbutton label="Layout" onclick={toggleLayout}>
+        <Fa icon={layoutTypeIcons[layout.value]}></Fa>
+      </UiIconbutton>
+    {/snippet}
+  </AppTopbar>
+</AppShellSection>
 
 {#if trainingViewportContext.pristine$ === false}
   <AppEditTopbar title={`Editar entrenamiento ${trainingViewportContext.training$.name}`}>

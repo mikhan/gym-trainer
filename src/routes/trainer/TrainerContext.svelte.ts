@@ -10,6 +10,7 @@ export type TrainerContextStateUnset = {
   currentSerieIndex: null
   currentSerie: null
   records: null
+  progress: null
 }
 
 export type TrainerContextStateRunning = {
@@ -20,6 +21,7 @@ export type TrainerContextStateRunning = {
   currentSerieIndex: number
   currentSerie: Types.RoutineSerie
   records: Types.TrainerRecords
+  progress: Types.TrainerProgress
 }
 
 export type TrainerContextStateCompleted = {
@@ -30,12 +32,13 @@ export type TrainerContextStateCompleted = {
   currentSerieIndex: null
   currentSerie: null
   records: Types.TrainerRecords
+  progress: Types.TrainerProgress
 }
 
 type TrainerContextState =
-  | Omit<TrainerContextStateUnset, 'currentRoutine' | 'currentSerie'>
-  | Omit<TrainerContextStateRunning, 'currentRoutine' | 'currentSerie'>
-  | Omit<TrainerContextStateCompleted, 'currentRoutine' | 'currentSerie'>
+  | Omit<TrainerContextStateUnset, 'currentRoutine' | 'currentSerie' | 'progress'>
+  | Omit<TrainerContextStateRunning, 'currentRoutine' | 'currentSerie' | 'progress'>
+  | Omit<TrainerContextStateCompleted, 'currentRoutine' | 'currentSerie' | 'progress'>
 
 export class TrainerContext {
   static getContext() {
@@ -54,29 +57,36 @@ export class TrainerContext {
     records: null,
   })
 
-  state = $derived.by(() => {
-    let currentRoutine: Types.Routine | null = null
-    let currentSerie: Types.RoutineSerie | null = null
+  state: TrainerContextStateUnset | TrainerContextStateRunning | TrainerContextStateCompleted =
+    $derived.by(() => {
+      let currentRoutine: Types.Routine | null = null
+      let currentSerie: Types.RoutineSerie | null = null
+      let progress: Types.TrainerProgress | null = null
 
-    const { status, training, currentRoutineIndex, currentSerieIndex } = this.#state
+      const { status, training, currentRoutineIndex, currentSerieIndex, records } = this.#state
 
-    switch (status) {
-      case 'completed':
-        currentRoutine = training.routines[currentRoutineIndex] || null
-        if (!currentRoutine) throw new TypeError(`Invalid routine index '${currentRoutineIndex}'.`)
-        return { ...this.#state, currentRoutine, currentSerie }
+      switch (status) {
+        case 'running':
+          currentRoutine = training.routines[currentRoutineIndex] || null
+          if (!currentRoutine)
+            throw new TypeError(`Invalid routine index '${currentRoutineIndex}'.`)
+          currentSerie = currentRoutine.series[currentSerieIndex] || null
+          if (!currentSerie) throw new TypeError(`Invalid serie index '${currentSerieIndex}'.`)
+          progress = getProgress(currentRoutine, records)
+          return { ...this.#state, currentRoutine, currentSerie, progress }
 
-      case 'running':
-        currentRoutine = training.routines[currentRoutineIndex] || null
-        if (!currentRoutine) throw new TypeError(`Invalid routine index '${currentRoutineIndex}'.`)
-        currentSerie = currentRoutine.series[currentSerieIndex] || null
-        if (!currentSerie) throw new TypeError(`Invalid serie index '${currentSerieIndex}'.`)
-        return { ...this.#state, currentRoutine, currentSerie }
+        case 'completed':
+          currentRoutine = training.routines[currentRoutineIndex] || null
 
-      default:
-        return { ...this.#state, currentRoutine, currentSerie }
-    }
-  })
+          if (!currentRoutine)
+            throw new TypeError(`Invalid routine index '${currentRoutineIndex}'.`)
+          progress = getProgress(currentRoutine, records)
+          return { ...this.#state, currentRoutine, currentSerie, progress }
+
+        default:
+          return { ...this.#state, currentRoutine, currentSerie, progress }
+      }
+    })
 
   private constructor() {}
 
@@ -182,4 +192,14 @@ export class TrainerContext {
       delete records[stepIndex]
     }
   }
+}
+
+function getProgress(routine: Types.Routine, records: Types.TrainerRecords): Types.TrainerProgress {
+  return Object.fromEntries(
+    routine.series.map(({ id, steps }) => {
+      const record = records[id]
+      const progress = Object.keys(steps).filter((index) => record && record[index])
+      return [id, progress.length / steps.length]
+    }),
+  )
 }

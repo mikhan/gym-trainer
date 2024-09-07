@@ -8,6 +8,6 @@ export const GET: RequestHandler = async () => {
   return json({
     branch: BRANCH,
     commitRef: COMMIT_REF,
-    buildTime: new Date().toJSON(),
+    buildDate: new Date().toJSON(),
   })
 }

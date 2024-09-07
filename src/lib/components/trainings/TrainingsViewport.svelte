@@ -1,6 +1,7 @@
 <script lang="ts">
   import AppTopbar from '$lib/components/app/AppTopbar.svelte'
   import AppMetadata from '../app/AppMetadata.svelte'
+  import AppShellSection from '../app/AppShellSection.svelte'
   import TrainingsGrid from './TrainingsGrid.svelte'
 
   type Props = {
@@ -11,7 +12,9 @@
 
 <AppMetadata title="Entrenamientos"></AppMetadata>
 
-<AppTopbar title="Entrenamientos"></AppTopbar>
+<AppShellSection name="header">
+  <AppTopbar title="Entrenamientos"></AppTopbar>
+</AppShellSection>
 
 <div class="container mx-auto p-layout-gap">
   <TrainingsGrid {trainings}></TrainingsGrid>

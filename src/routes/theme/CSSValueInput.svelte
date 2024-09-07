@@ -33,7 +33,10 @@
     element.addEventListener('blur', () => (element.contentEditable = 'false'), { once: true })
   }
 
-  const unitLengthControl: Action<HTMLElement, UnitLengthToken> = (element, token) => {
+  const unitLengthControl: Action<HTMLElement, UnitLengthToken> = (
+    element,
+    token: UnitLengthToken,
+  ) => {
     element.addEventListener('click', onClick)
     element.addEventListener('mousedown', onMousedown)
     element.setAttribute('tabindex', '-1')
@@ -79,7 +82,7 @@
     }
   }
 
-  const varControl: Action<HTMLElement, VarToken> = (element, token) => {
+  const varControl: Action<HTMLElement, VarToken> = (element, token: VarToken) => {
     function onclick(event: MouseEvent) {
       event.preventDefault()
       document.getElementById(`css-input${token.value}`)?.scrollIntoView({ behavior: 'smooth' })

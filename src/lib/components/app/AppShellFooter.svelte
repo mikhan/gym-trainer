@@ -13,7 +13,10 @@
   let { start, children, end, class: className, ...other }: Props = $props()
 </script>
 
-<div class={clsx('app-shell-footer', className)} {...other}>
+<div
+  class={clsx('app-shell-footer', className)}
+  {...other}
+  use:viewTransitionClass={'app-shell-footer'}>
   <div class="container mx-auto flex gap-2 px-layout-gap py-2 *:flex *:items-center *:gap-2">
     {#if start}
       <div class="grow justify-start" use:viewTransitionClass={'app-shell-footer-start'}>
@@ -38,31 +41,39 @@
     @apply flex overflow-hidden transition surface;
   }
 
+  ::view-transition-group(.app-shell-footer),
   ::view-transition-group(.app-shell-footer-start),
+  ::view-transition-group(.app-shell-footer-center),
   ::view-transition-group(.app-shell-footer-end) {
     animation-duration: theme('transitionDuration.medium');
     animation-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
-    z-index: 1;
+    z-index: 2;
   }
 
+  ::view-transition-old(.app-shell-footer),
+  ::view-transition-new(.app-shell-footer),
   ::view-transition-old(.app-shell-footer-start),
-  ::view-transition-new(.app-shell-footer-start) {
-    height: 100%;
-    object-fit: none;
-    object-position: left;
-  }
-
+  ::view-transition-new(.app-shell-footer-start),
   ::view-transition-old(.app-shell-footer-center),
-  ::view-transition-new(.app-shell-footer-center) {
-    height: 100%;
-    object-fit: none;
-    object-position: center;
-  }
-
+  ::view-transition-new(.app-shell-footer-center),
   ::view-transition-old(.app-shell-footer-end),
   ::view-transition-new(.app-shell-footer-end) {
     height: 100%;
     object-fit: none;
-    object-position: right;
+  }
+
+  ::view-transition-old(.app-shell-footer-start),
+  ::view-transition-new(.app-shell-footer-start) {
+    object-position: bottom left;
+  }
+
+  ::view-transition-old(.app-shell-footer-center),
+  ::view-transition-new(.app-shell-footer-center) {
+    object-position: bottom center;
+  }
+
+  ::view-transition-old(.app-shell-footer-end),
+  ::view-transition-new(.app-shell-footer-end) {
+    object-position: bottom right;
   }
 </style>

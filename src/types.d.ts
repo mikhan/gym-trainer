@@ -40,6 +40,10 @@ declare global {
       }
     }
 
+    type TrainerProgress = {
+      [serieId: string]: number
+    }
+
     type TrainerRecord = {
       type: 'repetitions' | 'failure'
       value: string

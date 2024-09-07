@@ -1,11 +1,10 @@
 <script lang="ts">
   import { autoselect } from '$lib/actions/autoselect.action'
-  import clsx from 'clsx'
   import { TrainerContext } from './TrainerContext.svelte'
   import { convertUnit } from '$lib/utils/unit-converter'
   import Fa from 'svelte-fa'
   import { faCheck } from '@fortawesome/free-solid-svg-icons'
-  import { faCircle } from '@fortawesome/free-regular-svg-icons'
+  import clsx from 'clsx'
 
   type Props = {
     serieIndex: number
@@ -45,8 +44,7 @@
     {/if}
     <div>{step.value} reps</div>
   </div>
-  <label
-    class={clsx('ui-input w-full flex-col rounded-card p-1', record && 'color-neutral-darkest')}>
+  <label class="ui-input w-full flex-col rounded-card p-1" class:color-neutral-darker={record}>
     <span class="typescale-label opacity-75">Peso</span>
     <input
       class="w-[5ch] text-center text-2xl"
@@ -62,16 +60,18 @@
   </label>
   <button
     class={clsx(
-      'flex w-full place-content-center items-center justify-between rounded-full border-2 p-1 transition-colors surface surface-editable',
-      record && 'color-neutral-darkest',
+      'flex w-full place-content-center items-center rounded-full border-2 p-1 transition-colors surface surface-editable',
+      record ? 'justify-end color-neutral-darker' : 'justify-start color-neutral-lighter',
     )}
-    onclick={() => {
-      record ? deleteRecord() : setRecord()
-      //   completed[stepIndex] = completed ? undefined : step
-    }}>
-    <span class="px-2 text-sm">{stepIndex + 1}</span>
-    <span class="grid size-5 place-content-center rounded-full">
-      <Fa icon={record ? faCheck : faCircle} size="sm"></Fa>
+    onclick={() => (record ? deleteRecord() : setRecord())}>
+    <!-- <span class="px-2 text-sm">{stepIndex + 1}</span> -->
+    <span
+      class={clsx(
+        'grid size-5 place-content-center rounded-full shadow',
+        record ? 'bg-secondary text-secondary-fg' : 'bg-default-fg',
+      )}>
+      <span class={clsx('transition-opacity', record ? 'opacity-100' : 'opacity-0')}
+        ><Fa icon={faCheck} size="xs"></Fa></span>
     </span>
   </button>
 </li>

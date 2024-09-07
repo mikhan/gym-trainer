@@ -34,19 +34,29 @@
   export function previous() {
     const children = getChildren()
     const current = getCurrent(children)
-    if (current) goto(children, children.indexOf(current) - 1)
+    if (current) scrollTo(children, children.indexOf(current) - 1)
   }
 
   export function next() {
     const children = getChildren()
     const current = getCurrent(children)
-    if (current) goto(children, children.indexOf(current) + 1)
+    if (current) scrollTo(children, children.indexOf(current) + 1)
   }
 
-  function goto(children: HTMLLIElement[], index: number) {
+  export function goto(index: number) {
+    const children = getChildren()
+    scrollTo(children, index)
+  }
+
+  function scrollTo(children: HTMLLIElement[], index: number) {
     if (index < 0 || index >= children.length) return
     const target = children.at(index)
-    if (target) target.scrollIntoView({ behavior: 'smooth' })
+    if (target) {
+      const behavior = window.getComputedStyle(root).getPropertyValue('scroll-behavior') as
+        | 'auto'
+        | 'smooth'
+      target.scrollIntoView({ behavior })
+    }
   }
 
   function getChildren() {
@@ -67,7 +77,8 @@
     if (!onscrollsnapchange) return
 
     let current: HTMLLIElement | null = root.querySelector(':scope > li[aria-current="true"]')
-    if (current) current.scrollIntoView({ behavior: 'instant' })
+    if (current && direction === 'horizontal') root.scrollLeft = current.offsetLeft
+    if (current && direction === 'vertical') root.scrollTop = current.offsetTop
 
     const intersectionObserver = new IntersectionObserver(onIntersection, {
       threshold: [0, 1],
@@ -143,7 +154,7 @@
       grid-auto-columns: 100%;
       grid-auto-rows: 100%;
       scroll-snap-type: both mandatory;
-      scroll-behavior: smooth;
+      scroll-behavior: auto;
       container: carousel / size;
 
       &[data-direction='horizontal'] {

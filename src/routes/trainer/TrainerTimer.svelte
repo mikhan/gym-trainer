@@ -81,15 +81,17 @@
 
 <div
   class="grid grid-cols-[auto,3rem] items-center gap-2 rounded-full p-1 color-neutral surface [zoom:1.25]">
-  <div
-    class={clsx(
-      'grid h-full content-end items-end pl-2 text-right font-mono',
-      status === 'paused' && 'animate-paused',
-    )}>
-    <span class="h-6 w-[4ch] text-3xl/6">{value.minutes}:</span>
-    <span class="h-6 w-[2ch] text-3xl/6">{value.seconds}</span>
-    <span class="col-span-2 h-4 text-base/4">{value.milliseconds}</span>
-  </div>
+  {#key value}
+    <div
+      class={clsx(
+        'grid h-full content-end items-end pl-2 text-right font-mono',
+        status === 'paused' && 'animate-paused',
+      )}>
+      <span class="h-6 w-[4ch] text-3xl/6">{value.minutes}:</span>
+      <span class="h-6 w-[2ch] text-3xl/6">{value.seconds}</span>
+      <span class="col-span-2 h-4 text-base/4">{value.milliseconds}</span>
+    </div>
+  {/key}
   <UiIconbutton
     class="relative color-primary"
     size="lg"
@@ -111,14 +113,17 @@
       }}>
       <div
         class={clsx(
-          'pointer-events-none fixed inset-0 grid place-content-center place-items-center gap-4 bg-black/50 transition-opacity sm:absolute sm:-inset-3 sm:bg-transparent',
+          'pointer-events-none fixed inset-0 grid place-content-center bg-black/50 transition-opacity sm:absolute sm:-inset-2 sm:bg-transparent',
           pressing ? 'opacity-100 delay-200' : 'opacity-0 delay-0',
         )}>
-        <UiCircularProgress
-          class={clsx('size-24 sm:size-full', !pressing && 'hidden')}
-          duration={`${pausePressDuration}ms`}
-          stroke={16}></UiCircularProgress>
-        <div class="sm:hidden">Pausar cronómetro</div>
+        <div
+          class="flex flex-col items-center gap-4 rounded-card p-4 shadow-over color-canvas surface sm:contents">
+          <UiCircularProgress
+            class={clsx('size-24 color-primary sm:size-full', !pressing && 'hidden')}
+            duration={`${pausePressDuration}ms`}
+            stroke={16}></UiCircularProgress>
+          <div class="text-base/4 sm:hidden">Pausar cronómetro</div>
+        </div>
       </div>
     </div>
   </UiIconbutton>

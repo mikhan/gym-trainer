@@ -1,27 +1,34 @@
 <script lang="ts">
   import clsx from 'clsx'
+  import type { Snippet } from 'svelte'
   import type { HTMLAttributes } from 'svelte/elements'
 
   type Props = {
-    title: string
     src: string | URL
     alt: string
+    children?: Snippet
   } & HTMLAttributes<HTMLElement>
 
-  let { title, src, alt, class: className, ...props }: Props = $props()
+  let { src, alt, class: className, children, ...props }: Props = $props()
 </script>
 
 <figure
   class={clsx(
-    'grid aspect-square grid-cols-[100%] grid-rows-[1fr,auto] justify-items-center gap-4 rounded-card bg-white p-4 shadow contain-strict',
+    'grid aspect-square grid-cols-[100%] grid-rows-1 justify-items-center gap-4 rounded-button bg-black p-2 contain-strict',
     className,
-  )}>
-  <img
-    class="size-full max-h-full max-w-full object-contain contain-size"
-    src={src.toString()}
-    {alt} />
-  <figcaption
-    class="typescale-label rounded-full px-4 py-1 font-bold uppercase color-neutral surface">
-    {title}
-  </figcaption>
+  )}
+  {...props}>
+  <div class="relative isolate size-full contain-size">
+    <img class="size-full object-contain invert" src={src.toString()} {alt} />
+    <img
+      class="absolute inset-0 size-full object-contain mix-blend-color"
+      src={src.toString()}
+      aria-hidden="true"
+      alt="" />
+  </div>
+  {#if children}
+    <figcaption class="typescale-label text-white">
+      {@render children()}
+    </figcaption>
+  {/if}
 </figure>

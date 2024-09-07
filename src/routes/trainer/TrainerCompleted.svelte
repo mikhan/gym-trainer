@@ -1,17 +1,19 @@
 <script lang="ts">
+  import AppShellSection from '$lib/components/app/AppShellSection.svelte'
   import AppTopbar from '$lib/components/app/AppTopbar.svelte'
-  // import { TrainerContext } from './TrainerContext.svelte'
+  import type { TrainerContextStateCompleted } from './TrainerContext.svelte'
 
   type Props = {
-    training: Types.Training
-    currentRoutine: Types.Routine
+    state: TrainerContextStateCompleted
   }
 
-  let { training, currentRoutine }: Props = $props()
-  // const trainerContext = TrainerContext.getContext()
+  const { state }: Props = $props()
+  let { training, currentRoutine } = state
 </script>
 
-<AppTopbar previous={`/trainings/${training.id}`} title={training.name}></AppTopbar>
+<AppShellSection name="header">
+  <AppTopbar previous={`/trainings/${training.id}`} title={training.name}></AppTopbar>
+</AppShellSection>
 
 <article class="container mx-auto flex flex-col space-y-4 p-layout-gap">
   <header>
