@@ -65,27 +65,27 @@ Excepteur aute voluptate anim mollit do amet officia dolore excepteur occaecat u
   onpointerup={() => (pointerdown = false)}
   onpointercancel={() => (pointerdown = false)} />
 
+<AppShellSection name="header">
+  <AppShellHeader class="app-topbar app-topbar-docked">
+    {#snippet start()}
+      <UiButton onclick={closeViewport}>
+        <Fa icon={faChevronDown}></Fa>
+        <span>{data.currentRoutine.name}</span>
+      </UiButton>
+    {/snippet}
+    {#snippet end()}
+      <UiButton class="color-neutral" variant="outlined" onclick={terminate}>Terminar</UiButton>
+    {/snippet}
+  </AppShellHeader>
+</AppShellSection>
+
 <div
   class="relative mx-auto grid size-full content-start surface xl:container xl:grid-cols-2"
   bind:this={root}>
   <div
-    class="flex h-layout-viewport-height max-h-[60rem] min-h-[35rem] flex-col xl:sticky [@media(min-height:768px)]:top-layout-viewport-top">
-    <AppShellSection name="header">
-      <AppShellHeader class="app-topbar app-topbar-docked">
-        {#snippet start()}
-          <UiButton onclick={closeViewport}>
-            <Fa icon={faChevronDown}></Fa>
-            <span>{data.currentRoutine.name}</span>
-          </UiButton>
-        {/snippet}
-        {#snippet end()}
-          <UiButton class="color-neutral" variant="outlined" onclick={terminate}>Terminar</UiButton>
-        {/snippet}
-      </AppShellHeader>
-    </AppShellSection>
-
+    class="flex h-[clamp(30rem,var(--layout-viewport-height),60rem)] flex-col gap-layout-gap p-layout-gap xl:sticky [@media(min-height:768px)]:top-layout-viewport-top">
     <div
-      class="grow"
+      class="-m-layout-gap grow"
       use:viewTransitionName={{
         name: 'trainer-running-serie',
         type: 'trainer-running-transition',
@@ -108,30 +108,29 @@ Excepteur aute voluptate anim mollit do amet officia dolore excepteur occaecat u
         {/each}
       </UiCarousel>
     </div>
-    <div class="container mx-auto w-full p-layout-gap pt-0">
-      <TrainerScroller
-        value={data.currentSerieIndex}
-        min={0}
-        max={data.currentRoutine.series.length - 1}
-        onchange={(value) => gotoSerie(value)}></TrainerScroller>
-    </div>
+    <TrainerScroller
+      value={data.currentSerieIndex}
+      min={0}
+      max={data.currentRoutine.series.length - 1}
+      onchange={(value) => gotoSerie(value)}></TrainerScroller>
   </div>
 
   <div class="container mx-auto w-full space-y-layout-gap p-layout-gap max-xl:pt-0">
-    <section class="flex flex-wrap gap-2">
+    <section class="flex flex-wrap gap-4">
       {#each data.currentRoutine.series as serie, serieIndex (serie.id)}
         {@const percent = `${((data.progress[serie.id] ?? 0) * 100).toFixed(0)}%`}
         <button
-          class="typescale-label relative line-clamp-1 min-w-min rounded-button px-2 py-1 text-left shadow color-neutral surface surface-hoverable surface-activable focusable-outside focusable-ring"
+          class="relative min-w-min rounded-button px-2 py-1 text-left shadow color-neutral surface surface-hoverable surface-activable focusable-outside focusable-ring"
           type="button"
           onclick={() => gotoSerie(serieIndex)}>
-          <div>{serie.name}</div>
+          <div class="typescale-label line-clamp-1">{serie.name}</div>
           <div
-            class="absolute inset-0 line-clamp-1 overflow-clip px-2 py-1 transition-all color-secondary surface"
+            class="typescale-label absolute inset-0 line-clamp-1 overflow-clip rounded-button px-2 py-1 transition-all color-secondary surface"
             style="clip-path: rect(auto var(--clip-width) auto auto)"
             style:--clip-width={percent}>
             {serie.name}
           </div>
+          <div class="absolute -inset-2"></div>
         </button>
       {/each}
     </section>

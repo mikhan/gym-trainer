@@ -33,16 +33,12 @@
           ? 'delay-200 duration-long color-secondary-darker'
           : 'duration-short color-neutral-lighter',
       )}>
-      <header class="sticky top-0 z-1 mb-6 flex items-start gap-4 bg-inherit p-6 pb-4">
+      <header class="flex items-center gap-4 p-6">
         <div class="flex items-center gap-1">
           <span class="text-6xl font-light leading-10">{serieIndex + 1}</span>
           <span class="text-lg leading-5 opacity-75">DE<br />{total}</span>
         </div>
         <h1 class="typescale-headline grow">{serie.name}</h1>
-        <div
-          class="pointer-events-none absolute -bottom-6 left-0 h-6 w-full bg-inherit"
-          style="mask-image: linear-gradient(to bottom, black, transparent)">
-        </div>
       </header>
       <!-- <div class="px-6">
       <label class="ui-field">
@@ -56,7 +52,9 @@
         </div>
       </label>
     </div> -->
-      <div class="typescale-title mt-auto px-6">{serie.steps.length} series</div>
+      <div class="typescale-title mt-auto px-6">
+        {serie.steps.length} series
+      </div>
       <ul
         class="grid w-full snap-x snap-mandatory scroll-p-6 auto-cols-max grid-flow-col content-end justify-start gap-x-4 gap-y-2 overflow-x-scroll p-6 scrollbar-thin *:snap-start">
         <!-- eslint-disable-next-line @typescript-eslint/no-unused-vars -->

@@ -91,7 +91,6 @@ export class TrainerContext {
   private constructor() {}
 
   startTraining(training: Types.Training, currentRoutineIndex: number, currentSerieIndex = 0) {
-    console.log('startTraining')
     const routine = training.routines[currentRoutineIndex]
     if (!routine) throw new TypeError(`Invalid routine index '${currentRoutineIndex}'.`)
     const serie = routine.series[currentSerieIndex]
@@ -138,7 +137,6 @@ export class TrainerContext {
     const serie = this.getSerie(serieIndex)
     const step = serie.steps[stepIndex]
     if (!step) {
-      console.log($state.snapshot(serie))
       throw new Error(`Undefined step ${stepIndex} of ${serie.steps.length}.`)
     }
 

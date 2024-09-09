@@ -13,7 +13,6 @@
   )
 
   let { previous, actions, class: className, docked = true, ...other }: Props = $props()
-  console.log('topbar')
 </script>
 
 <AppShellHeader class={clsx('app-topbar', docked && 'app-topbar-docked', className)}>
@@ -43,7 +42,7 @@
 <style lang="postcss">
   :global {
     .app-topbar-docked {
-      @apply color-canvas;
+      @apply color-canvas surface;
       animation-timeline: scroll(nearest);
       animation-name: app-topbar-color;
       animation-range-end: min(200px, 50%);

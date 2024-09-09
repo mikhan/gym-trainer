@@ -31,6 +31,7 @@ export async function startViewTransition(config: StartViewTransitionConfig) {
   })
 
   await transition.finished
+  transition = null
 
   transitioning.update((transitions) => transitions.difference(new Set(types)))
 }

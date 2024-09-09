@@ -54,8 +54,7 @@
 </AppDatabase>
 
 <div
-  class="fixed left-0 top-0 z-3 rounded-br-button bg-default px-2 text-xs font-bold text-black"
+  class="fixed bottom-0 right-0 z-3 size-3 rounded-tl-button bg-default"
   use:viewTransitionName={'wakelock-status'}
   style:--color-default={colors[$wakeLock]}>
-  {$wakeLock}
 </div>
