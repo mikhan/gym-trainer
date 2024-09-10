@@ -80,10 +80,10 @@ Excepteur aute voluptate anim mollit do amet officia dolore excepteur occaecat u
 </AppShellSection>
 
 <div
-  class="relative mx-auto grid size-full content-start surface xl:container xl:grid-cols-2"
+  class="relative mx-auto grid size-full auto-rows-auto grid-rows-[clamp(30rem,var(--layout-viewport-height),60rem)] content-start gap-x-layout-gap xl:container xl:grid-cols-2"
   bind:this={root}>
   <div
-    class="flex h-[clamp(30rem,var(--layout-viewport-height),60rem)] flex-col gap-layout-gap p-layout-gap xl:sticky [@media(min-height:768px)]:top-layout-viewport-top">
+    class="flex flex-col gap-layout-gap p-layout-gap xl:sticky xl:pr-0 [@media(min-height:768px)]:top-layout-viewport-top">
     <div
       class="-m-layout-gap grow"
       use:viewTransitionName={{
@@ -115,7 +115,8 @@ Excepteur aute voluptate anim mollit do amet officia dolore excepteur occaecat u
       onchange={(value) => gotoSerie(value)}></TrainerScroller>
   </div>
 
-  <div class="container mx-auto w-full space-y-layout-gap p-layout-gap max-xl:pt-0">
+  <div
+    class="container row-span-2 mx-auto w-full space-y-layout-gap p-layout-gap max-xl:pt-0 xl:pl-0">
     <section class="flex flex-wrap gap-4">
       {#each data.currentRoutine.series as serie, serieIndex (serie.id)}
         {@const percent = `${((data.progress[serie.id] ?? 0) * 100).toFixed(0)}%`}

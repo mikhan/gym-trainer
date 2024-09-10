@@ -7,29 +7,13 @@ settings:
 importers:
 
   .:
-    dependencies:
-      '@fontsource-variable/roboto-mono':
-        specifier: ^5.0.20
-        version: 5.0.20
-      '@fontsource-variable/sometype-mono':
-        specifier: ^5.0.4
-        version: 5.0.4
-      '@fontsource-variable/source-code-pro':
-        specifier: ^5.0.20
-        version: 5.0.20
-      '@fontsource/space-mono':
-        specifier: ^5.0.21
-        version: 5.0.21
-      es-toolkit:
-        specifier: ^1.16.0
-        version: 1.16.0
     devDependencies:
-      '@fontsource-variable/inter':
-        specifier: ^5.0.20
-        version: 5.0.20
       '@fontsource-variable/quicksand':
         specifier: ^5.0.18
         version: 5.0.18
+      '@fontsource-variable/sometype-mono':
+        specifier: ^5.0.5
+        version: 5.0.5
       '@fortawesome/free-brands-svg-icons':
         specifier: ^6.6.0
         version: 6.6.0
@@ -84,6 +68,9 @@ importers:
       clsx:
         specifier: ^2.1.1
         version: 2.1.1
+      es-toolkit:
+        specifier: ^1.17.0
+        version: 1.17.0
       eslint:
         specifier: ^8.57.0
         version: 8.57.0
@@ -363,23 +350,11 @@ packages:
     resolution: {integrity: sha512-Ys+3g2TaW7gADOJzPt83SJtCDhMjndcDMFVQ/Tj9iA1BfJzFKD9mAUXT3OenpuPHbI6P/myECxRJrofUsDx/5g==}
     engines: {node: ^12.22.0 || ^14.17.0 || >=16.0.0}
 
-  '@fontsource-variable/inter@5.0.20':
-    resolution: {integrity: sha512-dhzG4Zls/tIrf8h0FhTNi8jT/uFwNhdTY2vKe6DYqoXDYOfEcTVZDyh1hKml1rlLT44Y7OoKoGz8w7czDW7twQ==}
-
   '@fontsource-variable/quicksand@5.0.18':
     resolution: {integrity: sha512-avlweYmAdhqBt4GIm++G4bhlwejKy+1Rkv6wjesJM+K4z8SEid3b0RP1gZ/eneWhjTIVUhxS/SeMrdMaswQqWQ==}
 
-  '@fontsource-variable/roboto-mono@5.0.20':
-    resolution: {integrity: sha512-c0lS38hfgGdhUZ2WQIwMxmdzaSz706iF3nOoAIYMTIZBYAFjP8QlHGGJNS/fPshSGMob4+/MfICsynFclQ9mDg==}
-
-  '@fontsource-variable/sometype-mono@5.0.4':
-    resolution: {integrity: sha512-SCHGSC7yYYgvsx48IUjlmzX6Gi2fvYT4NxEfQKHBg0gSoAT6LkFJY3lbF41u87sXvxfK8aO09JXVLat6JlgrGA==}
-
-  '@fontsource-variable/source-code-pro@5.0.20':
-    resolution: {integrity: sha512-ib79xMlEi9TJbeV7p0PoqCKVgFRuisQgYOluIa27cWChpBjTBQqK2A5Trs9zTmjuS3toz5S3H4f5s9v9fMfE3w==}
-
-  '@fontsource/space-mono@5.0.21':
-    resolution: {integrity: sha512-NZ9+iWsX2P8fa79Y93oA0tOLJTRK4qbAM94SsNaNEoinYRyaXr44cM20vMXVr5KBFDgbWsYUBFbdPC98J3dm8g==}
+  '@fontsource-variable/sometype-mono@5.0.5':
+    resolution: {integrity: sha512-GHHvN/008UDD63lzDpH0NmzXBo4Gxuo4hn+kezrzbtPboFNPMy1GYQ9kML7Kqng9r2o52r3Nno48PqzFb+cWuA==}
 
   '@fortawesome/fontawesome-common-types@6.6.0':
     resolution: {integrity: sha512-xyX0X9mc0kyz9plIyryrRbl7ngsA9jz77mCZJsUkLl+ZKs0KWObgaEBoSgQiYWAsSmjz/yjl0F++Got0Mdp4Rw==}
@@ -937,8 +912,8 @@ packages:
   emoji-regex@9.2.2:
     resolution: {integrity: sha512-L18DaJsXSUk2+42pv8mLs5jJT2hqFkFE4j21wOmgbUqsZ2hL72NsUU785g9RXgo3s0ZNgVl42TiHp3ZtOv/Vyg==}
 
-  es-toolkit@1.16.0:
-    resolution: {integrity: sha512-eNJh3zF1KmAHRYd1D8rFi1cMFMCjrC6tumBfwuuZdSur97mED/ifyeBoGzxS11L4owCMx3XSmWTo6oxJQkdGng==}
+  es-toolkit@1.17.0:
+    resolution: {integrity: sha512-aJvpNxK7d+I+Rt9tmdwzelxTe4EwtxX1Kv0xv6ZTRWJBpMCxe0vxTLLW4STz6pHYjtyTTrEkonNXLaBsYHg2Yw==}
 
   es6-promise@3.3.1:
     resolution: {integrity: sha512-SOp9Phqvqn7jtEUxPWdWfWoLmyt2VaJ6MpvP9Comy1MceMXqE6bxvaTu4iaxpYYPzhny28Lc+M87/c2cPK6lDg==}
@@ -2159,17 +2134,9 @@ snapshots:
 
   '@eslint/js@8.57.0': {}
 
-  '@fontsource-variable/inter@5.0.20': {}
-
   '@fontsource-variable/quicksand@5.0.18': {}
 
-  '@fontsource-variable/roboto-mono@5.0.20': {}
-
-  '@fontsource-variable/sometype-mono@5.0.4': {}
-
-  '@fontsource-variable/source-code-pro@5.0.20': {}
-
-  '@fontsource/space-mono@5.0.21': {}
+  '@fontsource-variable/sometype-mono@5.0.5': {}
 
   '@fortawesome/fontawesome-common-types@6.6.0': {}
 
@@ -2726,7 +2693,7 @@ snapshots:
 
   emoji-regex@9.2.2: {}
 
-  es-toolkit@1.16.0: {}
+  es-toolkit@1.17.0: {}
 
   es6-promise@3.3.1: {}
 

@@ -1,6 +1,7 @@
 <script lang="ts">
   import clsx from 'clsx'
   import type { HTMLAttributes } from 'svelte/elements'
+  import defaultUserAvatar from './default-user-avatar.jpg'
 
   type Props = HTMLAttributes<HTMLDivElement>
 
@@ -8,8 +9,5 @@
 </script>
 
 <div class={clsx('ui-avatar rounded-full', ClassName)} {...props}>
-  <img
-    class="rounded-full"
-    alt="Imagen de perfil del usuario"
-    src="https://mighty.tools/mockmind-api/content/human/5.jpg" />
+  <img class="rounded-full" alt="Imagen de perfil del usuario" src={defaultUserAvatar} />
 </div>

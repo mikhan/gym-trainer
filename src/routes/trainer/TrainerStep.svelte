@@ -60,18 +60,18 @@
   </label>
   <button
     class={clsx(
-      'flex w-full place-content-center items-center rounded-full border-2 p-1 transition-colors surface focusable-ring',
+      'relative flex w-full items-center rounded-full p-1 transition-all surface surface-editable surface-outlined focusable-ring',
       record ? 'justify-end color-neutral-darker' : 'justify-start color-neutral-lighter',
     )}
     onclick={() => (record ? deleteRecord() : setRecord())}>
-    <!-- <span class="px-2 text-sm">{stepIndex + 1}</span> -->
     <span
       class={clsx(
-        'grid size-5 place-content-center rounded-full shadow',
+        'grid size-6 place-content-center rounded-full shadow',
         record ? 'bg-secondary text-secondary-fg' : 'bg-default-fg',
       )}>
       <span class={clsx('transition-opacity', record ? 'opacity-100' : 'opacity-0')}
         ><Fa icon={faCheck} size="xs"></Fa></span>
     </span>
+    <div class="absolute -inset-1"></div>
   </button>
 </li>

@@ -14,8 +14,8 @@
   },
   "type": "module",
   "devDependencies": {
-    "@fontsource-variable/inter": "^5.0.20",
     "@fontsource-variable/quicksand": "^5.0.18",
+    "@fontsource-variable/sometype-mono": "^5.0.5",
     "@fortawesome/free-brands-svg-icons": "^6.6.0",
     "@fortawesome/free-regular-svg-icons": "^6.6.0",
     "@fortawesome/free-solid-svg-icons": "^6.6.0",
@@ -34,6 +34,7 @@
     "@typescript-eslint/parser": "^7.18.0",
     "autoprefixer": "^10.4.20",
     "clsx": "^2.1.1",
+    "es-toolkit": "^1.17.0",
     "eslint": "^8.57.0",
     "eslint-config-prettier": "^9.1.0",
     "eslint-plugin-svelte": "^2.43.0",
@@ -51,12 +52,5 @@
     "typescript": "^5.5.4",
     "vite": "^5.4.1",
     "zod": "^3.23.8"
-  },
-  "dependencies": {
-    "@fontsource-variable/roboto-mono": "^5.0.20",
-    "@fontsource-variable/sometype-mono": "^5.0.4",
-    "@fontsource-variable/source-code-pro": "^5.0.20",
-    "@fontsource/space-mono": "^5.0.21",
-    "es-toolkit": "^1.16.0"
   }
 }

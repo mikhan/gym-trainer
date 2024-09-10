@@ -14,7 +14,7 @@
 
 <figure
   class={clsx(
-    'grid aspect-square grid-cols-[100%] grid-rows-1 justify-items-center gap-4 rounded-button bg-black p-2 contain-strict',
+    'grid aspect-square max-h-96 w-full grid-cols-[100%] grid-rows-1 justify-items-center gap-4 rounded-button bg-black p-2 contain-strict',
     className,
   )}
   {...props}>
