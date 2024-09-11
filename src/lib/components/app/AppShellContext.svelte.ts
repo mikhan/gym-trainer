@@ -1,5 +1,5 @@
 import { type Snippet, getContext, setContext } from 'svelte'
-import { getSessionState } from '$lib/states/persisted-state.svelte'
+import { getPersistedState } from '$lib/states/persisted-state.svelte'
 
 type AppShellContextState = {
   readonly sidebar: {
@@ -20,7 +20,7 @@ export class AppShellContext {
   #asides = $state.raw<Snippet[]>([])
   #footers = $state.raw<Snippet[]>([])
 
-  #state = getSessionState('AppShell.state', {
+  #state = getPersistedState('session', 'AppShell.state', {
     sidebar: { open: true },
   })
 
@@ -32,7 +32,7 @@ export class AppShellContext {
   public asideLevel: number = $derived(this.#asides.length)
   public footerLevel: number = $derived(this.#footers.length)
 
-  public state: AppShellContextState = this.#state.value
+  public state: AppShellContextState = this.#state
 
   private constructor() {}
 
@@ -67,6 +67,6 @@ export class AppShellContext {
   }
 
   toggleSidebar(open = !this.state.sidebar.open) {
-    this.#state.value.sidebar.open = open
+    this.#state.sidebar.open = open
   }
 }
