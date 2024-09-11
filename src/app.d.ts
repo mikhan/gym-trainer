@@ -3,6 +3,12 @@ import { Database } from './database/database.types'
 
 declare global {
   namespace App {
+    interface Error {
+      code?: string | number | undefined
+      name?: string
+      message?: string
+    }
+
     interface Locals {
       supabase: SupabaseClient<Database>
       safeGetSession(): Promise<{ session: Session | null; user: User | null }>

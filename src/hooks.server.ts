@@ -1,5 +1,5 @@
 import { createSupabaseServerClient } from '@supabase/auth-helpers-sveltekit'
-import type { Handle } from '@sveltejs/kit'
+import type { Handle, HandleServerError } from '@sveltejs/kit'
 import { PUBLIC_SUPABASE_ANON_KEY, PUBLIC_SUPABASE_URL } from '$env/static/public'
 
 export const handle: Handle = async ({ event, resolve }) => {
@@ -42,3 +42,12 @@ export const handle: Handle = async ({ event, resolve }) => {
 
   return response
 }
+
+export const handleError = ((input) => {
+  const error = (input.error || {}) as Record<string, string>
+  const { code, name = 'Unknown error', message = '' } = error
+
+  console.error(`❌ ${name}: ${message}`)
+
+  return { code, name, message }
+}) satisfies HandleServerError
