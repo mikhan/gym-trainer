@@ -3,10 +3,12 @@
     --height: var(--widget-height);
     --padding: round(calc(var(--height) * 0.6), 2px);
     --min-width: calc(var(--height) * 2);
-    @apply flex h-[--height] flex-none items-center justify-center gap-2 rounded-full surface;
-    @apply focusable-ring;
+    @apply flex h-[--height] flex-none items-center justify-center gap-2 rounded-full;
 
-    @apply [&:not(:disabled)]:surface-hoverable [&:not(:disabled)]:surface-activable;
+    &:not(:disabled) {
+      @apply surface-focusable transition-colors surface-hoverable surface-activable;
+    }
+
     @apply disabled:cursor-not-allowed disabled:opacity-50;
 
     &:not(.ui-button-circle) {
@@ -24,6 +26,10 @@
 
   .ui-button-lg {
     --height: calc(var(--widget-height) + 0.5rem);
+  }
+
+  .ui-button-filled {
+    @apply surface;
   }
 
   .ui-button-outlined {

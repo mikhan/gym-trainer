@@ -9,19 +9,24 @@
     children?: Snippet
     is?: 'button' | 'a'
     size?: keyof typeof sizeClasses
-    variant?: keyof typeof variantClasses
+    outlined?: boolean
+    filled?: boolean
   } & (IsButton | IsLink)
 
-  let { children, is = 'button', variant, size, class: className, ...props }: Props = $props()
+  let {
+    children,
+    is = 'button',
+    size,
+    class: className,
+    outlined,
+    filled,
+    ...props
+  }: Props = $props()
 
   const sizeClasses = {
     xs: 'ui-button-xs',
     sm: 'ui-button-sm',
     lg: 'ui-button-lg',
-  }
-
-  const variantClasses = {
-    outlined: 'ui-button-outlined',
   }
 </script>
 
@@ -30,7 +35,8 @@
   class={clsx(
     'ui-button',
     size && sizeClasses[size],
-    variant && variantClasses[variant],
+    outlined && 'ui-button-outlined',
+    filled && 'ui-button-filled',
     className,
   )}
   type={is === 'button' ? 'button' : undefined}

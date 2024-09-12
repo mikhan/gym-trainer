@@ -71,13 +71,16 @@ export function surfacePlugin() {
         '@apply bg-default-under': '',
       },
       '.surface-hoverable': {
-        '@apply hocus:bg-default-hover hocus:transition-colors': '',
+        '@apply hocus:bg-default-hover': '',
       },
       '.surface-activable': {
-        '@apply active:bg-default-active active:transition-colors': '',
+        '@apply active:bg-default-active': '',
       },
       '.surface-outlined': {
         '@apply outline outline-2 outline-default-line -outline-offset-2': '',
+      },
+      '.surface-focusable': {
+        '@apply focusable-ring': '',
       },
       '.surface-glass': {
         '@apply bg-opacity-75 backdrop-blur': '',

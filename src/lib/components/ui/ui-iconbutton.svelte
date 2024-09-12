@@ -7,19 +7,16 @@
     children?: Snippet
     label: string
     size?: keyof typeof sizeClasses
-    variant?: keyof typeof variants
+    outlined?: boolean
+    filled?: boolean
   } & HTMLButtonAttributes
 
-  let { children, label, class: className, size, variant, ...props }: Props = $props()
+  let { children, label, class: className, size, outlined, filled, ...props }: Props = $props()
 
   const sizeClasses = {
     xs: 'ui-button-xs',
     sm: 'ui-button-sm',
     lg: 'ui-button-lg',
-  }
-
-  const variants = {
-    outlined: 'ui-button-outlined',
   }
 </script>
 
@@ -27,7 +24,8 @@
   class={clsx(
     'ui-button ui-button-circle',
     size && sizeClasses[size],
-    variant && variants[variant],
+    outlined && 'ui-button-outlined',
+    filled && 'ui-button-filled',
     className,
   )}
   {...props}
