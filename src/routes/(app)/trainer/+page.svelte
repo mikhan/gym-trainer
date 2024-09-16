@@ -1,8 +1,8 @@
 <script lang="ts">
-  import TrainerRunning from './TrainerRunning.svelte'
-  import { TrainerContext } from './TrainerContext.svelte'
   import { goto } from '$app/navigation'
-  import TrainerCompleted from './TrainerCompleted.svelte'
+  import { TrainerContext } from './TrainerContext.svelte'
+  import Trainer from './Trainer.svelte'
+  import Result from './Result.svelte'
 
   const trainerContext = TrainerContext.getContext()
 
@@ -14,7 +14,7 @@
 </script>
 
 {#if trainerContext.state.status === 'running'}
-  <TrainerRunning data={trainerContext.state}></TrainerRunning>
+  <Trainer data={trainerContext.state}></Trainer>
 {:else if trainerContext.state.status === 'completed'}
-  <TrainerCompleted state={trainerContext.state}></TrainerCompleted>
+  <Result state={trainerContext.state}></Result>
 {/if}

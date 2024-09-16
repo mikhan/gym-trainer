@@ -3,7 +3,7 @@
   import TrainerStep from './TrainerStep.svelte'
   import Fa from 'svelte-fa'
   import { faPlus } from '@fortawesome/free-solid-svg-icons'
-  import UiIconbutton from '$lib/components/ui/ui-iconbutton.svelte'
+  import UiIconbutton from '$lib/components/ui/UiIconbutton.svelte'
 
   type Props = {
     serie: Types.RoutineSerie
@@ -30,9 +30,16 @@
       class={clsx(
         'mx-auto flex size-full flex-col overflow-auto rounded-card shadow transition-colors contain-strict scrollbar-thin surface',
         isCompleted
-          ? 'delay-200 duration-long color-secondary-darker'
-          : 'duration-short color-neutral-lighter',
+          ? 'delay-200 duration-long ease-out color-secondary-darker'
+          : 'color-neutral-lighter',
       )}>
+      {#if isCompleted}
+        <div class="pointer-events-none fixed inset-0 -z-1 contain-paint">
+          <div
+            class="ripple absolute bottom-0 left-0 size-[100vmin] rounded-full bg-default-active">
+          </div>
+        </div>
+      {/if}
       <header class="flex items-center gap-4 p-6">
         <div class="flex items-center gap-1">
           <span class="text-6xl font-light leading-10">{serieIndex + 1}</span>
@@ -40,18 +47,6 @@
         </div>
         <h1 class="typescale-headline grow">{serie.name}</h1>
       </header>
-      <!-- <div class="px-6">
-      <label class="ui-field">
-        <span class="ui-label">Notas</span>
-        <div class="ui-input">
-          <textarea
-            class="max-h-[6lh] min-h-[2lh]"
-            value={serie.notes}
-            placeholder="Agrega un comentario personal a este ejercicio"
-            onchange={(e) => updateSerieNotes(e.currentTarget.value)}></textarea>
-        </div>
-      </label>
-    </div> -->
       <div class="typescale-title mt-auto px-6">
         {serie.steps.length} series
       </div>
@@ -67,19 +62,13 @@
               'row-start-2 place-self-center transition-colors',
               isCompleted ? 'color-neutral-darker' : 'color-neutral-lighter',
             )}
-            variant="outlined"
+            outlined
+            filled
             label="Agregar serie">
             <Fa icon={faPlus} size="lg"></Fa>
           </UiIconbutton>
         </div>
       </ul>
-      {#if isCompleted}
-        <div class="pointer-events-none fixed inset-0 z-2 contain-paint">
-          <div
-            class="ripple absolute bottom-0 left-0 size-[100vmin] rounded-full bg-default-active">
-          </div>
-        </div>
-      {/if}
     </article>
   </div>
 </li>
@@ -89,8 +78,8 @@
     scale: 0;
     translate: -50% 50%;
     animation-name: ripple;
-    animation-duration: theme('transitionDuration.medium');
-    animation-timing-function: cubic-bezier(0, 0, 0.2, 1);
+    animation-duration: theme('transitionDuration.long');
+    animation-timing-function: theme('transitionTimingFunction.out');
   }
 
   @keyframes ripple {
@@ -101,17 +90,17 @@
   }
 
   li > * {
-    @media (min-width: theme('screens.xl')) {
+    @media (min-width: theme('screens.lg')) {
       animation-name: --stack-left, --scale-in, --fade-in-out;
       animation-timing-function: linear, linear, ease-in-out;
       animation-timeline: view(x);
-      transform-origin: 0% 50%;
+      transform-origin: center;
     }
   }
 
   @keyframes --stack-left {
     0% {
-      translate: -90%;
+      translate: -100%;
     }
     50% {
       translate: 0%;
@@ -127,14 +116,13 @@
       opacity: 0;
     }
 
-    25%,
     50% {
       opacity: 1;
     }
 
-    75%,
+    55%,
     100% {
-      opacity: 0.5;
+      opacity: 0;
     }
   }
 
@@ -146,96 +134,6 @@
     50%,
     100% {
       scale: 1;
-    }
-  }
-
-  @property --scrollable-shadow-1 {
-    syntax: '<percentage>';
-    inherits: false;
-    initial-value: 0%;
-  }
-  @property --scrollable-shadow-2 {
-    syntax: '<percentage>';
-    inherits: false;
-    initial-value: 100%;
-  }
-
-  .scrollable-xxx {
-    position: relative;
-    --scrollable-shadow-size: 2rem;
-    --scrollable-shadow-color: hsl(0 0 0 / 90%);
-    /* display: grid;
-    grid-template-rows: auto 1fr auto;
-    align-items: flex-start;
-    background-color: inherit; */
-    contain: layout;
-    background-image: linear-gradient(
-      to right,
-      color-mix(in oklch, var(--scrollable-shadow-color) var(--scrollable-shadow-1), transparent),
-      transparent 2rem,
-      transparent calc(100% - 2rem),
-      color-mix(in oklch, var(--scrollable-shadow-color) var(--scrollable-shadow-2), transparent)
-    );
-    animation-timeline: scroll(inline self);
-    animation-name: --scrollable-shadow-fade;
-
-    /* &::before, */
-    &::before {
-      content: '';
-      display: block;
-      position: absolute;
-      left: 0;
-      inset: 0;
-      border: 1px solid red;
-      /* flex: none;
-      pointer-events: none; */
-      /*  */
-      /* position: sticky;
-      height: var(--scrollable-shadow-size);
-      background-color: inherit;
-      margin-block-start: calc(var(--scrollable-shadow-size) * -1);
-      opacity: 0;
-      z-index: 1; */
-    }
-
-    /* &::before {
-      top: 0;
-      background-image: radial-gradient(
-        farthest-side at top center,
-        var(--scrollable-shadow-color) 33%,
-        transparent
-      );
-      mask-image: linear-gradient(to bottom, black, transparent);
-    } */
-
-    /* &::after {
-      bottom: 0;
-      background-image: radial-gradient(
-        farthest-side at bottom center,
-        var(--scrollable-shadow-color) 33%,
-        transparent
-      );
-      mask-image: linear-gradient(to top, black, transparent);
-      animation-direction: reverse;
-    } */
-  }
-
-  @keyframes --scrollable-shadow-fade {
-    0% {
-      --scrollable-shadow-1: 0%;
-      --scrollable-shadow-2: 100%;
-    }
-    10% {
-      --scrollable-shadow-1: 100%;
-      --scrollable-shadow-2: 100%;
-    }
-    90% {
-      --scrollable-shadow-1: 100%;
-      --scrollable-shadow-2: 100%;
-    }
-    100% {
-      --scrollable-shadow-1: 100%;
-      --scrollable-shadow-2: 0%;
     }
   }
 </style>

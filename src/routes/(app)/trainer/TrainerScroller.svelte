@@ -1,5 +1,5 @@
 <script lang="ts">
-  import UiIconbutton from '$lib/components/ui/ui-iconbutton.svelte'
+  import UiIconbutton from '$lib/components/ui/UiIconbutton.svelte'
   import Fa from 'svelte-fa'
   import { faChevronLeft, faChevronRight } from '@fortawesome/free-solid-svg-icons'
   import clsx from 'clsx'
@@ -16,13 +16,13 @@
   const ticks = $derived(Array.from({ length: max + 1 }, (_, index) => index))
 
   function previous() {
-    value = Math.max(min, Math.min(max, value - 1))
-    onchange?.(value)
+    const newValue = Math.max(min, Math.min(max, value - 1))
+    if (value !== newValue) onchange?.((value = newValue))
   }
 
   function next() {
-    value = Math.max(min, Math.min(max, value + 1))
-    onchange?.(value)
+    const newValue = Math.max(min, Math.min(max, value + 1))
+    if (value !== newValue) onchange?.((value = newValue))
   }
 
   function updateFromInput() {
@@ -35,7 +35,7 @@
     'flex touch-pan-y items-center justify-between gap-1 rounded-full p-1 shadow color-neutral-darker surface surface-outlined sm:gap-2',
     className,
   )}>
-  <UiIconbutton label="Serie anterior" onclick={previous}>
+  <UiIconbutton label="Serie anterior" tabindex={-1} onclick={previous}>
     <Fa icon={faChevronLeft}></Fa>
   </UiIconbutton>
   <div class="relative isolate h-6 grow @container-[size]">
@@ -56,7 +56,7 @@
       step="1"
       oninput={updateFromInput} />
   </div>
-  <UiIconbutton label="Siguiente serie" onclick={next}>
+  <UiIconbutton label="Siguiente serie" tabindex={-1} onclick={next}>
     <Fa icon={faChevronRight}></Fa>
   </UiIconbutton>
 </section>

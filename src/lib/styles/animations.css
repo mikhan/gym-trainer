@@ -1,0 +1,59 @@
+@keyframes --slide-from-top {
+  from {
+    transform: translateY(-100%);
+  }
+}
+
+@keyframes --slide-to-top {
+  to {
+    transform: translateY(-100%);
+  }
+}
+
+@keyframes --slide-from-bottom {
+  from {
+    transform: translateY(100%);
+  }
+}
+
+@keyframes --slide-to-bottom {
+  to {
+    transform: translateY(100%);
+  }
+}
+
+@keyframes --slide-from-left {
+  from {
+    transform: translatex(-100%);
+  }
+}
+
+@keyframes --slide-to-left {
+  to {
+    transform: translatex(-100%);
+  }
+}
+
+@keyframes --slide-from-right {
+  from {
+    transform: translatex(100%);
+  }
+}
+
+@keyframes --slide-to-right {
+  to {
+    transform: translatex(100%);
+  }
+}
+
+@keyframes --fade-in {
+  from {
+    opacity: 0;
+  }
+}
+
+@keyframes --fade-out {
+  to {
+    opacity: 0;
+  }
+}

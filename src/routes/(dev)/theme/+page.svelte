@@ -2,7 +2,7 @@
   import ThemeColor from './ThemeColor.svelte'
   import ThemeTypography from './ThemeTypography.svelte'
   import CSSValue from './CSSValue.svelte'
-  import UiButton from '$lib/components/ui/ui-button.svelte'
+  import UiButton from '$lib/components/ui/UiButton.svelte'
   import AppTopbar from '$lib/components/app/AppTopbar.svelte'
   import Fa from 'svelte-fa'
   import { faChevronDown } from '@fortawesome/free-solid-svg-icons'
@@ -84,7 +84,7 @@
 <AppMetadata title="Theme Editor"></AppMetadata>
 
 <AppShellSection name="header">
-  <AppTopbar title="Theme Editor"></AppTopbar>
+  <AppTopbar title="Theme Editor" previous="/"></AppTopbar>
 </AppShellSection>
 
 <AppShellSection name="aside">

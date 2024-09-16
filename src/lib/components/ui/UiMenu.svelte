@@ -1,7 +1,7 @@
 <script lang="ts">
   import { onMount, type Snippet } from 'svelte'
   import { anchor } from '$lib/actions/anchor.action'
-  import { UiMenuContext } from './ui-menu-context.svelte'
+  import { UiMenuContext } from './UiMenuContext.svelte'
   import { clsx } from 'clsx'
   import type { HTMLMenuAttributes } from 'svelte/elements'
   import { getElement } from '$lib/utils/element'
@@ -40,6 +40,7 @@
       @apply fixed rounded-card p-1 shadow-over backdrop-blur;
       min-width: anchor-size(inline);
       position-visibility: anchors-visible;
+      inset: auto;
       left: anchor(left);
       top: anchor(bottom);
       margin: theme('spacing.1') 0;

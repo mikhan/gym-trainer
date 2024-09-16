@@ -1,10 +1,7 @@
 <script lang="ts">
   import { type Snippet } from 'svelte'
   import AppShellSection from './AppShellSection.svelte'
-  import AppShellHeader from './AppShellHeader.svelte'
-  // import UiIconbutton from '../ui/ui-iconbutton.svelte'
-  // import Fa from 'svelte-fa'
-  // import { faTimes } from '@fortawesome/free-solid-svg-icons'
+  import AppShellHeader from './AppBar.svelte'
 
   type Props = { children: Snippet; title: string; onclose?: () => void }
 
@@ -14,11 +11,9 @@
 <AppShellSection name="header">
   <AppShellHeader class="color-neutral-darkest">
     {#snippet start()}
-      <!-- <UiIconbutton onclick={onclose} label="Previous">
-          <Fa icon={faTimes}></Fa>
-          </UiIconbutton> -->
-      <div class="typescale-title truncate">{title}</div>
+      <div class="typescale-title line-clamp-1">{title}</div>
     {/snippet}
+
     {#snippet end()}
       {@render children()}
     {/snippet}

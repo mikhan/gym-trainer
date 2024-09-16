@@ -56,7 +56,9 @@ function getAlign(anchoralign?: string) {
   const target: { x: AlignX; y: AlignY } = { x: 'left', y: 'top' }
 
   if (anchoralign) {
-    const [anchorString, targetString] = anchoralign.split(',').map((s) => s.trim().replace(/\s+/g, ' ').split(' '))
+    const [anchorString, targetString] = anchoralign
+      .split(',')
+      .map((s) => s.trim().replace(/\s+/g, ' ').split(' '))
 
     if (anchorString) {
       const [y, x] = anchorString

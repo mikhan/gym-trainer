@@ -6,7 +6,7 @@
     @apply flex h-[--height] flex-none items-center justify-center gap-2 rounded-full;
 
     &:not(:disabled) {
-      @apply surface-focusable transition-colors surface-hoverable surface-activable;
+      @apply transition-colors surface-hoverable surface-activable surface-focusable;
     }
 
     @apply disabled:cursor-not-allowed disabled:opacity-50;

@@ -3,6 +3,8 @@
   import { startViewTransition } from '$lib/actions/transition.action'
 
   onNavigate((navigation) => {
+    if (navigation.from?.url.href === navigation.to?.url.href) return
+
     return new Promise((resolve) => {
       startViewTransition({
         update: async () => {

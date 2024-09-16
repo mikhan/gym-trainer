@@ -1,7 +1,8 @@
 @layer components {
   .ui-popup {
-    @apply surface-glass rounded-card border shadow-over scrollbar color-popover surface;
+    @apply rounded-card border shadow-over scrollbar color-popover surface surface-glass;
     @apply fixed;
+    inset: 0;
     inset-area: bottom span-right;
     position-try:
       most-width flip-block,

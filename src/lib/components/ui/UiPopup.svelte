@@ -1,7 +1,7 @@
 <script lang="ts">
   import { onMount, type Snippet } from 'svelte'
   import { anchor } from '$lib/actions/anchor.action'
-  import { UiMenuContext } from './ui-menu-context.svelte'
+  import { UiMenuContext } from './UiMenuContext.svelte'
   import { clsx } from 'clsx'
   import type { HTMLAttributes } from 'svelte/elements'
   import { getElement } from '$lib/utils/element'

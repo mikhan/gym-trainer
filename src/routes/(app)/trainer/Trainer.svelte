@@ -3,17 +3,17 @@
   import TrainerSerieImage from './TrainerSerieImage.svelte'
   import TrainerSerieInstructions from './TrainerSerieInstructions.svelte'
   import TrainerSerie from './TrainerSerie.svelte'
-  import UiCarousel from '$lib/components/ui/ui-carousel.svelte'
-  import Fa from 'svelte-fa'
-  import { faChevronDown } from '@fortawesome/free-solid-svg-icons'
+  import UiCarousel from '$lib/components/ui/UiCarousel.svelte'
   import { TrainerContext, type TrainerContextStateRunning } from './TrainerContext.svelte'
-  import UiButton from '$lib/components/ui/ui-button.svelte'
+  import UiButton from '$lib/components/ui/UiButton.svelte'
   import { startViewTransition } from '$lib/actions/transition.action'
   import AppShellSection from '$lib/components/app/AppShellSection.svelte'
-  import AppShellHeader from '$lib/components/app/AppShellHeader.svelte'
+  import AppTopbar from '$lib/components/app/AppTopbar.svelte'
   import TrainerScroller from './TrainerScroller.svelte'
-  import { goto } from '$app/navigation'
   import SvelteMarkdown from 'svelte-markdown'
+  import { faChevronDown } from '@fortawesome/free-solid-svg-icons'
+  import TrainerStatics from './TrainerStatics.svelte'
+  import TrainerNotes from './TrainerNotes.svelte'
 
   type Props = {
     data: TrainerContextStateRunning
@@ -43,10 +43,6 @@ Excepteur aute voluptate anim mollit do amet officia dolore excepteur occaecat u
     startViewTransition(() => trainerContext.terminateTraining())
   }
 
-  function closeViewport() {
-    goto(`/trainings/${data.training.id}`)
-  }
-
   let pointerdown = false
 
   function gotoSerie(index: number) {
@@ -66,24 +62,22 @@ Excepteur aute voluptate anim mollit do amet officia dolore excepteur occaecat u
   onpointercancel={() => (pointerdown = false)} />
 
 <AppShellSection name="header">
-  <AppShellHeader class="app-topbar app-topbar-docked">
-    {#snippet start()}
-      <UiButton onclick={closeViewport}>
-        <Fa icon={faChevronDown}></Fa>
-        <span>{data.currentRoutine.name}</span>
-      </UiButton>
+  <AppTopbar
+    icon={faChevronDown}
+    previous={`/trainings/${data.training.id}`}
+    title={data.currentRoutine.name}>
+    {#snippet actions()}
+      <UiButton class="color-primary" outlined onclick={terminate}>Terminar</UiButton>
     {/snippet}
-    {#snippet end()}
-      <UiButton class="color-neutral" variant="outlined" onclick={terminate}>Terminar</UiButton>
-    {/snippet}
-  </AppShellHeader>
+  </AppTopbar>
 </AppShellSection>
 
 <div
-  class="relative mx-auto grid size-full auto-rows-auto grid-rows-[clamp(30rem,var(--layout-viewport-height),60rem)] content-start gap-x-layout-gap xl:container xl:grid-cols-2"
+  class="relative mx-auto grid size-full auto-rows-auto grid-rows-[clamp(30rem,var(--layout-viewport-height),60rem)] content-start gap-x-layout-gap lg:container
+  lg:grid-cols-[480px,1fr] xl:grid-cols-[640px,1fr] 3xl:grid-cols-[640px,1fr,480px]"
   bind:this={root}>
   <div
-    class="flex flex-col gap-layout-gap p-layout-gap xl:sticky xl:pr-0 [@media(min-height:768px)]:top-layout-viewport-top">
+    class="flex flex-col gap-layout-gap p-layout-gap lg:sticky lg:pr-0 [@media(min-height:768px)]:top-layout-viewport-top">
     <div
       class="-m-layout-gap grow"
       use:viewTransitionName={{
@@ -93,7 +87,6 @@ Excepteur aute voluptate anim mollit do amet officia dolore excepteur occaecat u
       <UiCarousel
         class="size-full scrollbar-none"
         direction="horizontal"
-        snap="center"
         label="Ejercicios"
         onscrollsnapchange={(e) => setCurrentSerie(e.detail.snapTargetInline?.dataset.id)}
         bind:this={carousel}>
@@ -116,7 +109,7 @@ Excepteur aute voluptate anim mollit do amet officia dolore excepteur occaecat u
   </div>
 
   <div
-    class="container row-span-2 mx-auto w-full space-y-layout-gap p-layout-gap max-xl:pt-0 xl:pl-0">
+    class="container row-span-2 mx-auto w-full space-y-layout-gap p-layout-gap max-lg:pt-0 lg:col-start-2 lg:pl-0 3xl:pr-0">
     <section class="flex flex-wrap gap-4">
       {#each data.currentRoutine.series as serie, serieIndex (serie.id)}
         {@const percent = `${((data.progress[serie.id] ?? 0) * 100).toFixed(0)}%`}
@@ -148,18 +141,12 @@ Excepteur aute voluptate anim mollit do amet officia dolore excepteur occaecat u
         </div>
       </div>
     </TrainerSerieInstructions>
-    <section class="space-y-4 rounded-card p-4 shadow color-neutral surface">
-      <div class="typescale-title">Notas</div>
-      <p>
-        Eu consectetur officia labore aliqua id nisi fugiat dolore ipsum et sit est. Reprehenderit
-        elit ad fugiat velit ipsum. Laborum pariatur ullamco non fugiat Lorem elit adipisicing duis
-        cupidatat eiusmod commodo proident incididunt mollit. Id cillum ullamco aliqua nisi eiusmod
-        laboris.
-      </p>
-    </section>
-    <section class="min-h-96 rounded-card p-4 shadow color-neutral surface">
-      <div class="typescale-title">Historial</div>
-    </section>
+    <TrainerNotes></TrainerNotes>
+  </div>
+
+  <div
+    class="container mx-auto w-full space-y-layout-gap p-layout-gap max-3xl:pt-0 lg:col-start-2 lg:pl-0 3xl:sticky 3xl:top-layout-header-height 3xl:col-start-3">
+    <TrainerStatics></TrainerStatics>
   </div>
 </div>
 

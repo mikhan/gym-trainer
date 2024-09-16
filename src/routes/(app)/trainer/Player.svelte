@@ -1,9 +1,9 @@
 <script lang="ts">
   import { type TrainerContextStateRunning } from './TrainerContext.svelte'
-  import TrainerTimer from './TrainerTimer.svelte'
+  import PlayerTimer from './PlayerTimer.svelte'
   import AppShellSection from '$lib/components/app/AppShellSection.svelte'
-  import AppShellFooter from '$lib/components/app/AppShellFooter.svelte'
-  import UiIconbutton from '$lib/components/ui/ui-iconbutton.svelte'
+  import AppShellHeader from '$lib/components/app/AppBar.svelte'
+  import UiIconbutton from '$lib/components/ui/UiIconbutton.svelte'
   import { faAnglesDown, faAnglesUp, faTrash } from '@fortawesome/free-solid-svg-icons'
   import Fa from 'svelte-fa'
   import { slide } from 'svelte/transition'
@@ -28,29 +28,28 @@
 </script>
 
 <AppShellSection name="footer">
-  {#if showHistory}
-    <div transition:slide={{ axis: 'y', duration: 100 }}>
-      <AppShellFooter class="max-h-36 color-neutral-darkest">
-        {#snippet end()}
-          <div class="flex h-full max-h-80 grow justify-start">
-            <ul
-              class="grid flex-1 grid-cols-[auto,auto] content-start justify-end gap-x-4 overflow-auto px-2 text-right font-mono leading-5 scrollbar-thin scrollbar-stable">
-              {#each history as duration, index}
-                <li class="col-span-2 grid grid-cols-subgrid">
-                  <time>{formatTime(duration)}</time>
-                  <span>{index + 1}</span>
-                </li>
-              {/each}
-            </ul>
-            <UiIconbutton label="Eliminar historial" onclick={clearHistory}>
-              <Fa icon={faTrash}></Fa>
-            </UiIconbutton>
-          </div>
-        {/snippet}
-      </AppShellFooter>
-    </div>
-  {/if}
-  <AppShellFooter class="color-neutral-darkest">
+  <AppShellHeader class="color-neutral-darkest surface" name="timer-history" align="end">
+    {#snippet aside()}
+      {#if showHistory}
+        <div
+          class="flex justify-start px-layout-gap py-2"
+          transition:slide={{ axis: 'y', duration: 100 }}>
+          <ul
+            class="grid max-h-[4.5lh] flex-1 grid-cols-[auto,auto] content-start justify-end gap-x-4 overflow-auto px-2 text-right font-mono leading-5 scrollbar-thin scrollbar-stable">
+            {#each history as duration, index}
+              <li class="col-span-2 grid grid-cols-subgrid">
+                <time>{formatTime(duration)}</time>
+                <span>{index + 1}</span>
+              </li>
+            {/each}
+          </ul>
+          <UiIconbutton label="Eliminar historial" onclick={clearHistory}>
+            <Fa icon={faTrash}></Fa>
+          </UiIconbutton>
+        </div>
+      {/if}
+    {/snippet}
+
     {#snippet start()}
       <a
         class="-ml-2 grid h-12 place-content-center rounded-button px-2 focusable-ring hover:bg-default-hover md:-ml-4 md:px-4"
@@ -68,7 +67,7 @@
           <Fa icon={showHistory ? faAnglesDown : faAnglesUp}></Fa>
         </UiIconbutton>
       {/if}
-      <TrainerTimer ontime={(time) => history.push(time.duration)}></TrainerTimer>
+      <PlayerTimer ontime={(time) => history.push(time.duration)}></PlayerTimer>
     {/snippet}
-  </AppShellFooter>
+  </AppShellHeader>
 </AppShellSection>

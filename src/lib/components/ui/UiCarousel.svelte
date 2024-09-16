@@ -1,7 +1,7 @@
 <script lang="ts" context="module">
   export type ScrollSnapEvent = CustomEvent<{
-    snapTargetBlock: HTMLLIElement | null
-    snapTargetInline: HTMLLIElement | null
+    snapTargetBlock: HTMLElement | null
+    snapTargetInline: HTMLElement | null
   }>
 </script>
 
@@ -14,7 +14,6 @@
     children: Snippet
     label?: string
     direction?: 'horizontal' | 'vertical'
-    snap?: 'start' | 'end' | 'center'
     onscrollsnapchange?: (event: ScrollSnapEvent) => void
   } & HTMLAttributes<HTMLElement>
 
@@ -22,14 +21,12 @@
     children,
     label,
     direction = 'horizontal',
-    snap = 'center',
     onscrollsnapchange,
     class: className,
     ...props
   }: Props = $props()
   let root: HTMLElement
-
-  const isLIElement = (node: Node): node is HTMLLIElement => node.nodeName === 'LI'
+  let current: HTMLElement | null = null
 
   export function previous() {
     const children = getChildren()
@@ -48,7 +45,7 @@
     scrollToChild(children, index)
   }
 
-  function scrollToChild(children: HTMLLIElement[], childIndex: number) {
+  function scrollToChild(children: HTMLElement[], childIndex: number) {
     if (childIndex < 0 || childIndex >= children.length) return
     const child = children.at(childIndex)
     if (child) scrollTo(child)
@@ -60,10 +57,10 @@
   }
 
   function getChildren() {
-    return Array.from(root.children).filter(isLIElement)
+    return Array.from(root.children) as HTMLElement[]
   }
 
-  function getCurrent(children: HTMLLIElement[]) {
+  function getCurrent(children: HTMLElement[]) {
     const measure = direction === 'horizontal' ? 'x' : 'y'
     for (const child of children) {
       const rect = child.getBoundingClientRect()
@@ -73,60 +70,42 @@
     return null
   }
 
+  let scrollTimeout: number
+
+  function scrollHandler() {
+    const atSnappingPoint = root.scrollLeft % root.offsetWidth === 0
+    const timeOut = atSnappingPoint ? 0 : 150
+
+    clearTimeout(scrollTimeout)
+
+    scrollTimeout = setTimeout(() => {
+      if (timeOut) return
+      const newCurrent = getCurrent(getChildren())
+      if (newCurrent) setCurrent(newCurrent)
+    }, timeOut) as unknown as number
+  }
+
+  function setCurrent(element: HTMLElement) {
+    if (current === element) return
+    const previous = current
+    current = element
+
+    previous?.removeAttribute('aria-current')
+    current.setAttribute('aria-current', 'true')
+
+    if (onscrollsnapchange) {
+      const detail = { snapTargetBlock: current, snapTargetInline: current }
+      onscrollsnapchange(new CustomEvent('change', { detail }))
+    }
+  }
+
   onMount(() => {
     if (!onscrollsnapchange) return
 
-    let current: HTMLLIElement | null = root.querySelector(':scope > li[aria-current="true"]')
+    current = root.querySelector<HTMLElement>(':scope > li[aria-current="true"]')
     if (current) scrollTo(current)
 
-    const intersectionObserver = new IntersectionObserver(onIntersection, {
-      threshold: [0, 1],
-      root,
-    })
-
-    for (const child of root.children) {
-      if (isLIElement(child)) intersectionObserver.observe(child)
-    }
-
-    const mutationObserver = new MutationObserver(onMutation)
-    mutationObserver.observe(root, { childList: true })
-
-    function onMutation(entries: MutationRecord[]) {
-      for (const entry of entries) {
-        for (const node of entry.addedNodes) {
-          if (isLIElement(node)) intersectionObserver.observe(node)
-        }
-
-        for (const node of entry.removedNodes) {
-          if (isLIElement(node)) intersectionObserver.unobserve(node)
-        }
-      }
-    }
-
-    function onIntersection(entries: IntersectionObserverEntry[]) {
-      for (const entry of entries) {
-        if (entry.intersectionRatio !== 1) continue
-        if (current === entry.target) continue
-        const previous = current
-        current = entry.target as HTMLLIElement
-
-        previous?.removeAttribute('aria-current')
-        current.setAttribute('aria-current', 'true')
-
-        if (onscrollsnapchange)
-          onscrollsnapchange(
-            new CustomEvent('change', {
-              detail: { snapTargetBlock: current, snapTargetInline: current },
-            }),
-          )
-        break
-      }
-    }
-
-    return () => {
-      intersectionObserver.disconnect()
-      mutationObserver.disconnect()
-    }
+    root.addEventListener('scroll', scrollHandler)
   })
 </script>
 
@@ -136,7 +115,6 @@
   aria-roledescription="carousel"
   aria-label={label}
   data-direction={direction}
-  data-snap={snap}
   {...props}
   bind:this={root}>
   {@render children()}
@@ -166,24 +144,9 @@
         overflow-y: scroll;
       }
 
-      &[data-snap='start'] > li {
-        scroll-snap-align: start;
-      }
-
-      &[data-snap='end'] > li {
-        scroll-snap-align: end;
-      }
-
-      &[data-snap='center'] > li {
-        scroll-snap-align: center;
-      }
-
       & > li {
+        scroll-snap-align: center;
         scroll-snap-stop: always;
-      }
-
-      & > :not(li) {
-        display: none;
       }
     }
   }

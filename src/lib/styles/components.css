@@ -14,7 +14,7 @@
 
   .ui-input {
     @apply flex items-center gap-1 rounded-button px-2 py-1.5;
-    @apply surface-editable surface-outlined surface focusable-ring focusable-within-ring;
+    @apply surface surface-editable surface-outlined focusable-ring focusable-within-ring;
     @apply transition-colors;
     /* background-color: var(--color-default-under, theme('colors.neutral.under')); */
     /* display: inline-block;

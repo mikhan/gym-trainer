@@ -1,0 +1,79 @@
+::view-transition-group(prefix-root),
+::view-transition-group(prefix-first),
+::view-transition-group(prefix-last) {
+  animation-duration: 500ms;
+  animation-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  z-index: --z-index;
+}
+
+::view-transition-old(prefix-root),
+::view-transition-new(prefix-root),
+::view-transition-old(prefix-first),
+::view-transition-new(prefix-first),
+::view-transition-old(prefix-last),
+::view-transition-new(prefix-last) {
+  animation-duration: 500ms;
+  animation-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  animation-fill-mode: both;
+  height: 100%;
+}
+
+::view-transition-old(prefix-root),
+::view-transition-new(prefix-root) {
+  object-position: --object-position-first;
+  object-fit: none;
+}
+
+::view-transition-old(prefix-first),
+::view-transition-new(prefix-first) {
+  object-position: --object-position-first;
+  object-fit: none;
+}
+
+::view-transition-old(prefix-last),
+::view-transition-new(prefix-last) {
+  object-position: --object-position-last;
+  object-fit: none;
+}
+
+::view-transition-old(prefix-root):only-child {
+  animation-name: --slide-animation-old;
+}
+
+::view-transition-new(prefix-root):only-child {
+  animation-name: --slide-animation-new;
+}
+
+::view-transition-old(prefix-first):only-child,
+::view-transition-old(prefix-last):only-child {
+  animation-duration: 250ms;
+  animation-name: --slide-animation-old, --fade-out;
+}
+
+::view-transition-new(prefix-first):only-child,
+::view-transition-new(prefix-last):only-child {
+  animation-duration: 250ms;
+  animation-delay: 250ms;
+  animation-name: --slide-animation-new, --fade-in;
+}
+
+/* ::view-transition-image-pair(prefix-root),
+::view-transition-image-pair(prefix-first),
+::view-transition-image-pair(prefix-last) {
+  outline: 1px dotted rgb(89, 0, 255);
+  outline-offset: -1px;
+}
+
+::view-transition-old(prefix-root),
+::view-transition-old(prefix-first),
+::view-transition-old(prefix-last) {
+  outline: 1px dashed #00ff22;
+  outline-offset: -1px;
+}
+
+::view-transition-new(prefix-root),
+::view-transition-new(prefix-first),
+::view-transition-new(prefix-last) {
+  outline: 1px dashed rgb(255, 0, 98);
+  outline-offset: -1px;
+} */

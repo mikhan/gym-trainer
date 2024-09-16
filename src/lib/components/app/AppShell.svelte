@@ -42,31 +42,14 @@
 <div
   class="app-shell"
   use:setStyle
-  use:viewTransitionName={'app-viewport'}
   use:getStyle={(e) => ({
     '--layout-width': `${e.clientWidth}px`,
     '--layout-height': `${e.clientHeight}px`,
   })}>
-  {#if appShellContext.header}
-    {#key appShellContext.headerLevel}
-      <header
-        class="app-header"
-        use:viewTransitionName={'app-header'}
-        transition:fly={{ duration: 200, y: '-100%' }}
-        use:getStyle={(e) => ({
-          '--layout-header-width': 'calc(var(--layout-width) - var(--layout-aside-width))',
-          '--layout-header-height': `${e.offsetHeight}px`,
-        })}>
-        {@render appShellContext.header()}
-      </header>
-    {/key}
-  {/if}
-
   {#if appShellContext.aside}
     {#key appShellContext.asideLevel}
       <aside
         class="app-aside"
-        use:viewTransitionName={'app-aside'}
         use:getStyle={(e) => ({
           '--layout-aside-width': `${e.offsetWidth}px`,
           '--layout-aside-height': 'var(--layout-height)',
@@ -76,23 +59,41 @@
     {/key}
   {/if}
 
-  <main class="app-viewport">
-    {@render children()}
-  </main>
+  <div
+    class="grid flex-1 scroll-pt-layout-header-height grid-cols-1 grid-rows-[auto,1fr,auto] overflow-y-scroll scroll-smooth scrollbar scrollbar-track-black scrollbar-stable"
+    use:getStyle={(e) => ({
+      '--layout-header-width': `${e.clientWidth}px`,
+      '--layout-footer-width': `${e.clientWidth}px`,
+    })}>
+    {#if appShellContext.header}
+      {#key appShellContext.headerLevel}
+        <header
+          class="app-header"
+          transition:fly={{ duration: 200, y: '-100%' }}
+          use:getStyle={(e) => ({
+            '--layout-header-height': `${e.offsetHeight}px`,
+          })}>
+          {@render appShellContext.header()}
+        </header>
+      {/key}
+    {/if}
 
-  {#if appShellContext.footer}
-    {#key appShellContext.footerLevel}
-      <footer
-        class="app-footer"
-        use:viewTransitionName={'app-footer'}
-        use:getStyle={(e) => ({
-          '--layout-footer-width': 'calc(var(--layout-width) - var(--layout-aside-width))',
-          '--layout-footer-height': `${e.offsetHeight}px`,
-        })}>
-        {@render appShellContext.footer()}
-      </footer>
-    {/key}
-  {/if}
+    <main class="app-viewport" use:viewTransitionName={'app-viewport'}>
+      {@render children()}
+    </main>
+
+    {#if appShellContext.footer}
+      {#key appShellContext.footerLevel}
+        <footer
+          class="app-footer"
+          use:getStyle={(e) => ({
+            '--layout-footer-height': `${e.offsetHeight}px`,
+          })}>
+          {@render appShellContext.footer()}
+        </footer>
+      {/key}
+    {/if}
+  </div>
 </div>
 
 <style lang="postcss">
@@ -123,33 +124,23 @@
         --layout-padding: calc(var(--layout-padding-default) * 2);
       }
 
-      @apply grid size-full;
-      @apply scroll-pt-layout-header-height overflow-y-scroll scroll-smooth scrollbar scrollbar-track-black scrollbar-stable;
-      grid-template:
-        'aside head' auto
-        'aside view' 1fr
-        'aside foot' auto
-        / auto 1fr;
-    }
-
-    .app-header {
-      grid-area: head;
-      @apply sticky left-layout-aside-width top-layout-header-top z-1 w-layout-header-width;
+      @apply flex size-full;
     }
 
     .app-aside {
-      grid-area: aside;
-      @apply sticky left-0 top-0 z-2 h-layout-height bg-default;
+      @apply sticky left-0 top-0 z-2 h-layout-height flex-none bg-default;
+    }
+
+    .app-header {
+      @apply sticky left-0 top-0 z-1 col-start-1 row-start-1;
     }
 
     .app-viewport {
-      @apply isolate;
-      grid-area: view;
+      @apply isolate col-start-1 row-start-2 contain-inline-size;
     }
 
     .app-footer {
-      grid-area: foot;
-      @apply sticky bottom-0 left-layout-aside-width z-1 w-layout-footer-width;
+      @apply sticky bottom-0 left-0 z-1 col-start-1 row-start-3;
     }
 
     ::view-transition-group(app-viewport) {
@@ -157,51 +148,21 @@
     }
 
     ::view-transition-old(app-viewport) {
+      height: 100%;
+      object-position: top left;
+      object-fit: none;
       animation:
-        90ms cubic-bezier(0.4, 0, 1, 1) both fade-out,
+        90ms cubic-bezier(0.4, 0, 1, 1) both --fade-out,
         theme('transitionDuration.medium') cubic-bezier(0.4, 0, 0.2, 1) both slide-to-left;
     }
 
     ::view-transition-new(app-viewport) {
-      animation:
-        210ms cubic-bezier(0, 0, 0.2, 1) 90ms both fade-in,
-        theme('transitionDuration.medium') cubic-bezier(0.4, 0, 0.2, 1) both slide-from-right;
-    }
-
-    /* ::view-transition-group(app-header),
-    ::view-transition-group(app-footer) {
-      animation-duration: theme('transitionDuration.medium');
-      animation-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
-      contain: paint;
-      z-index: 1;
-    }
-
-    ::view-transition-old(app-header),
-    ::view-transition-new(app-header),
-    ::view-transition-old(app-footer),
-    ::view-transition-new(app-footer) {
       height: 100%;
+      object-position: top left;
       object-fit: none;
-    } */
-
-    ::view-transition-old(app-aside):only-child {
-      animation: theme('transitionDuration.medium') cubic-bezier(0.4, 0, 0.2, 1) both slide-out;
-    }
-
-    ::view-transition-new(app-aside):only-child {
-      animation: theme('transitionDuration.medium') cubic-bezier(0.4, 0, 0.2, 1) both slide-in;
-    }
-
-    @keyframes fade-in {
-      from {
-        opacity: 0;
-      }
-    }
-
-    @keyframes fade-out {
-      to {
-        opacity: 0;
-      }
+      animation:
+        210ms cubic-bezier(0, 0, 0.2, 1) 90ms both --fade-in,
+        theme('transitionDuration.medium') cubic-bezier(0.4, 0, 0.2, 1) both slide-from-right;
     }
 
     @keyframes slide-from-right {
@@ -213,18 +174,6 @@
     @keyframes slide-to-left {
       to {
         transform: translateX(-60px);
-      }
-    }
-
-    @keyframes slide-in {
-      from {
-        transform: translateX(-100%);
-      }
-    }
-
-    @keyframes slide-out {
-      to {
-        transform: translateX(-100%);
       }
     }
   }

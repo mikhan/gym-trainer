@@ -1,5 +1,5 @@
 <script lang="ts">
-  import UiCheckbox from '$lib/components/ui/ui-checkbox.svelte'
+  import UiCheckbox from '$lib/components/ui/UiCheckbox.svelte'
   import { getPersistedState } from '$lib/states/persisted-state.svelte'
 
   const themeState = getPersistedState('session', 'ThemeTypography.state', {
@@ -11,7 +11,9 @@
   <header>
     <h1 class="typescale-headline">Typography</h1>
   </header>
-  <section class="ui-toolbar" aria-label="Herramientas">
+  <section
+    class="ui-toolbar sticky top-layout-header-height z-1 bg-default"
+    aria-label="Herramientas">
     <div class="ui-field">
       <label class="ui-label">
         <UiCheckbox bind:checked={themeState.showGridlines}></UiCheckbox>

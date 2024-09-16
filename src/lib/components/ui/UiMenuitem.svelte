@@ -1,7 +1,7 @@
 <script lang="ts">
   import type { Snippet } from 'svelte'
   import type { HTMLButtonAttributes } from 'svelte/elements'
-  import { UiMenuContext } from './ui-menu-context.svelte'
+  import { UiMenuContext } from './UiMenuContext.svelte'
   import clsx from 'clsx'
 
   type Props = {

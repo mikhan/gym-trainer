@@ -1,6 +1,6 @@
 import { updateTraining } from '$data/trainings'
 import { getContext, setContext } from 'svelte'
-import { getAppDatabaseContext } from '$lib/components/app/app-database-context.svelte'
+import { getAppDatabaseContext } from '$lib/components/app/AppDatabaseContext.svelte'
 import type { ChartData } from './LineChart.svelte'
 
 type TrainingViewportContextInit = {

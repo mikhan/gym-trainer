@@ -4,7 +4,7 @@
   import { Fa } from 'svelte-fa'
   import type { Snippet } from 'svelte'
   import { clsx } from 'clsx'
-  import UiIconbutton from './ui-iconbutton.svelte'
+  import UiIconbutton from './UiIconbutton.svelte'
 
   type Props = {
     children?: Snippet

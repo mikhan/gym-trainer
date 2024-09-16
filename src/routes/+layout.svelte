@@ -1,6 +1,6 @@
 <script lang="ts">
   import { onMount } from 'svelte'
-  import AppDatabase from '$lib/components/app/app-database.svelte'
+  import AppDatabase from '$lib/components/app/AppDatabase.svelte'
   import { invalidate } from '$app/navigation'
   import AppPwa from '$lib/components/app/AppPwa.svelte'
   import AppNavigatingIndicator from '$lib/components/app/AppNavigatingIndicator.svelte'

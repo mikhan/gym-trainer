@@ -1,7 +1,7 @@
 <script lang="ts">
   import Fa from 'svelte-fa'
   import { faArrowRotateBack, faPause, faPlay } from '@fortawesome/free-solid-svg-icons'
-  import UiIconbutton from '$lib/components/ui/ui-iconbutton.svelte'
+  import UiIconbutton from '$lib/components/ui/UiIconbutton.svelte'
   import UiCircularProgress from '$lib/components/ui/UiCircularProgress.svelte'
   import { onDestroy } from 'svelte'
   import { wakeLock } from '$lib/stores/wakelock.store'
@@ -92,7 +92,8 @@
     </div>
   {/key}
   <UiIconbutton
-    class="relative color-primary"
+    class={clsx('relative', status === 'playing' ? 'color-secondary' : 'color-primary')}
+    filled
     size="lg"
     label={currentTime ? 'Reiniciar cronómetro' : 'Iniciar cronómetro'}
     onclick={() => start()}

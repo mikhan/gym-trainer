@@ -58,4 +58,10 @@
       opacity: 0;
     }
   }
+
+  @property --tw-bg-opacity {
+    syntax: '<number>';
+    inherits: true;
+    initial-value: 1;
+  }
 }

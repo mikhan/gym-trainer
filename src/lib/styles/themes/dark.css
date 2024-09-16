@@ -3,8 +3,8 @@
     color-scheme: dark;
 
     --color-neutral-hue: 240;
-    --color-primary-hue: 240;
-    --color-secondary-hue: 267;
+    --color-primary-hue: 265;
+    --color-secondary-hue: 60;
     --color-accent-hue: 183;
 
     --color-selection: oklch(60% 0.15 80);
@@ -40,11 +40,11 @@
     --color-secondary-darker: oklch(46% 0.12 var(--color-secondary-hue));
     --color-secondary-darker-fg: oklch(95% 0.05 var(--color-secondary-hue));
     --color-secondary-darker-line: oklch(62% 0.12 var(--color-secondary-hue));
-    --color-secondary: oklch(56% 0.15 var(--color-secondary-hue));
+    --color-secondary: oklch(56% 0.12 var(--color-secondary-hue));
     --color-secondary-fg: oklch(95% 0.05 var(--color-secondary-hue));
     --color-secondary-line: oklch(70% 0.1 var(--color-secondary-hue));
-    --color-secondary-lighter: oklch(66% 0.15 var(--color-secondary-hue));
-    --color-secondary-lighter-fg: oklch(96% 0.05 var(--color-secondary-hue));
+    --color-secondary-lighter: oklch(66% 0.12 var(--color-secondary-hue));
+    --color-secondary-lighter-fg: oklch(100% 0.03 var(--color-secondary-hue));
     --color-secondary-lighter-line: oklch(80% 0.1 var(--color-secondary-hue));
     --color-accent-darker: oklch(46% 0.15 var(--color-accent-hue));
     --color-accent-darker-fg: oklch(95% 0.05 var(--color-accent-hue));

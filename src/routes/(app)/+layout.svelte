@@ -3,7 +3,7 @@
   import AppShell from '$lib/components/app/AppShell.svelte'
   import { TrainerContext } from './trainer/TrainerContext.svelte'
   import { wakeLock, type WakeLockStatus } from '$lib/stores/wakelock.store'
-  import TrainerPlayer from './trainer/TrainerPlayer.svelte'
+  import Player from './trainer/Player.svelte'
 
   let { children } = $props()
 
@@ -21,7 +21,7 @@
   {@render children()}
 
   {#if trainerContext.state.status === 'running'}
-    <TrainerPlayer state={trainerContext.state}></TrainerPlayer>
+    <Player state={trainerContext.state}></Player>
   {/if}
 </AppShell>
 

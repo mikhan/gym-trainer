@@ -10,17 +10,17 @@
     faPlay,
   } from '@fortawesome/free-solid-svg-icons'
   import { faTrashAlt } from '@fortawesome/free-regular-svg-icons'
-  import UiMenu from '$lib/components/ui/ui-menu.svelte'
-  import UiMenuitem from '$lib/components/ui/ui-menuitem.svelte'
+  import UiMenu from '$lib/components/ui/UiMenu.svelte'
+  import UiMenuitem from '$lib/components/ui/UiMenuitem.svelte'
   import { tocTarget } from '$lib/actions/toc.action'
   import { TrainingViewportContext } from './TrainingViewportContext.svelte'
-  import UiIconbutton from '$lib/components/ui/ui-iconbutton.svelte'
+  import UiIconbutton from '$lib/components/ui/UiIconbutton.svelte'
   import { getMuscleGroups, type MuscleGroup } from '$data/trainer/config'
   import { goto } from '$app/navigation'
   import { TrainerContext } from '../../trainer/TrainerContext.svelte'
   import LineChart, { type ChartData } from './LineChart.svelte'
   import clsx from 'clsx'
-  import UiButton from '$lib/components/ui/ui-button.svelte'
+  import UiButton from '$lib/components/ui/UiButton.svelte'
 
   type Props = {
     training: Types.Training
@@ -169,12 +169,13 @@
 
         {#each groupedSerie.series as serie (serie.id)}
           <li
-            class="relative grid h-16 grid-cols-[auto,1fr,auto] items-center gap-4 px-4 transition-colors hover:bg-default-hover"
+            class="flex h-16 items-center gap-4 px-4 contain-strict"
             use:sortitem={training.id}
             data-routine-id={routine.id}
             data-serie-id={serie.id}>
+            <!-- Handle -->
             <button
-              class="grid h-full w-4 shrink-0 cursor-grab place-content-center"
+              class="grid size-4 flex-none cursor-grab place-content-center pointer-coarse:hidden"
               type="button"
               draggable={true}
               tabindex="-1"
@@ -182,19 +183,21 @@
               aria-label="Drag to sort">
               <Fa icon={faGripLines}></Fa>
             </button>
+            <!-- Item -->
             <button
-              class="group flex h-full w-full items-center gap-2 overflow-hidden text-left outline-none"
+              class="group flex-1 text-left outline-none contain-inline-size"
               type="button"
               onclick={() => (currentSerie$ = serie)}>
-              <div class="flex-1 overflow-hidden">
+              <div class="flex-1">
                 <div class="truncate">{serie.name}</div>
                 <div class="typescale-label truncate">{getStepsDescription(serie)}</div>
               </div>
               <div
-                class="absolute inset-0 -z-1 group-focus-visible:outline group-focus-visible:outline-2 group-focus-visible:-outline-offset-2 group-focus-visible:outline-ring">
+                class="absolute inset-0 -z-1 ring-inset ring-ring transition-colors group-hover:bg-default-hover group-focus-visible:ring-2 group-active:bg-default-active">
               </div>
             </button>
-            <UiIconbutton class="shrink-0" id={`serie-${serie.id}-actions`} label="More actions">
+            <!-- Actions -->
+            <UiIconbutton class="flex-none" id={`serie-${serie.id}-actions`} label="More actions">
               <Fa icon={faEllipsisV}></Fa>
             </UiIconbutton>
           </li>

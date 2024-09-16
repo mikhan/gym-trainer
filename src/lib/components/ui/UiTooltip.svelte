@@ -59,6 +59,7 @@
       @apply px-4 py-1 text-sm;
       @apply rounded-card border bg-opacity-75 shadow-over backdrop-blur color-popover surface;
       position: fixed;
+      inset: 0;
       position-visibility: anchors-visible;
       position-try:
         flip-block,

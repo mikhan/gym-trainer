@@ -1,6 +1,6 @@
 <script lang="ts">
   import clsx from 'clsx'
-  import UiToc from '$lib/components/ui/ui-toc.svelte'
+  import UiToc from '$lib/components/ui/UiToc.svelte'
 
   type Props = {
     training: Types.Training
@@ -13,7 +13,7 @@
   {#snippet children(active)}
     <nav
       class="sticky left-0 top-layout-header-height ms-auto hidden h-layout-viewport-height w-full space-y-4 overflow-y-auto py-layout-gap scrollbar scrollbar-autohide lg:block">
-      <div class="px-4 font-bold">Rutinas</div>
+      <div class="typescale-label px-4 font-bold uppercase">Rutinas</div>
       <ul class="">
         {#each training.routines as routine}
           {@const id = `routine-${routine.id}`}

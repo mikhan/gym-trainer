@@ -17,19 +17,20 @@
   class={clsx('app-shell-footer', className)}
   {...other}
   use:viewTransitionClass={'app-shell-footer'}>
-  <div class="container mx-auto flex gap-2 px-layout-gap py-2 *:flex *:items-center *:gap-2">
+  <div
+    class="container mx-auto flex gap-2 px-layout-gap py-3 *:flex *:min-h-10 *:items-center *:gap-2">
     {#if start}
-      <div class="grow justify-start" use:viewTransitionClass={'app-shell-footer-start'}>
+      <div class="flex-none" use:viewTransitionClass={'app-shell-footer-start'}>
         {@render start()}
       </div>
     {/if}
     {#if children}
-      <div use:viewTransitionClass={'app-shell-footer-center'}>
+      <div class="flex-1 contain-strict" use:viewTransitionClass={'app-shell-footer-center'}>
         {@render children()}
       </div>
     {/if}
     {#if end}
-      <div class="grow justify-end" use:viewTransitionClass={'app-shell-footer-end'}>
+      <div class="ml-auto flex-none" use:viewTransitionClass={'app-shell-footer-end'}>
         {@render end()}
       </div>
     {/if}
@@ -38,7 +39,7 @@
 
 <style lang="postcss">
   :where(.app-shell-footer) {
-    @apply flex overflow-hidden transition surface;
+    @apply flex overflow-hidden py-3 transition contain-inline-size surface;
   }
 
   ::view-transition-group(.app-shell-footer),
