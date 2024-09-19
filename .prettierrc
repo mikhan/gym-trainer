@@ -9,9 +9,9 @@
   "plugins": [
     "prettier-plugin-svelte",
     "prettier-plugin-tailwindcss",
-    "@trivago/prettier-plugin-sort-imports"
+    "@ianvs/prettier-plugin-sort-imports"
   ],
   "overrides": [{ "files": "*.svelte", "options": { "parser": "svelte" } }],
-  "importOrder": ["^[$]env/(.*)", "^[$]core/(.*)", "^[$]lib/(.*)", "^[./]"],
-  "importOrderSortSpecifiers": true
+  "importOrder": ["$service-worker", "^[$]env/(.*)", "^[$]app/(.*)", "^[$]lib/(.*)", "^[.]"],
+  "importOrderTypeScriptVersion": "5.5.4"
 }
