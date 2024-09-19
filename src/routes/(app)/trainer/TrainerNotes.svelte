@@ -1,7 +1,7 @@
 <script lang="ts">
-  import UiIconbutton from '$lib/components/ui/UiIconbutton.svelte'
   import { faTrash } from '@fortawesome/free-solid-svg-icons'
   import Fa from 'svelte-fa'
+  import UiIconbutton from '$lib/components/ui/UiIconbutton.svelte'
 
   type Props = {
     content?: string

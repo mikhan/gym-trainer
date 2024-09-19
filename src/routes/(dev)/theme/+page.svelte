@@ -1,16 +1,16 @@
 <script lang="ts">
-  import ThemeColor from './ThemeColor.svelte'
-  import ThemeTypography from './ThemeTypography.svelte'
-  import CSSValue from './CSSValue.svelte'
-  import UiButton from '$lib/components/ui/UiButton.svelte'
-  import AppTopbar from '$lib/components/app/AppTopbar.svelte'
-  import Fa from 'svelte-fa'
   import { faChevronDown } from '@fortawesome/free-solid-svg-icons'
-  import { getPersistedState } from '$lib/states/persisted-state.svelte'
   import { onMount } from 'svelte'
-  import AppShellSection from '$lib/components/app/AppShellSection.svelte'
+  import Fa from 'svelte-fa'
   import AppAside from '$lib/components/app/AppAside.svelte'
   import AppMetadata from '$lib/components/app/AppMetadata.svelte'
+  import AppShellSection from '$lib/components/app/AppShellSection.svelte'
+  import AppTopbar from '$lib/components/app/AppTopbar.svelte'
+  import UiButton from '$lib/components/ui/UiButton.svelte'
+  import { getPersistedState } from '$lib/states/persisted-state.svelte'
+  import CSSValue from './CSSValue.svelte'
+  import ThemeColor from './ThemeColor.svelte'
+  import ThemeTypography from './ThemeTypography.svelte'
 
   const { data } = $props()
 

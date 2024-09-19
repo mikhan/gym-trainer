@@ -1,4 +1,7 @@
 <script lang="ts">
+  import { faTrash } from '@fortawesome/free-solid-svg-icons'
+  import clsx from 'clsx'
+  import Fa from 'svelte-fa'
   import { goto } from '$app/navigation'
   import { page } from '$app/stores'
   import { startViewTransition, viewTransitionName } from '$lib/actions/transition.action'
@@ -7,9 +10,6 @@
   import UiButton from '$lib/components/ui/UiButton.svelte'
   import UiIconbutton from '$lib/components/ui/UiIconbutton.svelte'
   import { getPersistedState } from '$lib/states/persisted-state.svelte'
-  import { faTrash } from '@fortawesome/free-solid-svg-icons'
-  import clsx from 'clsx'
-  import Fa from 'svelte-fa'
 
   type View = typeof current
 

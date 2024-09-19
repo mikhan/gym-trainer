@@ -1,8 +1,8 @@
 <script lang="ts">
-  import { onMount, type Snippet } from 'svelte'
-  import { anchor } from '$lib/actions/anchor.action'
   import { clsx } from 'clsx'
+  import { onMount, type Snippet } from 'svelte'
   import type { HTMLAttributes } from 'svelte/elements'
+  import { anchor } from '$lib/actions/anchor.action'
   import { getElement } from '$lib/utils/element'
 
   type Props = {

@@ -1,4 +1,4 @@
-import { type Snippet, getContext, setContext } from 'svelte'
+import { getContext, setContext, type Snippet } from 'svelte'
 import { getPersistedState } from '$lib/states/persisted-state.svelte'
 
 type AppShellContextState = {

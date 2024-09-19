@@ -1,8 +1,8 @@
 <script lang="ts">
-  import { page } from '$app/stores'
   import { faChevronLeft, faSlash, faWarning, faWifi } from '@fortawesome/free-solid-svg-icons'
   import type { Snippet } from 'svelte'
   import Fa, { FaLayers } from 'svelte-fa'
+  import { page } from '$app/stores'
 
   type Props = {
     children?: Snippet

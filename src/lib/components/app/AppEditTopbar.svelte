@@ -1,7 +1,7 @@
 <script lang="ts">
   import { type Snippet } from 'svelte'
-  import AppShellSection from './AppShellSection.svelte'
   import AppShellHeader from './AppBar.svelte'
+  import AppShellSection from './AppShellSection.svelte'
 
   type Props = { children: Snippet; title: string; onclose?: () => void }
 

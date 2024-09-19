@@ -3,10 +3,10 @@
 </script>
 
 <script lang="ts">
-  import { onMount, type Snippet } from 'svelte'
-  import { viewTransitionName } from '$lib/actions/transition.action'
   import clsx from 'clsx'
+  import { onMount, type Snippet } from 'svelte'
   import type { HTMLAttributes } from 'svelte/elements'
+  import { viewTransitionName } from '$lib/actions/transition.action'
   import styleTemplate from './AppBar/style-template.css?raw'
 
   type Props = {

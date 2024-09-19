@@ -1,7 +1,7 @@
 <script lang="ts">
-  import type { HTMLAnchorAttributes, HTMLButtonAttributes } from 'svelte/elements'
-  import type { Snippet } from 'svelte'
   import { clsx } from 'clsx'
+  import type { Snippet } from 'svelte'
+  import type { HTMLAnchorAttributes, HTMLButtonAttributes } from 'svelte/elements'
 
   type IsButton = HTMLButtonAttributes
   type IsLink = HTMLAnchorAttributes & { is: 'a' }

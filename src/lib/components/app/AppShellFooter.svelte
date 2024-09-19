@@ -1,8 +1,8 @@
 <script lang="ts">
-  import { type Snippet } from 'svelte'
-  import { viewTransitionClass } from '$lib/actions/transition.action'
   import clsx from 'clsx'
+  import { type Snippet } from 'svelte'
   import type { HTMLAttributes } from 'svelte/elements'
+  import { viewTransitionClass } from '$lib/actions/transition.action'
 
   type Props = {
     start?: Snippet

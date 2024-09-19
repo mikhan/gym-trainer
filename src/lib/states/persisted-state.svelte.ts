@@ -1,5 +1,5 @@
-import { browser } from '$app/environment'
 import { onDestroy } from 'svelte'
+import { browser } from '$app/environment'
 
 type StorageType = 'local' | 'session'
 

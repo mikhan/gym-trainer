@@ -1,9 +1,9 @@
 <script lang="ts">
-  import type { HTMLDialogAttributes } from 'svelte/elements'
   import { faTimes } from '@fortawesome/free-solid-svg-icons'
-  import { Fa } from 'svelte-fa'
-  import type { Snippet } from 'svelte'
   import { clsx } from 'clsx'
+  import type { Snippet } from 'svelte'
+  import { Fa } from 'svelte-fa'
+  import type { HTMLDialogAttributes } from 'svelte/elements'
   import UiIconbutton from './UiIconbutton.svelte'
 
   type Props = {

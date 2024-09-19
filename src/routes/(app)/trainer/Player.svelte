@@ -1,12 +1,12 @@
 <script lang="ts">
-  import { type TrainerContextStateRunning } from './TrainerContext.svelte'
-  import PlayerTimer from './PlayerTimer.svelte'
-  import AppShellSection from '$lib/components/app/AppShellSection.svelte'
-  import AppShellHeader from '$lib/components/app/AppBar.svelte'
-  import UiIconbutton from '$lib/components/ui/UiIconbutton.svelte'
   import { faAnglesDown, faAnglesUp, faTrash } from '@fortawesome/free-solid-svg-icons'
   import Fa from 'svelte-fa'
   import { slide } from 'svelte/transition'
+  import AppShellHeader from '$lib/components/app/AppBar.svelte'
+  import AppShellSection from '$lib/components/app/AppShellSection.svelte'
+  import UiIconbutton from '$lib/components/ui/UiIconbutton.svelte'
+  import PlayerTimer from './PlayerTimer.svelte'
+  import { type TrainerContextStateRunning } from './TrainerContext.svelte'
 
   type Props = { state: TrainerContextStateRunning }
 

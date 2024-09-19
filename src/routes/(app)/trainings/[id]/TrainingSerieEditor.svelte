@@ -1,10 +1,10 @@
 <script lang="ts">
-  import TrainingSerieEditorStep from './TrainingSerieEditorStep.svelte'
   import { getMuscles } from '$data/trainer/config'
-  import UiDialog from '$lib/components/ui/UiDialog.svelte'
   import { onMount } from 'svelte'
   import UiButton from '$lib/components/ui/UiButton.svelte'
   import UiCheckbox from '$lib/components/ui/UiCheckbox.svelte'
+  import UiDialog from '$lib/components/ui/UiDialog.svelte'
+  import TrainingSerieEditorStep from './TrainingSerieEditorStep.svelte'
 
   type Props = {
     serie: Types.RoutineSerie

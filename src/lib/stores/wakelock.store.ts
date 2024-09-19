@@ -1,5 +1,5 @@
+import { writable, type Readable } from 'svelte/store'
 import { browser } from '$app/environment'
-import { type Readable, writable } from 'svelte/store'
 
 export type WakeLockStatus = 'pending' | 'released' | 'locked' | 'denied'
 

@@ -1,7 +1,7 @@
 <script lang="ts">
-  import Showcase from './Showcase.svelte'
   import UiCheckbox from '$lib/components/ui/UiCheckbox.svelte'
   import { getPersistedState } from '$lib/states/persisted-state.svelte'
+  import Showcase from './Showcase.svelte'
 
   const themeState = getPersistedState('session', 'ThemeColor.state', {
     layout: 'showcase' as 'showcase' | 'swatch',

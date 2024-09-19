@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { viewTransitionName, startViewTransition } from '$lib/actions/transition.action'
+  import { startViewTransition, viewTransitionName } from '$lib/actions/transition.action'
 
   let state = $state(1)
 

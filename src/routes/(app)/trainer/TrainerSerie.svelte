@@ -1,9 +1,9 @@
 <script lang="ts">
-  import clsx from 'clsx'
-  import TrainerStep from './TrainerStep.svelte'
-  import Fa from 'svelte-fa'
   import { faPlus } from '@fortawesome/free-solid-svg-icons'
+  import clsx from 'clsx'
+  import Fa from 'svelte-fa'
   import UiIconbutton from '$lib/components/ui/UiIconbutton.svelte'
+  import TrainerStep from './TrainerStep.svelte'
 
   type Props = {
     serie: Types.RoutineSerie

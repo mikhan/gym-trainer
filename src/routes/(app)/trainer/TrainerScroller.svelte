@@ -1,8 +1,8 @@
 <script lang="ts">
-  import UiIconbutton from '$lib/components/ui/UiIconbutton.svelte'
-  import Fa from 'svelte-fa'
   import { faChevronLeft, faChevronRight } from '@fortawesome/free-solid-svg-icons'
   import clsx from 'clsx'
+  import Fa from 'svelte-fa'
+  import UiIconbutton from '$lib/components/ui/UiIconbutton.svelte'
 
   type Props = {
     value?: number

@@ -1,5 +1,5 @@
 import type { Action } from 'svelte/action'
-import { type Readable, writable } from 'svelte/store'
+import { writable, type Readable } from 'svelte/store'
 
 let intersectionObserver: IntersectionObserver | null = null
 let currentVisible: { element: HTMLElement | null } = { element: null }

@@ -1,8 +1,8 @@
 <script lang="ts">
+  import { faTrashAlt } from '@fortawesome/free-regular-svg-icons'
+  import { faClone, faEllipsisV } from '@fortawesome/free-solid-svg-icons'
   import Fa from 'svelte-fa'
   import UiIconbutton from '$lib/components/ui/UiIconbutton.svelte'
-  import { faClone, faEllipsisV } from '@fortawesome/free-solid-svg-icons'
-  import { faTrashAlt } from '@fortawesome/free-regular-svg-icons'
   import UiMenu from '$lib/components/ui/UiMenu.svelte'
   import UiMenuitem from '$lib/components/ui/UiMenuitem.svelte'
   import UiMenutitle from '$lib/components/ui/UiMenutitle.svelte'

@@ -1,6 +1,6 @@
 <script lang="ts">
-  import { currentTocTarget } from '$lib/actions/toc.action'
   import { onMount, type Snippet } from 'svelte'
+  import { currentTocTarget } from '$lib/actions/toc.action'
 
   type Props = {
     children: Snippet<[active: HTMLElement | null]>

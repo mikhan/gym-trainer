@@ -1,10 +1,10 @@
 <script lang="ts">
-  import { onMount, type Snippet } from 'svelte'
-  import { anchor } from '$lib/actions/anchor.action'
-  import { UiMenuContext } from './UiMenuContext.svelte'
   import { clsx } from 'clsx'
+  import { onMount, type Snippet } from 'svelte'
   import type { HTMLMenuAttributes } from 'svelte/elements'
+  import { anchor } from '$lib/actions/anchor.action'
   import { getElement } from '$lib/utils/element'
+  import { UiMenuContext } from './UiMenuContext.svelte'
 
   type Props = {
     target: string | HTMLElement

@@ -1,8 +1,8 @@
 <script lang="ts">
+  import clsx from 'clsx'
   import type { Snippet } from 'svelte'
   import type { HTMLButtonAttributes } from 'svelte/elements'
   import { UiMenuContext } from './UiMenuContext.svelte'
-  import clsx from 'clsx'
 
   type Props = {
     children: Snippet

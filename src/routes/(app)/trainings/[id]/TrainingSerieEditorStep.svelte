@@ -1,9 +1,9 @@
 <script lang="ts">
-  import { Fa } from 'svelte-fa'
   import { faTrash } from '@fortawesome/free-solid-svg-icons'
+  import { Fa } from 'svelte-fa'
+  import { autoselect } from '$lib/actions/autoselect.action'
   import UiIconbutton from '$lib/components/ui/UiIconbutton.svelte'
   import { convertUnit } from '$lib/utils/unit-converter'
-  import { autoselect } from '$lib/actions/autoselect.action'
 
   type Props = {
     index: number

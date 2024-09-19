@@ -1,7 +1,5 @@
 <script lang="ts">
-  import TrainingSerieEditor from './TrainingSerieEditor.svelte'
-  import Fa from 'svelte-fa'
-  import { sortitem, sortlist } from '$lib/actions/sortable.action'
+  import { faTrashAlt } from '@fortawesome/free-regular-svg-icons'
   import {
     faChevronDown,
     faChevronUp,
@@ -9,18 +7,20 @@
     faGripLines,
     faPlay,
   } from '@fortawesome/free-solid-svg-icons'
-  import { faTrashAlt } from '@fortawesome/free-regular-svg-icons'
+  import { getMuscleGroups, type MuscleGroup } from '$data/trainer/config'
+  import clsx from 'clsx'
+  import Fa from 'svelte-fa'
+  import { goto } from '$app/navigation'
+  import { sortitem, sortlist } from '$lib/actions/sortable.action'
+  import { tocTarget } from '$lib/actions/toc.action'
+  import UiButton from '$lib/components/ui/UiButton.svelte'
+  import UiIconbutton from '$lib/components/ui/UiIconbutton.svelte'
   import UiMenu from '$lib/components/ui/UiMenu.svelte'
   import UiMenuitem from '$lib/components/ui/UiMenuitem.svelte'
-  import { tocTarget } from '$lib/actions/toc.action'
-  import { TrainingViewportContext } from './TrainingViewportContext.svelte'
-  import UiIconbutton from '$lib/components/ui/UiIconbutton.svelte'
-  import { getMuscleGroups, type MuscleGroup } from '$data/trainer/config'
-  import { goto } from '$app/navigation'
   import { TrainerContext } from '../../trainer/TrainerContext.svelte'
   import LineChart, { type ChartData } from './LineChart.svelte'
-  import clsx from 'clsx'
-  import UiButton from '$lib/components/ui/UiButton.svelte'
+  import TrainingSerieEditor from './TrainingSerieEditor.svelte'
+  import { TrainingViewportContext } from './TrainingViewportContext.svelte'
 
   type Props = {
     training: Types.Training

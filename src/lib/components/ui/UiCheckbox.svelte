@@ -1,6 +1,6 @@
 <script lang="ts">
-  import type { HTMLInputAttributes } from 'svelte/elements'
   import { clsx } from 'clsx'
+  import type { HTMLInputAttributes } from 'svelte/elements'
 
   type Props = {
     checked?: boolean

@@ -1,7 +1,7 @@
 <script lang="ts">
-  import TrainingsGridItem from './TrainingsGridItem.svelte'
-  import Fa from 'svelte-fa'
   import { faPlus } from '@fortawesome/free-solid-svg-icons'
+  import Fa from 'svelte-fa'
+  import TrainingsGridItem from './TrainingsGridItem.svelte'
 
   type Props = {
     trainings: Types.Training[]

@@ -1,9 +1,9 @@
 <script lang="ts">
   import { viewTransitionName } from '$lib/actions/transition.action'
   import AppShell from '$lib/components/app/AppShell.svelte'
-  import { TrainerContext } from './trainer/TrainerContext.svelte'
   import { wakeLock, type WakeLockStatus } from '$lib/stores/wakelock.store'
   import Player from './trainer/Player.svelte'
+  import { TrainerContext } from './trainer/TrainerContext.svelte'
 
   let { children } = $props()
 

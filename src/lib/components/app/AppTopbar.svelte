@@ -1,11 +1,11 @@
 <script lang="ts">
+  import { faArrowLeft, type IconDefinition } from '@fortawesome/free-solid-svg-icons'
+  import clsx from 'clsx'
   import { type Snippet } from 'svelte'
   import Fa from 'svelte-fa'
-  import { faArrowLeft, type IconDefinition } from '@fortawesome/free-solid-svg-icons'
-  import AppUserAvatar from './AppUserAvatar.svelte'
   import UiIconlink from '../ui/UiIconlink.svelte'
   import AppShellHeader from './AppBar.svelte'
-  import clsx from 'clsx'
+  import AppUserAvatar from './AppUserAvatar.svelte'
 
   type Props = {
     name?: string

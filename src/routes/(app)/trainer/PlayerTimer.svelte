@@ -1,12 +1,12 @@
 <script lang="ts">
-  import Fa from 'svelte-fa'
   import { faArrowRotateBack, faPause, faPlay } from '@fortawesome/free-solid-svg-icons'
-  import UiIconbutton from '$lib/components/ui/UiIconbutton.svelte'
-  import UiCircularProgress from '$lib/components/ui/UiCircularProgress.svelte'
-  import { onDestroy } from 'svelte'
-  import { wakeLock } from '$lib/stores/wakelock.store'
-  import { longpress } from '$lib/actions/longpress.action'
   import clsx from 'clsx'
+  import { onDestroy } from 'svelte'
+  import Fa from 'svelte-fa'
+  import { longpress } from '$lib/actions/longpress.action'
+  import UiCircularProgress from '$lib/components/ui/UiCircularProgress.svelte'
+  import UiIconbutton from '$lib/components/ui/UiIconbutton.svelte'
+  import { wakeLock } from '$lib/stores/wakelock.store'
 
   type Time = { start: number; duration: number }
   type State = 'stopped' | 'playing' | 'paused'

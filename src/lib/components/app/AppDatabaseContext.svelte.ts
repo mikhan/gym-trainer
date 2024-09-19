@@ -1,5 +1,5 @@
-import type { Database } from '$database/database.types'
 import type { SupabaseClient } from '@supabase/supabase-js'
+import type { Database } from '$database/database.types'
 import { getContext, setContext } from 'svelte'
 
 export type DatabaseClient = SupabaseClient<Database>

@@ -1,7 +1,7 @@
 <script lang="ts">
-  import AppTopbar from '$lib/components/app/AppTopbar.svelte'
   import AppMetadata from '$lib/components/app/AppMetadata.svelte'
   import AppShellSection from '$lib/components/app/AppShellSection.svelte'
+  import AppTopbar from '$lib/components/app/AppTopbar.svelte'
   import TrainingsGrid from './TrainingsGrid.svelte'
 
   type Props = {

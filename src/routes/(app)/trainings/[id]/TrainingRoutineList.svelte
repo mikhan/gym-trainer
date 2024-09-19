@@ -1,9 +1,9 @@
 <script lang="ts">
-  import TrainingListNavigation from './TrainingListNavigation.svelte'
-  import type { ChartData } from './LineChart.svelte'
-  import TrainingListItem from './TrainingListItem.svelte'
   import { page } from '$app/stores'
   import UiCollapsibleText from '$lib/components/ui/UiCollapsibleText.svelte'
+  import type { ChartData } from './LineChart.svelte'
+  import TrainingListItem from './TrainingListItem.svelte'
+  import TrainingListNavigation from './TrainingListNavigation.svelte'
 
   type Props = {
     training: Types.Training

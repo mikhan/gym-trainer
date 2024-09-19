@@ -1,5 +1,5 @@
-import { getTraining } from '$data/trainings'
 import { error } from '@sveltejs/kit'
+import { getTraining } from '$data/trainings'
 import type { PageLoad } from './$types'
 
 export const load = (async ({ params, parent }) => {

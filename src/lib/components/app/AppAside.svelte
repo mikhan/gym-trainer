@@ -1,10 +1,10 @@
 <script lang="ts">
+  import { faAnglesLeft, faAnglesRight } from '@fortawesome/free-solid-svg-icons'
+  import clsx from 'clsx'
   import { type Snippet } from 'svelte'
   import Fa from 'svelte-fa'
-  import { faAnglesLeft, faAnglesRight } from '@fortawesome/free-solid-svg-icons'
   import type { HTMLAttributes } from 'svelte/elements'
   import UiIconbutton from '../ui/UiIconbutton.svelte'
-  import clsx from 'clsx'
   import { AppShellContext } from './AppShellContext.svelte'
 
   type Props = {

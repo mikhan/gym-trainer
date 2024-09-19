@@ -1,5 +1,5 @@
 import type { Action } from 'svelte/action'
-import { type Writable, writable } from 'svelte/store'
+import { writable, type Writable } from 'svelte/store'
 
 const transitioning: Writable<Set<string>> = writable(new Set())
 

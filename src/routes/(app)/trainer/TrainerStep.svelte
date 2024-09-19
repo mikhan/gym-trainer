@@ -1,10 +1,10 @@
 <script lang="ts">
-  import { autoselect } from '$lib/actions/autoselect.action'
-  import { TrainerContext } from './TrainerContext.svelte'
-  import { convertUnit } from '$lib/utils/unit-converter'
-  import Fa from 'svelte-fa'
   import { faCheck } from '@fortawesome/free-solid-svg-icons'
   import clsx from 'clsx'
+  import Fa from 'svelte-fa'
+  import { autoselect } from '$lib/actions/autoselect.action'
+  import { convertUnit } from '$lib/utils/unit-converter'
+  import { TrainerContext } from './TrainerContext.svelte'
 
   type Props = {
     serieIndex: number

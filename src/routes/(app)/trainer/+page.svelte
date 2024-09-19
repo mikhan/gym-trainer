@@ -1,8 +1,8 @@
 <script lang="ts">
   import { goto } from '$app/navigation'
-  import { TrainerContext } from './TrainerContext.svelte'
-  import Trainer from './Trainer.svelte'
   import Result from './Result.svelte'
+  import Trainer from './Trainer.svelte'
+  import { TrainerContext } from './TrainerContext.svelte'
 
   const trainerContext = TrainerContext.getContext()
 

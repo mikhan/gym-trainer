@@ -1,9 +1,9 @@
 <script lang="ts">
-  import { viewTransitionName } from '$lib/actions/transition.action'
   import { type Snippet } from 'svelte'
-  import { AppShellContext } from '$lib/components/app/AppShellContext.svelte'
   import { fly } from 'svelte/transition'
   import { createStyler } from '$lib/actions/styler.action'
+  import { viewTransitionName } from '$lib/actions/transition.action'
+  import { AppShellContext } from '$lib/components/app/AppShellContext.svelte'
 
   type Props = { children: Snippet }
 

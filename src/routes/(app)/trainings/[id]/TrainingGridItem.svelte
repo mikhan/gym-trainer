@@ -1,7 +1,7 @@
 <script lang="ts">
+  import { sortitem, sortlist } from '$lib/actions/sortable.action'
   import LineChart, { type ChartData } from './LineChart.svelte'
   import { TrainingViewportContext } from './TrainingViewportContext.svelte.js'
-  import { sortitem, sortlist } from '$lib/actions/sortable.action'
 
   type Props = {
     training: Types.Training

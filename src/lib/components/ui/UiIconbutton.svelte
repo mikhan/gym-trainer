@@ -1,7 +1,7 @@
 <script lang="ts">
-  import type { HTMLButtonAttributes } from 'svelte/elements'
-  import type { Snippet } from 'svelte'
   import { clsx } from 'clsx'
+  import type { Snippet } from 'svelte'
+  import type { HTMLButtonAttributes } from 'svelte/elements'
 
   type Props = {
     children?: Snippet
