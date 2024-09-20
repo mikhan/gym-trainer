@@ -52,16 +52,19 @@ export type Database = {
           createdAt: string
           id: number
           name: string
+          zone: string
         }
         Insert: {
           createdAt?: string
           id?: number
           name: string
+          zone: string
         }
         Update: {
           createdAt?: string
           id?: number
           name?: string
+          zone?: string
         }
         Relationships: []
       }
@@ -128,19 +131,19 @@ export type Database = {
           createdAt: string
           id: string
           name: string
-          routines: Json | null
+          routines: Json
         }
         Insert: {
           createdAt?: string
           id?: string
           name: string
-          routines?: Json | null
+          routines: Json
         }
         Update: {
           createdAt?: string
           id?: string
           name?: string
-          routines?: Json | null
+          routines?: Json
         }
         Relationships: []
       }

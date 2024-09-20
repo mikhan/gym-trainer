@@ -13,6 +13,7 @@
 <div
   class={clsx(
     'grid cursor-default divide-y divide-default-line rounded-card shadow surface',
+    showFocus && 'focused-ring',
     className,
   )}>
   <div class="space-y-2 p-4">
@@ -24,18 +25,9 @@
       <small><b>Sphinx of black</b> quartz, judge my vow</small>
     </p>
   </div>
-  <div class="flex gap-2 p-2">
-    <button
-      class="focusable grow rounded-button border border-default-line p-2 transition-colors hover:bg-default-hover active:bg-default-active"
-      type="button">Button</button>
-    <button
-      class="focusable grow rounded-button border border-default-line bg-default-hover p-2"
-      type="button">Button</button>
-    <button
-      class={clsx(
-        'focusable grow rounded-button border border-default-line bg-default-active p-2',
-        showFocus && 'outline outline-2 -outline-offset-2 outline-ring',
-      )}
-      type="button">Button</button>
+  <div class="grid grid-cols-3 gap-2 p-2 *:rounded-button *:p-2 *:text-center">
+    <div class="bg-default-under">Under</div>
+    <div class="bg-default-hover">Hover</div>
+    <div class="bg-default-active">Active</div>
   </div>
 </div>

@@ -11,9 +11,9 @@ const createFluidValue = (
   minScreenSize = DEFAULT_MIN_SCREEN,
   maxScreenSize = DEFAULT_MAX_SCREEN,
 ) => {
-  return `clamp(${rem(minSize)}, ${getPreferredValue(minSize, maxSize, minScreenSize, maxScreenSize)}, ${rem(
+  return `round(down, clamp(${rem(minSize)}, ${getPreferredValue(minSize, maxSize, minScreenSize, maxScreenSize)}, ${rem(
     maxSize,
-  )})`
+  )}), 2px)`
 }
 
 const getPreferredValue = (
@@ -27,12 +27,12 @@ const getPreferredValue = (
     (minScreenSize * maxSize - maxScreenSize * minSize) / (minScreenSize - maxScreenSize),
   )
 
-  return `${vwCalc}vw + ${rem(remCalc)}`
+  return `${vwCalc}cqi + ${rem(remCalc)}`
 }
 
-const rem = (px: number) => `${cleanNumber(Number(px) / 16)}rem`
+const rem = (px: number) => `${cleanNumber(px / 16)}rem`
 
-const cleanNumber = (num: number) => +num.toFixed(3)
+const cleanNumber = (num: number) => +num.toFixed(2)
 // const fontSize = (fontSize, lineHeight) => [
 //   pxToRem(fontSize),
 //   pxToRem(fontSize * lineHeight),
@@ -48,8 +48,8 @@ export function typescalePlugin() {
   return plugin(function ({ addComponents }) {
     addComponents({
       '.typescale-label': {
-        'font-size': rem(BASE_FONT * 1.125 ** -2), //'0.75rem',
-        'line-height': rem(BASE_LINE * 1.125 ** -2), //'1rem',
+        'font-size': `round(down, ${rem(BASE_FONT * 1.125 ** -2)}, 2px)`, //'0.75rem',
+        'line-height': `round(down, ${rem(BASE_LINE * 1.125 ** -2)}, 2px)`, //'1rem',
         'font-weight': '400',
       },
       '.typescale-body': {

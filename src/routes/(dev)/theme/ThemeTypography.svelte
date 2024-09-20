@@ -1,10 +1,78 @@
 <script lang="ts">
+  import clsx from 'clsx'
   import UiCheckbox from '$lib/components/ui/UiCheckbox.svelte'
   import { getPersistedState } from '$lib/states/persisted-state.svelte'
 
   const themeState = getPersistedState('session', 'ThemeTypography.state', {
     showGridlines: true,
   })
+
+  const textSample = `Minim fugiat laboris id dolor Lorem veniam.
+  Sunt do magna eu enim amet anim commodo aliquip nulla consequat nostrud tempor laboris.
+  Qui nisi labore amet laboris commodo Lorem anim.
+  Non laborum excepteur duis aliqua officia irure Lorem in esse adipisicing Lorem.
+  Elit non laborum reprehenderit nostrud do ad magna irure voluptate.
+  Pariatur enim reprehenderit nulla minim.
+  Lorem sit incididunt Lorem mollit sunt nisi est pariatur ipsum.`
+
+  const typescales = [
+    { name: 'Display', class: 'typescale-display' },
+    { name: 'Headline', class: 'typescale-headline' },
+    { name: 'Title', class: 'typescale-title' },
+    { name: 'Body', class: 'typescale-body' },
+    { name: 'Label', class: 'typescale-label' },
+  ]
+
+  const elements: HTMLElement[] = $state([])
+  let measures: { fontSize: string; lineHeight: string }[] = $state([])
+
+  function recalculate() {
+    measures = elements.map((element) => {
+      const style = window.getComputedStyle(element)
+      return {
+        fontSize: style.getPropertyValue('font-size'),
+        lineHeight: style.getPropertyValue('line-height'),
+      }
+    })
+  }
+
+  let containerWidth: number = $state(0)
+
+  $effect(() => {
+    containerWidth
+    recalculate()
+  })
+
+  function resizable(element: HTMLElement, handlerId: string) {
+    const handler = document.getElementById(handlerId)
+    if (!handler) return
+    let controller: AbortController | undefined
+    let width = 0
+    let x = 0
+
+    function start({ screenX }: { screenX: number }) {
+      width = element.clientWidth
+      x = screenX
+      controller = new AbortController()
+      document.body.style.setProperty('cursor', 'ew-resize')
+      document.body.addEventListener('mousemove', resize, { signal: controller.signal })
+      document.body.addEventListener('mouseup', terminate, { once: true })
+    }
+
+    function resize({ screenX }: { screenX: number }) {
+      const dx = screenX - x
+      x = screenX
+      width += dx
+      element.style.setProperty('width', `${width}px`)
+    }
+
+    function terminate() {
+      document.body.style.removeProperty('cursor')
+      controller?.abort()
+    }
+
+    handler.addEventListener('mousedown', (event) => start(event))
+  }
 </script>
 
 <article class="container mx-auto space-y-layout-gap p-layout-gap">
@@ -21,58 +89,63 @@
       </label>
     </div>
   </section>
-  <section class="grid max-w-prose grid-cols-[auto,1fr] items-baseline">
-    <div class="pr-4 text-right font-bold">Display</div>
-    <div class="border-l-2 p-4">
-      <p class="typescale-display" class:line-height-gridlines={themeState.showGridlines}>
-        Tempor dolor dolore et sit. Qui ut minim aliquip est nisi fugiat adipisicing aliquip id
-        exercitation.
-      </p>
-    </div>
-    <div class="pr-4 text-right font-bold">Headline</div>
-    <div class="border-l-2 p-4">
-      <p class="typescale-headline" class:line-height-gridlines={themeState.showGridlines}>
-        In eiusmod irure magna elit dolore sint minim fugiat aliquip ex veniam elit tempor. Esse
-        proident sit ea dolore elit ad veniam ea officia ex.
-      </p>
-    </div>
-    <div class="pr-4 text-right font-bold">Title</div>
 
-    <div class="border-l-2 p-4">
-      <p class="typescale-title" class:line-height-gridlines={themeState.showGridlines}>
-        Laborum aute aute minim minim est aute mollit reprehenderit ad ullamco magna sunt cillum
-        eiusmod. Dolor commodo amet nisi reprehenderit ut.
-      </p>
+  <section
+    class="relative grid min-w-min max-w-max grid-cols-[max-content,minmax(480px,1024px)] overflow-hidden"
+    use:resizable={'resize-handler'}>
+    <div class="relative isolate col-start-2 my-2 grid border-l-2 border-r-2 border-accent py-3">
+      <div class="absolute top-1/2 h-px w-full border-b border-accent">
+        <div
+          class="typescale-label mx-auto w-max -translate-y-1/2 rounded-[4px] px-2 font-mono shadow color-accent surface">
+          {containerWidth}px
+        </div>
+      </div>
     </div>
-    <div class="pr-4 text-right font-bold">Body</div>
-    <div class="border-l-2 p-4">
-      <p class="typescale-body" class:line-height-gridlines={themeState.showGridlines}>
-        Sint mollit nisi exercitation irure adipisicing elit. Ad commodo duis anim adipisicing et
-        culpa irure fugiat quis culpa pariatur. Nisi laboris magna eiusmod irure ut ex et. Amet
-        eiusmod cupidatat nisi labore voluptate nisi minim. Nulla sit id nostrud pariatur non.
-        Dolore sit minim laborum nulla irure id eiusmod. Eiusmod commodo culpa ex laboris.
-      </p>
+    <div class="row-span-5 row-start-2 grid grid-rows-subgrid">
+      {#each typescales as typescale, index}
+        <div class="pr-4 pt-4 text-right">
+          <div class="mb-4 font-bold">{typescale.name}</div>
+          <div class="typescale-label font-mono opacity-75">
+            Font size: {measures[index]?.fontSize}
+          </div>
+          <div class="typescale-label font-mono opacity-75">
+            Line height: {measures[index]?.lineHeight}
+          </div>
+        </div>
+      {/each}
     </div>
-    <div class="pr-4 text-right font-bold">Label</div>
-    <div class="border-l-2 p-4">
-      <p class="typescale-label" class:line-height-gridlines={themeState.showGridlines}>
-        Labore Lorem id cupidatat commodo id commodo est cillum ullamco anim adipisicing. Veniam
-        quis enim aute enim voluptate pariatur. Ex ad ad culpa consequat. Dolor excepteur deserunt
-        ad quis. Deserunt veniam nisi aliqua consequat cillum mollit irure culpa voluptate. Dolor
-        commodo ut non ut qui labore excepteur pariatur voluptate eu culpa incididunt mollit esse.
-      </p>
+    <div class="row-span-5 row-start-2 grid grid-rows-subgrid" bind:clientWidth={containerWidth}>
+      {#each typescales as typescale, index}
+        <div class="@container">
+          <div class="h-full border-x-2 p-4">
+            <p
+              class={clsx(
+                typescale.class,
+                'line-clamp-3',
+                themeState.showGridlines && 'line-height-gridlines',
+              )}
+              bind:this={elements[index]}>
+              {textSample}
+            </p>
+          </div>
+        </div>
+      {/each}
+    </div>
+    <div
+      class="absolute right-0 top-0 h-full w-2 cursor-ew-resize border-l-4 border-l-transparent bg-clip-content transition-colors color-primary surface-hoverable surface-activable"
+      id="resize-handler">
     </div>
   </section>
 </article>
 
 <style lang="postcss">
   .line-height-gridlines {
-    @apply outline outline-1 outline-canvas-line;
+    @apply outline outline-2 outline-default-line;
     background-image: repeating-linear-gradient(
       transparent,
       transparent 1lh,
-      theme('colors.canvas.line') 1lh,
-      theme('colors.canvas.line') calc(1lh + 1px)
+      theme('colors.default.line') 1lh,
+      theme('colors.default.line') calc(1lh + 2px)
     );
   }
 </style>

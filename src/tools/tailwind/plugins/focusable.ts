@@ -5,8 +5,8 @@ import plugin from 'tailwindcss/plugin'
 export function focusablePlugin() {
   return plugin(function ({ addUtilities, matchUtilities, theme }) {
     const getStyle = (value: string) => ({
-      'outline': `2px solid ${toColorValue(value)}`,
-      'outline-offset': 'var(--focusable-offset, -2px)',
+      'outline': `2px dashed ${toColorValue(value)}`,
+      'outline-offset': 'var(--focusable-offset, 2px)',
     })
 
     addUtilities({
