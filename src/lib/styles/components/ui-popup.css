@@ -3,7 +3,7 @@
     @apply rounded-card border shadow-over scrollbar color-popover surface surface-glass;
     @apply fixed;
     inset: 0;
-    inset-area: bottom span-right;
+    position-area: bottom span-right;
     position-try:
       most-width flip-block,
       flip-inline,

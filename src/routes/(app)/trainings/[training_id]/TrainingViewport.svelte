@@ -22,24 +22,8 @@
   const trainingViewportContext = TrainingViewportContext.create({ training })
   const layoutTypeIcons = { list: faList, grid: faTableCells }
   const localState = getPersistedState('local', 'TrainingViewport.state', {
-    layout: 'grid' as LayoutType,
+    layout: 'list' as LayoutType,
   })
-
-  function createRoutine() {
-    const name = prompt('Nombre de la rutina')
-    if (name) {
-      const t = structuredClone(training)
-      t.routines.push({
-        id: crypto.randomUUID(),
-        name,
-        description: '',
-        series: [],
-      })
-      trainingViewportContext.update(t)
-    }
-  }
-
-  $inspect(training)
 
   function toggleLayout() {
     startViewTransition({
@@ -53,31 +37,30 @@
 <AppShellSection name="header">
   <AppTopbar previous="/" title={`Entrenamiento ${trainingViewportContext.training$.name}`}>
     {#snippet actions()}
-      <UiButton outlined onclick={createRoutine}>Agregar rutina</UiButton>
       <UiIconbutton label="Layout" onclick={toggleLayout}>
         <Fa icon={layoutTypeIcons[localState.layout]}></Fa>
       </UiIconbutton>
     {/snippet}
   </AppTopbar>
-</AppShellSection>
 
-{#if trainingViewportContext.pristine$ === false}
-  <AppEditTopbar title={`Editar entrenamiento ${trainingViewportContext.training$.name}`}>
-    <UiButton
-      outlined
-      onclick={() => trainingViewportContext.reset()}
-      disabled={trainingViewportContext.saving$}>
-      <Fa icon={faUndo}></Fa>
-      <span>Deshacer</span>
-    </UiButton>
-    <UiButton
-      filled
-      outlined
-      class="color-primary"
-      onclick={() => trainingViewportContext.save()}
-      disabled={trainingViewportContext.saving$}>Guardar</UiButton>
-  </AppEditTopbar>
-{/if}
+  {#if trainingViewportContext.pristine$ === false}
+    <AppEditTopbar title={`Editar entrenamiento ${trainingViewportContext.training$.name}`}>
+      <UiButton
+        outlined
+        onclick={() => trainingViewportContext.reset()}
+        disabled={trainingViewportContext.saving$}>
+        <Fa icon={faUndo}></Fa>
+        <span>Deshacer</span>
+      </UiButton>
+      <UiButton
+        filled
+        outlined
+        class="color-primary"
+        onclick={() => trainingViewportContext.save()}
+        disabled={trainingViewportContext.saving$}>Guardar</UiButton>
+    </AppEditTopbar>
+  {/if}
+</AppShellSection>
 
 {#if localState.layout === 'list'}
   <TrainingRoutineList

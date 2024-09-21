@@ -31,6 +31,8 @@
     --widget-height: 2.5rem;
 
     --card-roundness: 12px;
+    /* --card-roundness: max(0px, min(12px, calc((100vw - 6px - 100%) * 9999))); */
+
     --button-roundness: 8px;
 
     --shadow: inset 0px 0px 0.5px 1px rgb(255 255 255 / 5%), 0px 0px 0px 1px rgb(0 0 0 / 10%),

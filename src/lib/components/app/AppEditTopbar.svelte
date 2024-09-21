@@ -9,7 +9,7 @@
 </script>
 
 <AppShellSection name="header">
-  <AppShellHeader class="color-primary surface">
+  <AppShellHeader class="color-neutral-darkest surface">
     {#snippet start()}
       <div class="typescale-title line-clamp-1">{title}</div>
     {/snippet}

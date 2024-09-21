@@ -29,8 +29,7 @@
   }
 </script>
 
-<article
-  class="xl:zoom-lg grid h-80 w-full max-w-screen-sm rounded-card shadow contain-paint color-neutral-darkest surface *:col-start-1 *:row-start-1">
+<article class="grid h-80 w-full max-w-screen-sm *:col-start-1 *:row-start-1">
   <img
     src={welcomeImage}
     class="h-full min-h-0 w-full min-w-0 object-cover object-top"

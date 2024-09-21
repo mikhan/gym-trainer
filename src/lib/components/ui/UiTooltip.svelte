@@ -68,22 +68,22 @@
       transition-delay: 0s;
 
       &[data-align='block-start'] {
-        inset-area: block-start;
+        position-area: block-start;
         margin-block-end: 8px;
       }
 
       &[data-align='block-end'] {
-        inset-area: block-end;
+        position-area: block-end;
         margin-block-start: 8px;
       }
 
       &[data-align='inline-start'] {
-        inset-area: inline-start;
+        position-area: inline-start;
         margin-inline-end: 8px;
       }
 
       &[data-align='inline-end'] {
-        inset-area: inline-end;
+        position-area: inline-end;
         margin-inline-start: 8px;
       }
 

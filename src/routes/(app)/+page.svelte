@@ -5,7 +5,8 @@
   import AppTopbar from '$lib/components/app/AppTopbar.svelte'
   import TrainingsGrid from './trainings/TrainingsGrid.svelte'
   import WelcomeInsights from './WelcomeInsights.svelte'
-  import WelcomeMessage from './WelcomeMessage.svelte'
+
+  // import WelcomeMessage from './WelcomeMessage.svelte'
 
   const { data } = $props()
 </script>
@@ -18,7 +19,7 @@
 
 <div class="container mx-auto space-y-4 p-layout-gap">
   <div class="flex flex-wrap gap-layout-gap">
-    <WelcomeMessage></WelcomeMessage>
+    <!-- <WelcomeMessage></WelcomeMessage> -->
     <WelcomeInsights></WelcomeInsights>
     <h1 class="typescale-title w-full">Entrenamientos</h1>
     <TrainingsGrid trainings={data.trainings}></TrainingsGrid>

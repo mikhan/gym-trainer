@@ -1,14 +1,7 @@
 <script lang="ts">
   import { faTrashAlt } from '@fortawesome/free-regular-svg-icons'
-  import {
-    faChevronDown,
-    faChevronUp,
-    faEllipsisV,
-    faGripLines,
-    faPlay,
-  } from '@fortawesome/free-solid-svg-icons'
+  import { faEllipsisV, faGripLines, faPlay } from '@fortawesome/free-solid-svg-icons'
   import { getMuscleGroups, type MuscleGroup } from '$data/trainer/config'
-  import clsx from 'clsx'
   import Fa from 'svelte-fa'
   import { goto } from '$app/navigation'
   import { sortitem, sortlist } from '$lib/actions/sortable.action'
@@ -25,11 +18,11 @@
   type Props = {
     training: Types.Training
     routineIndex: number
-    expanded?: boolean
+    // expanded?: boolean
     chartData?: ChartData[]
   }
 
-  let { training, routineIndex, expanded = $bindable(), chartData }: Props = $props()
+  let { training, routineIndex, chartData }: Props = $props()
 
   const muscleGroups = getMuscleGroups()
   const trainingViewportContext = TrainingViewportContext.get()
@@ -40,8 +33,6 @@
   const trainerContext = TrainerContext.getContext()
 
   function groupByMuscle(series: Types.RoutineSerie[]) {
-    // console.groupCollapsed()
-    // console.log(series)
     const groupedSeries: { group: MuscleGroup; series: Types.RoutineSerie[] }[] = []
 
     for (const serie of series) {
@@ -54,8 +45,6 @@
       groupedSerie.series.push(serie)
     }
 
-    // console.log(groupedSeries)
-    // console.groupEnd()
     return groupedSeries
   }
 
@@ -122,21 +111,13 @@
 {/if}
 
 <article
-  class={clsx(
-    'grid scroll-mt-layout-gap items-center rounded-card border contain-paint color-neutral surface xl:grid-cols-[4fr,8fr]',
-    expanded && 'xl:grid-flow-col xl:grid-rows-[auto,auto,1fr] xl:items-stretch',
-  )}
+  class="grid scroll-mt-layout-gap items-center rounded-card border contain-paint color-neutral surface
+  lg:grid-flow-col lg:grid-cols-[4fr,8fr] lg:grid-rows-[auto,auto,1fr] lg:items-stretch"
   use:tocTarget
   id={`routine-${routine.id}`}>
-  <header class={clsx('sticky top-layout-viewport-top z-1 bg-inherit p-4 ps-8')}>
+  <header class="sticky top-layout-viewport-top z-1 bg-inherit p-4 ps-8">
     <div class="flex items-center gap-2">
-      <button
-        type="button"
-        class="-m-2 flex grow items-center gap-2 rounded-button p-2 text-left focusable-ring"
-        onclick={() => (expanded = !expanded)}>
-        <Fa icon={expanded ? faChevronUp : faChevronDown}></Fa>
-        <span class="typescale-title">{routine.name}</span>
-      </button>
+      <div class="typescale-title grow">{routine.name}</div>
       <UiIconbutton label="Iniciar entrenamiento" onclick={() => startRoutine(routine.id)}>
         <Fa icon={faPlay}></Fa></UiIconbutton>
       <UiIconbutton label="Más acciones" id={`routine-${routine.id}-actions`}>
@@ -156,7 +137,7 @@
       <LineChart data={chartData}></LineChart>
     {/if}
   </div>
-  <div class={clsx('border-default-line xl:row-span-3 xl:border-l', !expanded && 'hidden')}>
+  <div class="border-default-line lg:row-span-3 lg:border-l">
     <div class="p-4">
       <UiButton class="color-neutral-lighter max-md:mx-auto" onclick={() => addSerie()}
         >Agregar serie</UiButton>
