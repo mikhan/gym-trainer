@@ -25,6 +25,22 @@
     layout: 'grid' as LayoutType,
   })
 
+  function createRoutine() {
+    const name = prompt('Nombre de la rutina')
+    if (name) {
+      const t = structuredClone(training)
+      t.routines.push({
+        id: crypto.randomUUID(),
+        name,
+        description: '',
+        series: [],
+      })
+      trainingViewportContext.update(t)
+    }
+  }
+
+  $inspect(training)
+
   function toggleLayout() {
     startViewTransition({
       update: () => (localState.layout = localState.layout === 'list' ? 'grid' : 'list'),
@@ -37,6 +53,7 @@
 <AppShellSection name="header">
   <AppTopbar previous="/" title={`Entrenamiento ${trainingViewportContext.training$.name}`}>
     {#snippet actions()}
+      <UiButton outlined onclick={createRoutine}>Agregar rutina</UiButton>
       <UiIconbutton label="Layout" onclick={toggleLayout}>
         <Fa icon={layoutTypeIcons[localState.layout]}></Fa>
       </UiIconbutton>

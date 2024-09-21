@@ -32,7 +32,7 @@
 
 <section
   class={clsx(
-    'flex touch-pan-y items-center justify-between gap-1 rounded-full p-1 shadow color-neutral-darker surface surface-outlined sm:gap-2',
+    'xl:zoom-lg flex touch-pan-y items-center justify-between gap-1 rounded-full p-1 shadow color-neutral-darker surface surface-outlined sm:gap-2',
     className,
   )}>
   <UiIconbutton label="Serie anterior" tabindex={-1} onclick={previous}>

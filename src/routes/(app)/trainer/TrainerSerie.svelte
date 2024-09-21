@@ -18,7 +18,7 @@
 </script>
 
 <li
-  class="mx-auto grid size-full"
+  class="xl:zoom-lg mx-auto grid size-full"
   role="group"
   aria-roledescription="Slide"
   aria-label={serie.name}

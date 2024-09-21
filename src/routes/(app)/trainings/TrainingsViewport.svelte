@@ -13,9 +13,11 @@
 <AppMetadata title="Entrenamientos"></AppMetadata>
 
 <AppShellSection name="header">
-  <AppTopbar title="Entrenamientos"></AppTopbar>
+  <AppTopbar title="Entrenamientos" previous="/"></AppTopbar>
 </AppShellSection>
 
 <div class="container mx-auto p-layout-gap">
-  <TrainingsGrid {trainings}></TrainingsGrid>
+  <div class="flex flex-wrap gap-layout-gap">
+    <TrainingsGrid {trainings}></TrainingsGrid>
+  </div>
 </div>

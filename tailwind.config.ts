@@ -8,6 +8,7 @@ import { pointerPlugin } from './src/tools/tailwind/plugins/pointer'
 import { scrollbarPlugin } from './src/tools/tailwind/plugins/scrollbar'
 import { surfacePlugin } from './src/tools/tailwind/plugins/surface'
 import { typescalePlugin } from './src/tools/tailwind/plugins/typescale'
+import { zoomPlugin } from './src/tools/tailwind/plugins/zoom'
 
 const varColor = (varName: string) => `oklch(from var(${varName}) l c h / <alpha-value>)`
 
@@ -272,5 +273,6 @@ export default {
     focusablePlugin(),
     developmentPlugin(),
     hocusPlugin(),
+    zoomPlugin(),
   ],
 } satisfies Config

@@ -43,7 +43,6 @@
   function add() {
     views.push(structuredClone($state.snapshot(current)))
     index = views.length - 1
-    console.log('add', index)
   }
 
   function deleteIndex(index: number) {

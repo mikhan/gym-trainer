@@ -14,7 +14,7 @@
     actions?: Snippet
     class?: string
     filled?: boolean
-  } & ({ title: string } | { children: Snippet })
+  } & ({ title?: string } | { children: Snippet })
 
   let {
     name = 'topbar',
@@ -53,7 +53,7 @@
 
     {#if 'title' in other}
       <div class="typescale-title line-clamp-1">{other.title}</div>
-    {:else}
+    {:else if 'children' in other}
       {@render other.children()}
     {/if}
   {/snippet}

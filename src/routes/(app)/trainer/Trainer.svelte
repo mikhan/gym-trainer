@@ -113,7 +113,7 @@ Excepteur aute voluptate anim mollit do amet officia dolore excepteur occaecat u
       {#each data.currentRoutine.series as serie, serieIndex (serie.id)}
         {@const percent = `${((data.progress[serie.id] ?? 0) * 100).toFixed(0)}%`}
         <button
-          class="relative min-w-min rounded-button px-2 py-1 text-left shadow color-neutral surface surface-hoverable surface-activable focusable-outside focusable-ring"
+          class="xl:zoom-lg relative min-w-min rounded-button px-2 py-1 text-left shadow color-neutral surface surface-hoverable surface-activable focusable-outside focusable-ring"
           type="button"
           onclick={() => gotoSerie(serieIndex)}>
           <div class="typescale-label line-clamp-1">{serie.name}</div>

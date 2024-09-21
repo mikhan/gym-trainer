@@ -34,6 +34,20 @@ const trainingSchema = z.object({
   routines: z.array(routineSchema),
 })
 
+export async function createTraining(
+  supabase: App.Locals['supabase'],
+  training: Types.Training,
+): Promise<Types.Training> {
+  const { error, data } = await supabase
+    .from('training')
+    .insert(training)
+    .select(`id, name, routines`)
+
+  if (error) throw error
+
+  return data[0] as Types.Training
+}
+
 export async function getTrainings(supabase: App.Locals['supabase']): Promise<Types.Training[]> {
   const result = await supabase.from('training').select(`id, name, routines`)
 
@@ -61,7 +75,7 @@ export async function updateTraining(
   supabase: App.Locals['supabase'],
   training: Types.Training,
 ): Promise<void> {
-  const result = await supabase.from('training').update(training)
+  const result = await supabase.from('training').upsert(training)
 
   if (result.error) throw result.error
 }

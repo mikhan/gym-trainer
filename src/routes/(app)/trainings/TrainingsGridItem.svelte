@@ -1,7 +1,9 @@
 <script lang="ts">
   import { faTrashAlt } from '@fortawesome/free-regular-svg-icons'
   import { faClone, faEllipsisV } from '@fortawesome/free-solid-svg-icons'
+  import { createTraining, getTraining } from '$data/trainings'
   import Fa from 'svelte-fa'
+  import { getAppDatabaseContext } from '$lib/components/app/AppDatabaseContext.svelte'
   import UiIconbutton from '$lib/components/ui/UiIconbutton.svelte'
   import UiMenu from '$lib/components/ui/UiMenu.svelte'
   import UiMenuitem from '$lib/components/ui/UiMenuitem.svelte'
@@ -11,17 +13,22 @@
     training: Types.Training
   }
   const { training }: Props = $props()
+  const database = getAppDatabaseContext()
 
   async function deleteTraining(id: string) {
-    console.log('delete', id)
+    alert('PENDIENTE: Eliminar entrenamiento')
+    console.log('TODO: delete', id)
   }
 
   async function cloneTraining(id: string) {
-    console.log('clone training', id)
+    const training = await getTraining(database, id)
+    if (!training) return
+    training.id = crypto.randomUUID()
+    await createTraining(database, training)
   }
 </script>
 
-<li class="isolate grid min-h-40 min-w-40 max-w-96 color-neutral *:col-start-1 *:row-start-1">
+<div class="isolate grid min-h-40 min-w-40 color-neutral *:col-start-1 *:row-start-1">
   <a
     class="flex gap-2 rounded-card p-4 shadow transition-colors surface surface-hoverable surface-activable surface-focusable"
     href={`/trainings/${training.id}`}>
@@ -36,7 +43,7 @@
     label="Más acciones"
     id={`training-${training.id}-actions`}>
     <Fa icon={faEllipsisV}></Fa></UiIconbutton>
-</li>
+</div>
 <UiMenu target={`training-${training.id}-actions`}>
   <UiMenutitle>Acciones</UiMenutitle>
   <UiMenuitem onclick={() => cloneTraining(training.id)}>
