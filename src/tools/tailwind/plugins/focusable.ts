@@ -10,6 +10,9 @@ export function focusablePlugin() {
     })
 
     addUtilities({
+      '.focusable-inside': {
+        '--focusable-offset': '-2px',
+      },
       '.focusable-outside': {
         '--focusable-offset': '0',
       },

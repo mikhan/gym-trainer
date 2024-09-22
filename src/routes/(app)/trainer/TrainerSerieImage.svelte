@@ -19,11 +19,12 @@
   )}
   {...props}>
   <div class="relative isolate size-full contain-size">
-    <img class="size-full object-contain invert" src={src.toString()} {alt} />
+    <img class="size-full object-contain invert" src={src.toString()} {alt} loading="lazy" />
     <img
       class="absolute inset-0 size-full object-contain mix-blend-color"
       src={src.toString()}
       aria-hidden="true"
+      loading="lazy"
       alt="" />
   </div>
   {#if children}

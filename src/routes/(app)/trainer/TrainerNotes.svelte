@@ -21,7 +21,7 @@
   </div>
 
   <textarea
-    class="block w-full resize-none rounded-b-card border-t p-4 surface surface-editable focusable-ring [field-sizing:content]"
+    class="focusable-inside m-1 block w-auto resize-none rounded-button p-4 transition-colors surface focusable-ring [field-sizing:content] focus:surface-editable focus:surface-outlined"
     bind:value={content}
     spellcheck="false"
     placeholder="Agregar una nota"></textarea>

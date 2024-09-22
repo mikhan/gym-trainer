@@ -70,24 +70,20 @@
 
 <style lang="postcss">
   :global {
-    :where(.app-topbar) {
+    .app-topbar-docked {
       @apply color-canvas surface;
-    }
-
-    :where(.app-topbar-docked) {
-      @apply bg-default/0 shadow-none;
       animation-timeline: scroll(nearest);
-      animation-name: --app-topbar-docked-animation;
-      animation-range-end: min(var(--layout-header-height), 50%);
+      animation-name: app-topbar-color;
+      animation-range-end: min(200px, 50%);
       animation-fill-mode: forwards;
     }
 
-    @keyframes --app-topbar-docked-animation {
+    @keyframes app-topbar-color {
       from {
-        @apply bg-default/0 shadow-none;
+        @apply bg-opacity-90 backdrop-blur color-canvas;
       }
       to {
-        @apply bg-default/100 shadow;
+        @apply bg-opacity-90 shadow backdrop-blur color-neutral-darkest;
       }
     }
   }

@@ -29,7 +29,7 @@
   }
 </script>
 
-<article class="grid h-80 w-full max-w-screen-sm *:col-start-1 *:row-start-1">
+<article class="stack h-80 w-full max-w-screen-sm">
   <img
     src={welcomeImage}
     class="h-full min-h-0 w-full min-w-0 object-cover object-top"
