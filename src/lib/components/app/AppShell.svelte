@@ -78,7 +78,12 @@
       {/key}
     {/if}
 
-    <main class="app-viewport" use:viewTransitionName={'app-viewport'}>
+    <main
+      class="app-viewport"
+      use:viewTransitionName={'app-viewport'}
+      use:getStyle={(e) => ({
+        '--layout-viewport-width': `${e.clientWidth}px`,
+      })}>
       {@render children()}
     </main>
 

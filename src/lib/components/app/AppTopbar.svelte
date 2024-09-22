@@ -80,10 +80,10 @@
 
     @keyframes app-topbar-color {
       from {
-        @apply bg-opacity-90 backdrop-blur color-canvas;
+        @apply shadow-none color-canvas;
       }
       to {
-        @apply bg-opacity-90 shadow backdrop-blur color-neutral-darkest;
+        @apply shadow color-neutral-darkest;
       }
     }
   }

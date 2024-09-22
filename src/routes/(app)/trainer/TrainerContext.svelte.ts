@@ -35,7 +35,12 @@ export type TrainerContextStateCompleted = {
   progress: Types.TrainerProgress
 }
 
-type TrainerContextState =
+export type TrainerContextState =
+  | TrainerContextStateUnset
+  | TrainerContextStateRunning
+  | TrainerContextStateCompleted
+
+type PersistedState =
   | Omit<TrainerContextStateUnset, 'currentRoutine' | 'currentSerie' | 'progress'>
   | Omit<TrainerContextStateRunning, 'currentRoutine' | 'currentSerie' | 'progress'>
   | Omit<TrainerContextStateCompleted, 'currentRoutine' | 'currentSerie' | 'progress'>
@@ -49,7 +54,7 @@ export class TrainerContext {
     return setContext(TrainerContext, new TrainerContext())
   }
 
-  readonly #state = getPersistedState<TrainerContextState>('local', 'TrainerContext.state', {
+  readonly #state = getPersistedState<PersistedState>('local', 'TrainerContext.state', {
     status: 'unset',
     training: null,
     currentRoutineIndex: null,
@@ -57,36 +62,33 @@ export class TrainerContext {
     records: null,
   })
 
-  state: TrainerContextStateUnset | TrainerContextStateRunning | TrainerContextStateCompleted =
-    $derived.by(() => {
-      let currentRoutine: Types.Routine | null = null
-      let currentSerie: Types.RoutineSerie | null = null
-      let progress: Types.TrainerProgress | null = null
+  state: TrainerContextState = $derived.by(() => {
+    let currentRoutine: Types.Routine | null = null
+    let currentSerie: Types.RoutineSerie | null = null
+    let progress: Types.TrainerProgress | null = null
 
-      const { status, training, currentRoutineIndex, currentSerieIndex, records } = this.#state
+    const { status, training, currentRoutineIndex, currentSerieIndex, records } = this.#state
 
-      switch (status) {
-        case 'running':
-          currentRoutine = training.routines[currentRoutineIndex] || null
-          if (!currentRoutine)
-            throw new TypeError(`Invalid routine index '${currentRoutineIndex}'.`)
-          currentSerie = currentRoutine.series[currentSerieIndex] || null
-          if (!currentSerie) throw new TypeError(`Invalid serie index '${currentSerieIndex}'.`)
-          progress = getProgress(currentRoutine, records)
-          return { ...this.#state, currentRoutine, currentSerie, progress }
+    switch (status) {
+      case 'running':
+        currentRoutine = training.routines[currentRoutineIndex] || null
+        if (!currentRoutine) throw new TypeError(`Invalid routine index '${currentRoutineIndex}'.`)
+        currentSerie = currentRoutine.series[currentSerieIndex] || null
+        if (!currentSerie) throw new TypeError(`Invalid serie index '${currentSerieIndex}'.`)
+        progress = getProgress(currentRoutine, records)
+        return { ...this.#state, currentRoutine, currentSerie, progress }
 
-        case 'completed':
-          currentRoutine = training.routines[currentRoutineIndex] || null
+      case 'completed':
+        currentRoutine = training.routines[currentRoutineIndex] || null
 
-          if (!currentRoutine)
-            throw new TypeError(`Invalid routine index '${currentRoutineIndex}'.`)
-          progress = getProgress(currentRoutine, records)
-          return { ...this.#state, currentRoutine, currentSerie, progress }
+        if (!currentRoutine) throw new TypeError(`Invalid routine index '${currentRoutineIndex}'.`)
+        progress = getProgress(currentRoutine, records)
+        return { ...this.#state, currentRoutine, currentSerie, progress }
 
-        default:
-          return { ...this.#state, currentRoutine, currentSerie, progress }
-      }
-    })
+      default:
+        return { ...this.#state, currentRoutine, currentSerie, progress }
+    }
+  })
 
   private constructor() {}
 

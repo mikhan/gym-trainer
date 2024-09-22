@@ -3,47 +3,71 @@
   import { faDumbbell, type IconDefinition } from '@fortawesome/free-solid-svg-icons'
   import clsx from 'clsx'
   import Fa from 'svelte-fa'
-  import WelcomeMessage from './WelcomeMessage.svelte'
+  import { TrainerContext, type TrainerContextState } from './trainer/TrainerContext.svelte'
 
   type Insight = {
     icon: IconDefinition
     label: string
     value: string
+    important?: boolean
   }
 
-  const data: Insight[] = $state([
-    { icon: faClock, label: 'Último entrenamiento', value: 'Hace 2 días' },
-    { icon: faDumbbell, label: 'Siguiente rutina', value: 'Push' },
-    { icon: faDumbbell, label: 'Etiqueta', value: 'Valor' },
-    { icon: faDumbbell, label: 'Etiqueta', value: 'Valor' },
-  ])
+  const trainerContext = TrainerContext.getContext()
+
+  const data: Insight[] = $state(getInsights(trainerContext.state))
+
+  function getInsights(state: TrainerContextState): Insight[] {
+    const insights: Insight[] = []
+    if (state.status === 'unset') return insights
+
+    insights.push({
+      icon: faDumbbell,
+      label: 'Último entrenamiento',
+      value: `${state.training.name} • ${state.currentRoutine.name}`,
+      important: true,
+    })
+
+    insights.push({
+      icon: faClock,
+      label: 'Hace',
+      value: '2 días',
+    })
+
+    insights.push({
+      icon: faClock,
+      label: 'Duración',
+      value: '96 minutos',
+    })
+
+    insights.push({
+      icon: faDumbbell,
+      label: 'Siguiente rutina',
+      value: 'Leg',
+      important: true,
+    })
+
+    return insights
+  }
 </script>
 
-<div
-  class="xl:zoom-lg flex max-w-screen-md flex-auto flex-col rounded-card shadow contain-paint color-neutral-darkest surface
-  md:flex-row">
-  <WelcomeMessage></WelcomeMessage>
-  <div
-    class="flex flex-auto items-center justify-around p-6
-  md:max-w-screen-sm md:flex-col md:items-start">
-    {#each data as insight, index}
-      <div class={clsx('flex items-end gap-2', index >= 2 && 'max-md:hidden')}>
-        <div class="my-1 grid size-6 place-content-center">
-          <Fa class="opacity-75" size="lg" icon={insight.icon}></Fa>
-        </div>
-        <div>
-          <div class="typescale-label opacity-75">{insight.label}</div>
-          <div>{insight.value}</div>
-        </div>
+<div class="flex flex-auto items-center justify-around p-8 md:flex-col md:items-start">
+  {#each data as insight, index}
+    {#if index > 0}
+      <div
+        class={clsx(
+          'mx-2 bg-default-line max-md:h-4 max-md:w-0.5 md:ml-8 md:h-0.5 md:w-12',
+          !insight.important && 'max-md:hidden',
+        )}>
       </div>
-      {#if index + 1 < data.length}
-        <div
-          class={clsx(
-            'bg-default-line max-md:h-4 max-md:w-0.5 md:ml-8 md:h-0.5 md:w-12',
-            index >= 1 && 'max-md:hidden',
-          )}>
-        </div>
-      {/if}
-    {/each}
-  </div>
+    {/if}
+    <div class={clsx('flex items-start gap-2', !insight.important && 'max-md:hidden')}>
+      <div class="my-1 mt-4 grid size-6 place-content-center">
+        <Fa class="opacity-75" size="lg" icon={insight.icon}></Fa>
+      </div>
+      <div>
+        <div class="typescale-label opacity-75">{insight.label}</div>
+        <div class="line-clamp-1">{insight.value}</div>
+      </div>
+    </div>
+  {/each}
 </div>

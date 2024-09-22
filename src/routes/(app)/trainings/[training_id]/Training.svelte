@@ -1,5 +1,6 @@
 <script lang="ts">
   import { faList, faTableCells, faUndo } from '@fortawesome/free-solid-svg-icons'
+  import type { Snippet } from 'svelte'
   import Fa from 'svelte-fa'
   import { startViewTransition } from '$lib/actions/transition.action'
   import AppEditTopbar from '$lib/components/app/AppEditTopbar.svelte'
@@ -15,10 +16,11 @@
 
   type Props = {
     training: Types.Training
+    children: Snippet
   }
   type LayoutType = 'grid' | 'list'
 
-  const { training }: Props = $props()
+  const { training, children }: Props = $props()
   const trainingViewportContext = TrainingViewportContext.create({ training })
   const layoutTypeIcons = { list: faList, grid: faTableCells }
   const localState = getPersistedState('local', 'TrainingViewport.state', {
@@ -65,7 +67,7 @@
 {#if localState.layout === 'list'}
   <TrainingRoutineList
     training={trainingViewportContext.training$}
-    chartData={trainingViewportContext.graphData}></TrainingRoutineList>
+    chartData={trainingViewportContext.graphData}>{@render children()}</TrainingRoutineList>
 {:else}
   <TrainingRoutineGrid
     training={trainingViewportContext.training$}

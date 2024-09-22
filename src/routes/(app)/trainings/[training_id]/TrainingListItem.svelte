@@ -2,6 +2,7 @@
   import { faTrashAlt } from '@fortawesome/free-regular-svg-icons'
   import { faEllipsisV, faGripLines, faPlay } from '@fortawesome/free-solid-svg-icons'
   import { getMuscleGroups, type MuscleGroup } from '$data/trainer/config'
+  import { onMount } from 'svelte'
   import Fa from 'svelte-fa'
   import { goto } from '$app/navigation'
   import { sortitem, sortlist } from '$lib/actions/sortable.action'
@@ -18,7 +19,6 @@
   type Props = {
     training: Types.Training
     routineIndex: number
-    // expanded?: boolean
     chartData?: ChartData[]
   }
 
@@ -31,6 +31,11 @@
   const routine = $derived(training.routines[routineIndex]!)
   const groupedSeries$ = $derived.by(() => groupByMuscle(routine.series))
   const trainerContext = TrainerContext.getContext()
+  let container = $state() as HTMLElement
+
+  onMount(() => {
+    // container.scrollIntoView()
+  })
 
   function groupByMuscle(series: Types.RoutineSerie[]) {
     const groupedSeries: { group: MuscleGroup; series: Types.RoutineSerie[] }[] = []
@@ -110,13 +115,14 @@
     onclose={() => (newSerie$ = undefined)}></TrainingSerieEditor>
 {/if}
 
-<article
-  class="grid scroll-mt-layout-gap items-center rounded-card border contain-paint color-neutral surface
-  lg:grid-flow-col lg:grid-cols-[4fr,8fr] lg:grid-rows-[auto,auto,1fr] lg:items-stretch"
-  use:tocTarget
-  id={`routine-${routine.id}`}>
-  <header class="sticky top-layout-viewport-top z-1 bg-inherit p-4 ps-8">
-    <div class="flex items-center gap-2">
+<div class="@container" bind:this={container}>
+  <article
+    class="grid max-w-screen-lg scroll-mt-layout-gap items-center gap-y-4 rounded-card shadow contain-paint color-neutral surface
+    @xl:grid-flow-col @xl:grid-cols-[4fr,8fr] @xl:grid-rows-[auto,1fr] @xl:items-stretch"
+    use:tocTarget
+    id={`routine-${routine.id}`}>
+    <header
+      class="sticky top-layout-viewport-top z-1 flex items-center gap-2 border-default-line bg-inherit p-4 @xl:border-b">
       <div class="typescale-title grow">{routine.name}</div>
       <UiIconbutton label="Iniciar entrenamiento" onclick={() => startRoutine(routine.id)}>
         <Fa icon={faPlay}></Fa></UiIconbutton>
@@ -130,76 +136,77 @@
           Eliminar rutina
         </UiMenuitem>
       </UiMenu>
+    </header>
+    <div class="px-4 last:pb-4 @xl:last:pb-0">
+      {#if chartData}
+        <LineChart data={chartData}></LineChart>
+      {/if}
     </div>
-  </header>
-  <div class="px-4 max-lg:last:pb-4">
-    {#if chartData}
-      <LineChart data={chartData}></LineChart>
-    {/if}
-  </div>
-  <div class="border-default-line lg:row-span-3 lg:border-l">
-    <div class="p-4">
-      <UiButton class="color-neutral-lighter max-md:mx-auto" onclick={() => addSerie()}
-        >Agregar serie</UiButton>
-    </div>
-    <ul
-      use:sortlist={training.id}
-      onsortend={(event) => updateSeries(getFromRegistry(event.detail.elements))}>
-      {#each groupedSeries$ as groupedSerie}
-        <li role="presentation" class="px-8 py-4 text-sm font-bold">{groupedSerie.group.name}</li>
+    <div
+      class="row-span-2 grid grid-rows-subgrid border-default-line @xl:row-start-1 @xl:-row-end-1 @xl:border-l">
+      <div class="m-auto px-4 @xl:mr-0">
+        <UiButton class="color-primary" filled onclick={() => addSerie()}
+          >Agregar ejercicio</UiButton>
+      </div>
+      <ul
+        use:sortlist={training.id}
+        onsortend={(event) => updateSeries(getFromRegistry(event.detail.elements))}>
+        {#each groupedSeries$ as groupedSerie}
+          <li role="presentation" class="px-8 py-4 text-sm font-bold">{groupedSerie.group.name}</li>
 
-        {#each groupedSerie.series as serie (serie.id)}
-          <li
-            class="flex h-16 items-center gap-4 px-4 contain-strict"
-            use:sortitem={training.id}
-            data-routine-id={routine.id}
-            data-serie-id={serie.id}>
-            <!-- Handle -->
-            <button
-              class="grid size-4 flex-none cursor-grab place-content-center pointer-coarse:hidden"
-              type="button"
-              draggable={true}
-              tabindex="-1"
-              title="Drag to sort"
-              aria-label="Drag to sort">
-              <Fa icon={faGripLines}></Fa>
-            </button>
-            <!-- Item -->
-            <button
-              class="group flex-1 text-left outline-none contain-inline-size"
-              type="button"
-              onclick={() => (currentSerie$ = serie)}>
-              <div class="flex-1">
-                <div class="truncate">{serie.name}</div>
-                <div class="typescale-label truncate">{getStepsDescription(serie)}</div>
-              </div>
-              <div
-                class="absolute inset-0 -z-1 ring-inset ring-ring transition-colors group-hover:bg-default-hover group-focus-visible:ring-2 group-active:bg-default-active">
-              </div>
-            </button>
-            <!-- Actions -->
-            <UiIconbutton class="flex-none" id={`serie-${serie.id}-actions`} label="More actions">
-              <Fa icon={faEllipsisV}></Fa>
-            </UiIconbutton>
-          </li>
-          <UiMenu target={`serie-${serie.id}-actions`}>
-            <UiMenuitem onclick={() => deleteSerie(serie.id)}>
-              {#snippet icon()}
-                <Fa icon={faTrashAlt}></Fa>
-              {/snippet}
-              Eliminar Serie</UiMenuitem>
-          </UiMenu>
-          <TrainingSerieEditor
-            {serie}
-            open={serie.id === currentSerie$?.id}
-            onclose={(serie) => {
-              if (serie) updateSerie(serie)
-              currentSerie$ = null
-            }}></TrainingSerieEditor>
+          {#each groupedSerie.series as serie (serie.id)}
+            <li
+              class="flex h-16 items-center gap-4 px-4 contain-strict"
+              use:sortitem={training.id}
+              data-routine-id={routine.id}
+              data-serie-id={serie.id}>
+              <!-- Handle -->
+              <button
+                class="grid size-4 flex-none cursor-grab place-content-center pointer-coarse:hidden"
+                type="button"
+                draggable={true}
+                tabindex="-1"
+                title="Drag to sort"
+                aria-label="Drag to sort">
+                <Fa icon={faGripLines}></Fa>
+              </button>
+              <!-- Item -->
+              <button
+                class="group flex-1 text-left outline-none contain-inline-size"
+                type="button"
+                onclick={() => (currentSerie$ = serie)}>
+                <div class="flex-1">
+                  <div class="truncate">{serie.name}</div>
+                  <div class="typescale-label truncate">{getStepsDescription(serie)}</div>
+                </div>
+                <div
+                  class="absolute inset-0 -z-1 ring-inset ring-ring transition-colors group-hover:bg-default-hover group-focus-visible:ring-2 group-active:bg-default-active">
+                </div>
+              </button>
+              <!-- Actions -->
+              <UiIconbutton class="flex-none" id={`serie-${serie.id}-actions`} label="More actions">
+                <Fa icon={faEllipsisV}></Fa>
+              </UiIconbutton>
+            </li>
+            <UiMenu target={`serie-${serie.id}-actions`}>
+              <UiMenuitem onclick={() => deleteSerie(serie.id)}>
+                {#snippet icon()}
+                  <Fa icon={faTrashAlt}></Fa>
+                {/snippet}
+                Eliminar Serie</UiMenuitem>
+            </UiMenu>
+            <TrainingSerieEditor
+              {serie}
+              open={serie.id === currentSerie$?.id}
+              onclose={(serie) => {
+                if (serie) updateSerie(serie)
+                currentSerie$ = null
+              }}></TrainingSerieEditor>
+          {/each}
+        {:else}
+          <div class="grid place-content-center h-16 px-4 opacity-50">Empty list</div>
         {/each}
-      {:else}
-        <div class="grid place-content-center h-16 px-4 opacity-50">Empty list</div>
-      {/each}
-    </ul>
-  </div>
-</article>
+      </ul>
+    </div>
+  </article>
+</div>

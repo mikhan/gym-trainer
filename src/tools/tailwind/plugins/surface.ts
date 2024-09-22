@@ -78,7 +78,7 @@ export function surfacePlugin() {
         '@apply bg-default-under': '',
       },
       '.surface-hoverable': {
-        '@apply hocus:bg-default-hover': '',
+        '@apply hover:bg-default-hover': '',
       },
       '.surface-activable': {
         '@apply active:bg-default-active': '',
