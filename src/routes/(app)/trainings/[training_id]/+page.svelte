@@ -1,7 +1,7 @@
 <script lang="ts">
-  import TrainingViewport from './TrainingViewport.svelte'
+  import Training from './Training.svelte'
 
   const { data } = $props()
 </script>
 
-<TrainingViewport training={data.training}></TrainingViewport>
+<Training training={data.training}></Training>
