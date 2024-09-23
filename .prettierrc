@@ -6,11 +6,7 @@
   "semi": false,
   "printWidth": 100,
   "bracketSameLine": true,
-  "plugins": [
-    "prettier-plugin-svelte",
-    "prettier-plugin-tailwindcss",
-    "@ianvs/prettier-plugin-sort-imports"
-  ],
+  "plugins": ["prettier-plugin-svelte", "@ianvs/prettier-plugin-sort-imports"],
   "overrides": [{ "files": "*.svelte", "options": { "parser": "svelte" } }],
   "importOrder": ["$service-worker", "^[$]env/(.*)", "^[$]app/(.*)", "^[$]lib/(.*)", "^[.]"],
   "importOrderTypeScriptVersion": "5.5.4"
