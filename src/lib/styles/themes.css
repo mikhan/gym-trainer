@@ -1,10 +1,6 @@
 @import './themes/dark.css';
 
 @import '@fontsource-variable/quicksand';
-/* @import '@fontsource-variable/inter'; */
-/* @import '@fontsource-variable/roboto-mono'; */
-/* @import '@fontsource-variable/source-code-pro'; */
-/* @import '@fontsource/space-mono'; */
 @import '@fontsource-variable/sometype-mono';
 
 @layer theme {
@@ -16,17 +12,19 @@
 
   :root {
     --font-family-sans: 'Quicksand Variable';
-    /* --font-family-sans: 'Inter Variable'; */
-    /* --font-family-mono: 'Roboto Mono Variable'; */
-    /* --font-family-mono: 'Source Code Pro Variable'; */
-    /* --font-family-mono: 'Space Mono'; */
     --font-family-mono: 'Sometype Mono Variable';
 
-    /* --layout-header-height: 0px;
-    --layout-footer-height: 0px;
-    --layout-viewport-height: 0px; */
     --layout-padding: 8px;
-    --layout-gap: 16px;
+    /* --layout-gap: round(clamp(1rem, 1.111vw + 0.667rem, 2rem), 8px); */
+    --layout-gap: 1rem;
+
+    @media (min-width: theme('screens.lg')) {
+      --layout-gap: 1.5rem;
+    }
+
+    @media (min-width: theme('screens.3xl')) {
+      --layout-gap: 2rem;
+    }
 
     --widget-height: 2.5rem;
 

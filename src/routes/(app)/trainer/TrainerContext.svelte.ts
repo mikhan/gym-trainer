@@ -9,6 +9,7 @@ export type TrainerContextStateUnset = {
   currentRoutine: null
   currentSerieIndex: null
   currentSerie: null
+  currentSerieCompleted: null
   records: null
   progress: null
 }
@@ -20,6 +21,7 @@ export type TrainerContextStateRunning = {
   currentRoutine: Types.Routine
   currentSerieIndex: number
   currentSerie: Types.RoutineSerie
+  currentSerieCompleted: boolean
   records: Types.TrainerRecords
   progress: Types.TrainerProgress
 }
@@ -31,6 +33,7 @@ export type TrainerContextStateCompleted = {
   currentRoutine: Types.Routine
   currentSerieIndex: null
   currentSerie: null
+  currentSerieCompleted: null
   records: Types.TrainerRecords
   progress: Types.TrainerProgress
 }
@@ -40,10 +43,12 @@ export type TrainerContextState =
   | TrainerContextStateRunning
   | TrainerContextStateCompleted
 
+type DerivedProps = 'currentRoutine' | 'currentSerie' | 'currentSerieCompleted' | 'progress'
+
 type PersistedState =
-  | Omit<TrainerContextStateUnset, 'currentRoutine' | 'currentSerie' | 'progress'>
-  | Omit<TrainerContextStateRunning, 'currentRoutine' | 'currentSerie' | 'progress'>
-  | Omit<TrainerContextStateCompleted, 'currentRoutine' | 'currentSerie' | 'progress'>
+  | Omit<TrainerContextStateUnset, DerivedProps>
+  | Omit<TrainerContextStateRunning, DerivedProps>
+  | Omit<TrainerContextStateCompleted, DerivedProps>
 
 export class TrainerContext {
   static getContext() {
@@ -66,6 +71,7 @@ export class TrainerContext {
     let currentRoutine: Types.Routine | null = null
     let currentSerie: Types.RoutineSerie | null = null
     let progress: Types.TrainerProgress | null = null
+    let currentSerieCompleted: boolean | null = null
 
     const { status, training, currentRoutineIndex, currentSerieIndex, records } = this.#state
 
@@ -76,17 +82,18 @@ export class TrainerContext {
         currentSerie = currentRoutine.series[currentSerieIndex] || null
         if (!currentSerie) throw new TypeError(`Invalid serie index '${currentSerieIndex}'.`)
         progress = getProgress(currentRoutine, records)
-        return { ...this.#state, currentRoutine, currentSerie, progress }
+        currentSerieCompleted = progress[currentSerie.id] === 1
+        return { ...this.#state, currentRoutine, currentSerie, currentSerieCompleted, progress }
 
       case 'completed':
         currentRoutine = training.routines[currentRoutineIndex] || null
 
         if (!currentRoutine) throw new TypeError(`Invalid routine index '${currentRoutineIndex}'.`)
         progress = getProgress(currentRoutine, records)
-        return { ...this.#state, currentRoutine, currentSerie, progress }
+        return { ...this.#state, currentRoutine, currentSerie, currentSerieCompleted, progress }
 
       default:
-        return { ...this.#state, currentRoutine, currentSerie, progress }
+        return { ...this.#state, currentRoutine, currentSerie, currentSerieCompleted, progress }
     }
   })
 

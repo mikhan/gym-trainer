@@ -18,7 +18,7 @@
 </script>
 
 <li
-  class="xl:zoom-lg mx-auto grid size-full"
+  class="mx-auto grid size-full"
   role="group"
   aria-roledescription="Slide"
   aria-label={serie.name}
@@ -90,6 +90,13 @@
   }
 
   li > * {
+    @media not all and (min-width: theme('screens.lg')) {
+      animation-name: --fade;
+      animation-timing-function: ease-in-out;
+      animation-timeline: view(x);
+      transform-origin: center;
+    }
+
     @media (min-width: theme('screens.lg')) {
       animation-name: --stack-left, --scale-in, --fade-in-out;
       animation-timing-function: linear, linear, ease-in-out;
@@ -98,10 +105,26 @@
     }
   }
 
+  @keyframes --fade {
+    0% {
+      opacity: 0;
+    }
+
+    40%,
+    60% {
+      opacity: 1;
+    }
+
+    100% {
+      opacity: 0;
+    }
+  }
+
   @keyframes --stack-left {
     0% {
       translate: -100%;
     }
+
     50% {
       translate: 0%;
     }

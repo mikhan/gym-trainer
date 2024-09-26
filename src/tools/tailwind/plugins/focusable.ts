@@ -4,10 +4,8 @@ import plugin from 'tailwindcss/plugin'
 
 export function focusablePlugin() {
   return plugin(function ({ addUtilities, matchUtilities, theme }) {
-    const getStyle = (value: string) => ({
-      'outline': `2px dashed ${toColorValue(value)}`,
-      'outline-offset': 'var(--focusable-offset, 2px)',
-    })
+    const outlineStyle = '2px solid transparent'
+    const outlineOffset = 'var(--focusable-offset, 0)'
 
     addUtilities({
       '.focusable-inside': {
@@ -20,9 +18,25 @@ export function focusablePlugin() {
 
     matchUtilities(
       {
-        'focusable': (value) => ({ '&:focus-visible': getStyle(value) }),
-        'focusable-within': (value) => ({ '&:has(:focus-visible)': getStyle(value) }),
-        'focused': (value) => getStyle(value),
+        'focusable': (value) => ({
+          'outline': outlineStyle,
+          'outline-offset': outlineOffset,
+          '&:focus-visible': {
+            'outline-color': toColorValue(value),
+          },
+        }),
+        'focusable-within': (value) => ({
+          'outline': outlineStyle,
+          'outline-offset': outlineOffset,
+          '&:has(:focus-visible)': {
+            'outline-color': toColorValue(value),
+          },
+        }),
+        'focused': (value) => ({
+          'outline': outlineStyle,
+          'outline-offset': outlineOffset,
+          'outline-color': toColorValue(value),
+        }),
       },
       { values: flattenColorPalette(theme('colors')), type: 'color' },
     )

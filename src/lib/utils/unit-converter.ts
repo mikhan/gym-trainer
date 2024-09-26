@@ -1,6 +1,6 @@
 export const UNITS = ['kg', 'lb', 'gr'] as const
 
-type Unit = (typeof UNITS)[number]
+export type Unit = (typeof UNITS)[number]
 
 const conversions: Record<Unit, number> = {
   kg: 1,
@@ -9,6 +9,7 @@ const conversions: Record<Unit, number> = {
 }
 
 export function convertUnit(value: number, from: string, to: string): number {
+  if (from === to) return value
   if (!isKeyof(from, conversions)) throw new TypeError(`Invalid unit '${from}'`)
   if (!isKeyof(to, conversions)) throw new TypeError(`Invalid unit '${to}'`)
 

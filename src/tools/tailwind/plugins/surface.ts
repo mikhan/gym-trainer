@@ -84,7 +84,7 @@ export function surfacePlugin() {
         '@apply active:bg-default-active': '',
       },
       '.surface-outlined': {
-        '@apply outline outline-2 outline-default-line -outline-offset-2': '',
+        '@apply ring-2 ring-default-line ring-inset': '',
       },
       '.surface-focusable': {
         '@apply focusable-ring': '',

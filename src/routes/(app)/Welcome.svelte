@@ -7,9 +7,9 @@
 </script>
 
 <div
-  class="-m-layout-gap h-layout-viewport-height min-h-96 w-layout-viewport-width p-layout-gap md:contents">
+  class="-m-layout-gap min-h-[calc(var(--layout-viewport-height)-8vh)] w-layout-viewport-width p-layout-gap md:contents">
   <article
-    class="h-full max-w-screen-md flex-auto rounded-card shadow contain-strict color-neutral-darkest surface
+    class="h-full max-w-screen-md flex-auto rounded-card shadow color-neutral-darkest surface contain-paint
     md:h-96 xl:zoom-lg">
     <div
       class="grid size-full grid-rows-[1fr,auto] md:grid-cols-[1fr,fit-content(24rem)] md:grid-rows-1">

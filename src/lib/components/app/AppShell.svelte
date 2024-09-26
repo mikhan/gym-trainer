@@ -103,13 +103,7 @@
 
 <style lang="postcss">
   :global {
-    :root {
-      --layout-padding-default: var(--layout-padding, 0px);
-      --layout-gap-default: var(--layout-gap, 0px);
-    }
-
     .app-shell {
-      --layout-gap: var(--layout-gap-default);
       --layout-height: 0px;
       --layout-header-height: 0px;
       --layout-header-top: 0px;
@@ -118,16 +112,6 @@
         100cqb - var(--layout-header-height) - var(--layout-footer-height)
       );
       --layout-viewport-top: calc(var(--layout-header-top) + var(--layout-header-height));
-
-      @media (min-width: theme('screens.lg')) {
-        --layout-gap: calc(var(--layout-gap-default) * 1.5);
-        --layout-padding: calc(var(--layout-padding-default) * 1.5);
-      }
-
-      @media (min-width: theme('screens.3xl')) {
-        --layout-gap: calc(var(--layout-gap-default) * 2);
-        --layout-padding: calc(var(--layout-padding-default) * 2);
-      }
 
       @apply flex size-full;
     }

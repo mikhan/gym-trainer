@@ -1,6 +1,6 @@
 <script lang="ts">
-  import { faClock } from '@fortawesome/free-regular-svg-icons'
-  import { faDumbbell, type IconDefinition } from '@fortawesome/free-solid-svg-icons'
+  import { faCalendarDays, faClock, type IconDefinition } from '@fortawesome/free-regular-svg-icons'
+  import { faDumbbell, faPersonRunning } from '@fortawesome/free-solid-svg-icons'
   import clsx from 'clsx'
   import Fa from 'svelte-fa'
   import { TrainerContext, type TrainerContextState } from './trainer/TrainerContext.svelte'
@@ -21,14 +21,14 @@
     if (state.status === 'unset') return insights
 
     insights.push({
-      icon: faDumbbell,
+      icon: faPersonRunning,
       label: 'Último entrenamiento',
       value: `${state.training.name} • ${state.currentRoutine.name}`,
       important: true,
     })
 
     insights.push({
-      icon: faClock,
+      icon: faCalendarDays,
       label: 'Hace',
       value: '2 días',
     })

@@ -1,16 +1,16 @@
 <script lang="ts">
   import { faChevronDown } from '@fortawesome/free-solid-svg-icons'
-  import SvelteMarkdown from 'svelte-markdown'
+  import Fa from 'svelte-fa'
   import { startViewTransition, viewTransitionName } from '$lib/actions/transition.action'
-  import AppShellSection from '$lib/components/app/AppShellSection.svelte'
-  import AppTopbar from '$lib/components/app/AppTopbar.svelte'
+  // import AppShellSection from '$lib/components/app/AppShellSection.svelte'
+  // import AppTopbar from '$lib/components/app/AppTopbar.svelte'
   import UiButton from '$lib/components/ui/UiButton.svelte'
   import UiCarousel from '$lib/components/ui/UiCarousel.svelte'
   import { TrainerContext, type TrainerContextStateRunning } from './TrainerContext.svelte'
+  import TrainerNavigator from './TrainerNavigator.svelte'
   import TrainerNotes from './TrainerNotes.svelte'
   import TrainerScroller from './TrainerScroller.svelte'
   import TrainerSerie from './TrainerSerie.svelte'
-  import TrainerSerieImage from './TrainerSerieImage.svelte'
   import TrainerSerieInstructions from './TrainerSerieInstructions.svelte'
   import TrainerStatics from './TrainerStatics.svelte'
 
@@ -22,14 +22,6 @@
   let carousel: UiCarousel
   let root: HTMLElement
   const trainerContext = TrainerContext.getContext()
-  const instructions = `
-Amet ipsum sint duis ex nisi anim cupidatat labore proident do ullamco culpaconsectetur.
-
-1. Sint minim quis amet **voluptate** nostrud sint fugiat duis pariatur ad anim sint.
-2. Ad ea laborum duis labore duis et do pariatur eiusmod ad culpa veniam. Fugiat dolore nulla amet ullamco est elit deserunt ullamco.
-3. In adipisicing eu irure incididunt commodo fugiat culpa aliqua commodo non commodo esse ex.
-
-Excepteur aute voluptate anim mollit do amet officia dolore excepteur occaecat ullamco sit.`
 
   function setCurrentSerie(serieId?: string) {
     if (serieId) {
@@ -60,7 +52,7 @@ Excepteur aute voluptate anim mollit do amet officia dolore excepteur occaecat u
   onpointerup={() => (pointerdown = false)}
   onpointercancel={() => (pointerdown = false)} />
 
-<AppShellSection name="header">
+<!-- <AppShellSection name="header">
   <AppTopbar
     icon={faChevronDown}
     previous={`/trainings/${data.training.id}`}
@@ -69,14 +61,24 @@ Excepteur aute voluptate anim mollit do amet officia dolore excepteur occaecat u
       <UiButton class="color-primary" outlined onclick={terminate}>Terminar</UiButton>
     {/snippet}
   </AppTopbar>
-</AppShellSection>
+</AppShellSection> -->
 
 <div
-  class="relative mx-auto grid size-full auto-rows-auto grid-rows-[clamp(30rem,var(--layout-viewport-height),60rem)] content-start gap-x-layout-gap lg:container
-  lg:grid-cols-[480px,1fr] xl:grid-cols-[640px,1fr] 3xl:grid-cols-[640px,1fr,480px]"
+  class="grid items-start auto-rows-auto gap-layout-gap p-layout-gap
+  grid-cols-1 lg:grid-cols-2 3xl:grid-cols-[36rem,1fr]
+  relative mx-auto size-full lg:container"
   bind:this={root}>
   <div
-    class="flex flex-col gap-layout-gap p-layout-gap lg:sticky lg:pr-0 [@media(min-height:768px)]:top-layout-viewport-top">
+    class="flex flex-col gap-layout-gap p-layout-gap lg:sticky [@media(min-height:41rem)]:top-layout-viewport-top
+    -m-layout-gap min-h-[36rem] max-h-[60rem] h-layout-viewport-height">
+    <div
+      class="flex gap-2 justify-between surface surface-outlined rounded-full p-1 color-neutral-darker">
+      <UiButton is="a" href={`/trainings/${data.training.id}/routines/${data.currentRoutine.id}`}>
+        <Fa icon={faChevronDown}></Fa>
+        <span>Rutina: {data.currentRoutine.name}</span>
+      </UiButton>
+      <UiButton onclick={terminate}>Terminar</UiButton>
+    </div>
     <div
       class="-m-layout-gap grow"
       use:viewTransitionName={{
@@ -108,44 +110,20 @@ Excepteur aute voluptate anim mollit do amet officia dolore excepteur occaecat u
   </div>
 
   <div
-    class="container row-span-2 mx-auto w-full space-y-layout-gap p-layout-gap max-lg:pt-0 lg:col-start-2 lg:pl-0 3xl:pr-0">
-    <section class="flex flex-wrap gap-4">
-      {#each data.currentRoutine.series as serie, serieIndex (serie.id)}
-        {@const percent = `${((data.progress[serie.id] ?? 0) * 100).toFixed(0)}%`}
-        <button
-          class="xl:zoom-lg relative min-w-min rounded-button px-2 py-1 text-left shadow color-neutral surface surface-hoverable surface-activable focusable-outside focusable-ring"
-          type="button"
-          onclick={() => gotoSerie(serieIndex)}>
-          <div class="typescale-label line-clamp-1">{serie.name}</div>
-          <div
-            class="typescale-label absolute inset-0 line-clamp-1 overflow-clip rounded-button px-2 py-1 transition-all color-secondary surface"
-            style="clip-path: rect(auto var(--clip-width) auto auto)"
-            style:--clip-width={percent}>
-            {serie.name}
-          </div>
-          <div class="absolute -inset-2"></div>
-        </button>
-      {/each}
-    </section>
-    <TrainerSerieInstructions>
-      <div class="flex flex-col gap-layout-gap sm:flex-row sm:flex-wrap">
-        <div class="prose prose-invert flex-1 sm:min-w-96">
-          <SvelteMarkdown source={instructions} />
-        </div>
-        <div class="flex-1 sm:min-w-48">
-          <TrainerSerieImage
-            src="https://ik.imagekit.io/mikhan/gym-trainer/exercises/00289eafca-v258577.gif"
-            alt={`Imagen demostrando como ejecutar el ejercicio ${data.currentSerie.name}`}>
-          </TrainerSerieImage>
-        </div>
-      </div>
-    </TrainerSerieInstructions>
-    <TrainerNotes></TrainerNotes>
-  </div>
+    class="max-lg:contents grid items-start gap-layout-gap container mx-auto w-full 3xl:grid-cols-[1fr,36rem]">
+    <div class="grid gap-layout-gap">
+      <TrainerNavigator {data} onselect={(serieIndex) => gotoSerie(serieIndex)}></TrainerNavigator>
+      <TrainerSerieInstructions
+        image={'https://ik.imagekit.io/mikhan/gym-trainer/exercises/00289eafca-v258577.gif'}
+        alt={`Imagen demostrando como ejecutar el ejercicio ${data.currentSerie.name}`}>
+      </TrainerSerieInstructions>
+      <TrainerNotes></TrainerNotes>
+    </div>
 
-  <div
-    class="container mx-auto w-full space-y-layout-gap p-layout-gap max-3xl:pt-0 lg:col-start-2 lg:pl-0 3xl:sticky 3xl:top-layout-header-height 3xl:col-start-3">
-    <TrainerStatics></TrainerStatics>
+    <div
+      class="max-3xl:contents sticky [@media(min-height:41rem)]:top-layout-viewport-top -my-layout-gap py-layout-gap h-layout-viewport-height">
+      <TrainerStatics></TrainerStatics>
+    </div>
   </div>
 </div>
 
