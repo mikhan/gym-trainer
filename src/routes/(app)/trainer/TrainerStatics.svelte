@@ -21,14 +21,20 @@
   const unit: Unit = 'lb'
 
   const data = getDummyData()
-  // console.log(data)
 
   const valueLimits = getLimits(data, unit)
-  // const minValue = valueLimits?.min.value ?? 0
   const maxValue = valueLimits?.max.value ?? 0
-  // $inspect(valueLimits)
+  const subdivisions = (valueLimits && getSubdivisions(valueLimits, 5)) || []
 
   const chartData = getCalendar(data)
+
+  function getSubdivisions(record: WeightLiftRecord, interval = 10) {
+    const { value, unit } = record.max
+    return Array.from(
+      { length: Math.ceil(value / interval) },
+      (_, i) => `${(i + 1) * interval} ${unit}`,
+    )
+  }
 
   function getCalendar(data: WeightLiftRecord[]): ChartData[] {
     const dates = data.map(({ date }) => date).toSorted((a, b) => +a - +b)
@@ -59,57 +65,6 @@
 
     return Object.values(chartData)
   }
-
-  // const dataSorted = data.toSorted((a, b) => a.date.getTime() - b.date.getTime())
-  // console.log('dataSorted')
-  // dataSorted.map(({ date }) => console.log(date.toJSON().slice(0, 10)))
-
-  // const groupedData = Object.groupBy(data, ({ date }) => getWeekNumber(date))
-
-  // const range = Object.keys(groupedData)
-  //   .map((week) => +week)
-  //   .sort()
-  // console.log(
-  //   Object.fromEntries(
-  //     createRange(range.at(0)!, range.at(-1)!).map((week) => [week, groupedData[week] ?? []]),
-  //   ),
-  // )
-
-  // console.log(chartData)
-
-  // const chartData: ChartData[] = Object.entries(groupedData).map(([week, records = []]) => {
-  //   const grouped = Object.groupBy(records, (i) => i.date.getDay() - 1)
-  //   const start = getMonday(records[0]!.date)
-  //   const end = new Date(start.getTime() + 6 * DAY)
-  //   const fullRecords = Array.from({ length: 7 }, (_, i) => ({
-  //     date: new Date(start.getTime() + DAY * i),
-  //     values:
-  //       grouped[i]
-  //         ?.map(({ min, max }) => [
-  //           convertUnit(min.value, min.unit, unit),
-  //           convertUnit(max.value, max.unit, unit),
-  //         ])
-  //         .flat()
-  //         .toSorted()
-  //         .filter((v, i, a) => a.indexOf(v) === i) ?? null,
-  //   }))
-  //   return { week, start, end, records: fullRecords }
-  // })
-  // .reduce((charData, current, index) => {
-  //   if (index === 0) return charData
-
-  //   const diff = Number(current.week) - Number(charData.at(-1)!.week)
-  //   for (let index = 1; index <= diff; index++) {
-  //     const week = String(Number(charData.at(-1)!.week) + index)
-  //     const start = getMonday(records[0]!.date)
-  //     charData.push({ week })
-  //   }
-  //   charData.push(current)
-
-  //   return charData
-  // }, [] as ChartData[])
-
-  // console.log('chartData', chartData)
 
   function clearTime(date: Date): Date {
     return new Date(date.getFullYear(), date.getMonth(), date.getDate())
@@ -160,10 +115,6 @@
     )
   }
 
-  // function createRange(min: number, max: number) {
-  //   return Array.from({ length: max - min }, (_, i) => min + i)
-  // }
-
   function getDummyData(): WeightLiftRecord[] {
     const config: [number, number, number][] = [
       [1, 15, 25],
@@ -173,6 +124,7 @@
       [2, 25, 35],
       [3, 30, 40],
       [3, 30, 35],
+      [3, 35, 35],
       [3, 35, 40],
     ]
     const values = config
@@ -196,7 +148,7 @@
       // if (i === 20) day += 24
       // if (i === 30) day += 10
 
-      if ([1, 3, 5].includes(date.getDay()) === false) continue
+      if ([1, 2, 3, 4, 5].includes(date.getDay()) === false) continue
 
       const { min, max } = values[index++]!
 
@@ -209,58 +161,94 @@
 
     return data.toSorted((a) => (a.date.getDate() % 3) - 1)
   }
+
+  function formatDateInterval(start: Date, end: Date) {
+    const sameYear = start.getFullYear() === end.getFullYear()
+    const sameMonth = sameYear && start.getMonth() === end.getMonth()
+    const sameDay = sameMonth && start.getDate() === end.getDate()
+    const thisYear = sameYear && start.getFullYear() === new Date().getFullYear()
+
+    const formatMonth = new Intl.DateTimeFormat('es-MX', { month: 'long' })
+    if (sameDay) {
+      return formatMonth.format(start)
+    }
+
+    if (sameMonth) {
+      const month = formatMonth.format(start)
+      const year = start.getFullYear()
+      return (
+        `del ${start.getDate()} al ${end.getDate()} de ${month}` + (thisYear ? '' : ` de ${year}`)
+      )
+    }
+
+    if (sameYear) {
+      const year = start.getFullYear()
+      return (
+        `del ${start.getDate()} de ${formatMonth.format(start)} al ${end.getDate()} de ${formatMonth.format(end)}` +
+        (thisYear ? '' : ` de ${year}`)
+      )
+    }
+
+    return formatter.format(start) + ' - ' + formatter.format(end)
+  }
 </script>
 
-<section
-  class="grid grid-rows-[auto,1fr] gap-4 rounded-card shadow color-neutral-darker surface mb-96">
+<section class="grid grid-rows-[auto,1fr] gap-4 surface color-neutral-darker rounded-card shadow">
   <div class="typescale-title p-4">Historial de peso levantado</div>
-
   <picture
-    class="grid grid-cols-[1fr,theme(spacing.6)] grid-rows-[theme(spacing.12),theme(spacing.48),1fr]">
+    class="grid grid-cols-[1fr,5ch] grid-rows-[theme(spacing.12),theme(spacing.48),1fr] px-4">
     <div
       class="flex flex-col justify-between col-start-1 row-start-2 h-48 typescale-label
       utline outline-1 -outline-offset-1 outline-[red]">
-      <div class="w-full border-t border-dashed border-default-line"></div>
-      <div class="w-full border-t border-dashed border-default-line"></div>
-      <div class="w-full border-t border-dashed border-default-line"></div>
-      <div class="w-full border-t border-dashed border-default-line"></div>
+      {#each subdivisions.toReversed() as subdivision}
+        <div class="relative w-full border-t border-dashed border-default-line">
+          <span class="absolute right-0 translate-x-full -translate-y-1/2 pl-2">{subdivision}</span>
+        </div>
+      {/each}
       <div class="w-full"></div>
     </div>
 
     <scroll
-      class="grid auto-cols-[100%] grid-flow-col size-full contain-paint px-4 scroll-px-4 gap-4
+      class="grid auto-cols-[100%] grid-flow-col size-full contain-paint
       col-start-1 row-start-1 row-span-3 z-1
       overflow-x-auto snap-x snap-mandatory scrollbar outline-none"
       dir="rtl">
-      {#each chartData as { week, start, end, records }}
-        <section class="grid grid-rows-[auto,1fr] snap-start">
-          <header class="h-12 sticky left-0 w-max pr-4">
-            Semana {week} del {formatter.format(start)} - {formatter.format(end)}
+      {#each chartData.toReversed() as { start, end, records }}
+        <section class="grid grid-rows-[auto,1fr] snap-start snap-always">
+          <header class="h-12 w-full text-left typescale-label">
+            Semana {formatDateInterval(start, end)}
           </header>
           <ul class="grid grid-cols-7 utline-dashed outline-1 -outline-offset-1 outline-[green]">
-            {#each records as record, index}
-              <li class="grid grid-rows-[theme(spacing.48),auto]">
-                {#if record.values.length}
-                  <div
-                    class="bg-primary w-3 mx-auto relative rounded-full"
-                    style:margin-bottom={`calc(12rem * ${record.values.at(0)! / maxValue})`}
-                    style:margin-top={`calc(12rem * ${1 - record.values.at(-1)! / maxValue})`}>
-                    <!-- <div
-                      class="absolute left-1/2 -translate-x-1/2 text-center top-0 -translate-y-full typescale-label opacity-75">
-                      {record.values.at(-1)}
-                    </div>
+            {#each records.toReversed() as record, index}
+              <li class="grid grid-rows-[12rem,auto]">
+                <div class="relative flex flex-col items-center @container-[size]">
+                  {#if record.values.length}
                     <div
-                      class="absolute left-1/2 -translate-x-1/2 text-center bottom-0 translate-y-full typescale-label opacity-75">
-                      {record.values.at(0)}
-                    </div> -->
-                  </div>
-                {:else}
-                  <div></div>
-                {/if}
+                      class="absolute box-content w-2 bg-primary rounded-full"
+                      style:top={`calc(100cqb * ${1 - record.values.at(-1)! / maxValue} - 4px)`}
+                      style:bottom={`calc(100cqb * ${record.values.at(0)! / maxValue} - 4px)`}>
+                      <!-- {#if record.values.at(0) !== record.values.at(-1)}
+                        <span
+                          class="absolute right-full text-center bottom-0 border-b-2 border-primary m-1 typescale-label opacity-75">
+                          {record.values.at(0)}
+                        </span>
+                        <span
+                          class="absolute left-full text-center top-0 border-t-2 border-primary m-1 typescale-label opacity-75">
+                          {record.values.at(-1)}
+                        </span>
+                      {:else}
+                        <span
+                          class="absolute left-full text-center top-0 -translate-y-1/2 m-1 typescale-label opacity-75">
+                          {record.values.at(-1)}
+                        </span>
+                      {/if} -->
+                    </div>
+                  {/if}
+                </div>
                 <div
                   class="text-center border-t-2 border-default-line p-1 mb-2 typescale-label relative">
                   <div class="absolute left-1/2 h-1 w-0.5 top-0 bg-default-line"></div>
-                  {weekDays[index]}
+                  {weekDays[records.length - 1 - index]}
                 </div>
               </li>
             {/each}
