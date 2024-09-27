@@ -19,15 +19,20 @@
       {@const percent = `${((data.progress[serie.id] ?? 0) * 100).toFixed(0)}%`}
       <label
         class={clsx(
-          'group stack relative min-w-min rounded-button shadow text-left focusable-within-ring border-4 contain-paint',
-          currentSerieId === serie.id ? 'border-primary' : 'border-default-line',
+          'group stack relative min-w-min border-2 border-default-line rounded-button shadow text-left focusable-within-ring contain-paint',
+          currentSerieId === serie.id ? 'color-secondary' : 'color-neutral',
         )}>
         <div
-          class="line-clamp-1 px-2 py-1 color-neutral bg-default group-hover:bg-default-hover group-active:bg-default-active transition-all">
+          class={clsx(
+            'line-clamp-1 px-2 py-1 bg-default group-hover:bg-default-hover group-active:bg-default-active transition-all',
+          )}>
           {serie.name}
         </div>
         <div
-          class="line-clamp-1 px-2 py-1 color-secondary-darker bg-default group-hover:bg-default-hover group-active:bg-default-active transition-all"
+          class={clsx(
+            'line-clamp-1 px-2 py-1 bg-default group-hover:bg-default-hover group-active:bg-default-active transition-all',
+            currentSerieId === serie.id ? 'color-secondary-darker' : 'color-neutral-darker',
+          )}
           style="clip-path: rect(auto var(--clip-width) auto auto)"
           style:--clip-width={percent}>
           {serie.name}
