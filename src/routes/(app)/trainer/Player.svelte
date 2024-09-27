@@ -6,15 +6,23 @@
   import AppShellSection from '$lib/components/app/AppShellSection.svelte'
   import UiIconbutton from '$lib/components/ui/UiIconbutton.svelte'
   import PlayerTimer from './PlayerTimer.svelte'
-  import { type TrainerContextStateRunning } from './TrainerContext.svelte'
+  import { TrainerContext, type TrainerContextStateRunning } from './TrainerContext.svelte'
 
   type Props = { state: TrainerContextStateRunning }
 
   const { state: trainerContextState }: Props = $props()
-  const history: number[] = $state([])
+  const trainerContext = TrainerContext.getContext()
+  const history = $derived(formatHistory(trainerContextState.timer.history))
   let showHistory = $state(false)
 
-  function formatTime(timestamp: number) {
+  function formatHistory(
+    history: Types.TimePlayerRecordCompleted[] | null,
+  ): { label?: string; value: string }[] {
+    if (!history) return []
+    return history.map(({ label, start, end }) => ({ label, value: formatTime(end - start) }))
+  }
+
+  function formatTime(timestamp: number): string {
     timestamp = ~~(timestamp / 1000)
     const minutes = ~~(timestamp / 60)
     const seconds = timestamp % 60
@@ -22,7 +30,7 @@
   }
 
   function clearHistory() {
-    history.length = 0
+    trainerContext.clearHistory()
     showHistory = false
   }
 </script>
@@ -30,15 +38,16 @@
 <AppShellSection name="footer">
   <AppShellHeader class="color-neutral-darkest surface" name="timer-history" align="end">
     {#snippet aside()}
-      {#if showHistory}
+      {#if showHistory && history.length}
         <div
-          class="flex justify-start px-layout-gap py-2"
+          class="flex justify-end px-layout-gap py-2 w-full"
           transition:slide={{ axis: 'y', duration: 100 }}>
           <ul
-            class="grid max-h-[4.5lh] flex-1 grid-cols-[auto,auto] content-start justify-end gap-x-4 overflow-auto px-2 text-right font-mono leading-5 scrollbar-thin scrollbar-stable">
-            {#each history as duration, index}
-              <li class="col-span-2 grid grid-cols-subgrid">
-                <time>{formatTime(duration)}</time>
+            class="grid grid-cols-[1fr,auto,auto] content-start justify-end gap-x-4 max-h-[4.5lh] flex-1 overflow-auto px-2 text-right font-mono leading-5 scrollbar-thin scrollbar-stable">
+            {#each history as time, index}
+              <li class="col-span-3 grid grid-cols-subgrid">
+                <span class="opacity-50">{time.label}</span>
+                <time>{time.value}</time>
                 <span>{index + 1}</span>
               </li>
             {/each}
@@ -67,7 +76,7 @@
           <Fa icon={showHistory ? faAnglesDown : faAnglesUp}></Fa>
         </UiIconbutton>
       {/if}
-      <PlayerTimer ontime={(time) => history.push(time.duration)}></PlayerTimer>
+      <PlayerTimer state={trainerContextState}></PlayerTimer>
     {/snippet}
   </AppShellHeader>
 </AppShellSection>

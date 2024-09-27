@@ -12,6 +12,7 @@ export type TrainerContextStateUnset = {
   currentSerieCompleted: null
   records: null
   progress: null
+  timer: null
 }
 
 export type TrainerContextStateRunning = {
@@ -24,6 +25,7 @@ export type TrainerContextStateRunning = {
   currentSerieCompleted: boolean
   records: Types.TrainerRecords
   progress: Types.TrainerProgress
+  timer: Types.TimePlayer
 }
 
 export type TrainerContextStateCompleted = {
@@ -36,6 +38,7 @@ export type TrainerContextStateCompleted = {
   currentSerieCompleted: null
   records: Types.TrainerRecords
   progress: Types.TrainerProgress
+  timer: Types.TimePlayer
 }
 
 export type TrainerContextState =
@@ -65,6 +68,7 @@ export class TrainerContext {
     currentRoutineIndex: null,
     currentSerieIndex: null,
     records: null,
+    timer: null,
   })
 
   state: TrainerContextState = $derived.by(() => {
@@ -105,32 +109,34 @@ export class TrainerContext {
     const serie = routine.series[currentSerieIndex]
     if (!serie) throw new TypeError(`Invalid serie index '${currentSerieIndex}'.`)
 
-    Object.assign(this.#state, {
+    const newState: Omit<TrainerContextStateRunning, DerivedProps> = {
+      ...this.#state,
       status: 'running',
       training,
       currentRoutineIndex,
       currentSerieIndex,
       records: {},
-    })
+      timer: {
+        status: 'stopped',
+        currentTime: null,
+        pauseTime: null,
+        history: null,
+      },
+    }
+
+    Object.assign(this.#state, newState)
   }
 
   terminateTraining() {
-    if (this.#state.status === 'running')
-      Object.assign(this.#state, {
+    if (this.#state.status === 'running') {
+      const newState: Omit<TrainerContextStateCompleted, DerivedProps> = {
         ...this.#state,
         status: 'completed',
         currentSerieIndex: null,
-      })
-  }
+      }
 
-  clearTraining() {
-    Object.assign(this.#state, {
-      status: 'unset',
-      training: null,
-      currentRoutineIndex: null,
-      currentSerieIndex: null,
-      records: null,
-    })
+      Object.assign(this.#state, newState)
+    }
   }
 
   getSerie(serieIndex: number): Types.RoutineSerie {
@@ -198,6 +204,62 @@ export class TrainerContext {
     } else {
       delete records[stepIndex]
     }
+  }
+
+  startPlayer(label: string): Types.TimePlayerRecord | undefined {
+    if (this.#state.timer?.status !== 'stopped') return
+
+    const currentTime = { label, start: Date.now() }
+    this.#state.timer = {
+      status: 'playing',
+      history: [],
+      currentTime,
+      pauseTime: null,
+    }
+
+    return currentTime
+  }
+
+  restartPlayer(label: string): Types.TimePlayerRecord | undefined {
+    if (this.#state.timer?.status !== 'playing') return
+
+    const now = Date.now()
+    const currentTime = { label, start: now }
+    this.#state.timer = {
+      ...this.#state.timer,
+      currentTime,
+      history: [...this.#state.timer.history, { ...this.#state.timer.currentTime, end: now }],
+    }
+
+    return currentTime
+  }
+
+  pausePlayer() {
+    if (this.#state.timer?.status !== 'playing') return
+    this.#state.timer = {
+      ...this.#state.timer,
+      status: 'paused',
+      pauseTime: Date.now(),
+    }
+  }
+
+  resumePlayer() {
+    if (this.#state.timer?.status !== 'paused') return
+    this.#state.timer = {
+      ...this.#state.timer,
+      status: 'playing',
+      currentTime: {
+        ...this.#state.timer.currentTime,
+        start: Date.now() - (this.#state.timer.pauseTime - this.#state.timer.currentTime.start),
+      },
+      pauseTime: null,
+    }
+  }
+
+  clearHistory() {
+    if (this.#state.timer?.status !== 'playing') return
+
+    this.#state.timer = { ...this.#state.timer, history: [] }
   }
 }
 

@@ -22,6 +22,7 @@ module.exports = {
   globals: {
     App: true,
     Types: true,
+    Utils: true,
   },
   overrides: [
     {

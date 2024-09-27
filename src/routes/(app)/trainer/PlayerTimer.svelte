@@ -1,109 +1,114 @@
 <script lang="ts">
   import { faArrowRotateBack, faPause, faPlay } from '@fortawesome/free-solid-svg-icons'
   import clsx from 'clsx'
-  import { onDestroy } from 'svelte'
+  import { onMount } from 'svelte'
   import Fa from 'svelte-fa'
   import { longpress } from '$lib/actions/longpress.action'
   import UiCircularProgress from '$lib/components/ui/UiCircularProgress.svelte'
   import UiIconbutton from '$lib/components/ui/UiIconbutton.svelte'
   import { wakeLock } from '$lib/stores/wakelock.store'
+  import { TrainerContext, type TrainerContextStateRunning } from './TrainerContext.svelte'
 
-  type Time = { start: number; duration: number }
-  type State = 'stopped' | 'playing' | 'paused'
   type Props = {
+    state: TrainerContextStateRunning
     pausePressDuration?: number
-    ontime?: (time: Time) => void
   }
 
-  const { pausePressDuration = 1000, ontime }: Props = $props()
-
-  const history: Time[] = $state([])
-  const defaultValue = {
+  const { state: trainerContextState, pausePressDuration = 1000 }: Props = $props()
+  const trainerContext = TrainerContext.getContext()
+  const timer: Utils.DeepReadonly<Types.TimePlayer> = $derived(trainerContextState.timer)
+  const defaultTimeParts = {
     minutes: '0',
     seconds: '00',
     milliseconds: '000',
   }
 
-  let currentTime: Time | undefined = $state()
-  let status: State = $state('stopped')
+  let currentTime = $state() as { start: number; duration: number } | undefined
   let pressing = $state(false)
-  let value = $state({ ...defaultValue })
+  let timeParts = $state({ ...defaultTimeParts })
 
   $effect(() => {
-    if (currentTime) update(currentTime.duration)
+    if (currentTime) updateParts(currentTime.duration)
   })
 
-  function update(timestamp: number) {
+  function updateParts(timestamp: number) {
     const duration = ~~(timestamp / 1000)
 
-    value.milliseconds = String(~~((timestamp % 1000) / 10)).padStart(2, '0')
-    value.seconds = String(~~duration % 60).padStart(2, '0')
-    if (duration >= 60) value.minutes = String(~~(duration / 60))
+    timeParts.milliseconds = String(~~((timestamp % 1000) / 10)).padStart(2, '0')
+    timeParts.seconds = String(~~duration % 60).padStart(2, '0')
+    if (duration >= 60) timeParts.minutes = String(~~(duration / 60))
   }
 
-  function calculate() {
-    if (status !== 'playing') return
-    if (currentTime) currentTime.duration = ~~(performance.now() - currentTime.start)
-    requestAnimationFrame(calculate)
-  }
-
-  function start() {
-    if (status === 'playing' && currentTime) {
-      history.push(currentTime)
-      ontime?.(currentTime)
-    }
-
-    if (status === 'paused' && currentTime) {
-      currentTime.start += performance.now() - (currentTime.start + currentTime.duration)
+  function play() {
+    if (timer.status === 'stopped') {
+      trainerContext.startPlayer(trainerContextState.currentSerie.name)
+    } else if (timer.status === 'playing') {
+      trainerContext.restartPlayer(trainerContextState.currentSerie.name)
     } else {
-      value = { ...defaultValue }
-      currentTime = { start: performance.now(), duration: 0 }
+      trainerContext.resumePlayer()
     }
 
-    status = 'playing'
-    wakeLock.request()
-    requestAnimationFrame(calculate)
+    startTimer()
   }
 
   function pause() {
-    if (status !== 'playing') return
-    status = 'paused'
+    if (timer.status !== 'playing') return
+    trainerContext.pausePlayer()
     wakeLock.release()
   }
 
-  onDestroy(() => {
-    wakeLock.release()
+  function startTimer() {
+    const start = timer.currentTime?.start
+
+    if (start) {
+      const pauseTime = timer.pauseTime
+      const duration = pauseTime ? pauseTime - start : Date.now() - start
+      currentTime = { start, duration }
+      timeParts = { ...defaultTimeParts }
+      wakeLock.request()
+      requestAnimationFrame(recalculateDuration)
+    }
+
+    function recalculateDuration() {
+      if (timer.status !== 'playing') return
+      if (currentTime) currentTime.duration = ~~(Date.now() - currentTime.start)
+      requestAnimationFrame(recalculateDuration)
+    }
+  }
+
+  onMount(() => {
+    startTimer()
+
+    return () => wakeLock.release()
   })
 </script>
 
-<svelte:document
-  on:mouseup={() => {
-    pressing = false
-  }} />
+<svelte:document on:mouseup={() => (pressing = false)} />
 
 <div class="grid grid-cols-[auto,3rem] items-center gap-2 rounded-full p-1 color-neutral surface">
-  {#key value}
+  {#key timeParts}
     <div
       class="grid h-full content-end items-end pl-2 text-right font-mono"
-      class:animate-paused={status === 'paused'}>
-      <span class="h-6 w-[4ch] text-3xl/6">{value.minutes}:</span>
-      <span class="h-6 w-[2ch] text-3xl/6">{value.seconds}</span>
-      <span class="col-span-2 h-4 text-base/4">{value.milliseconds}</span>
+      class:animate-paused={timer.status === 'paused'}>
+      <span class="h-6 w-[4ch] text-3xl/6">{timeParts.minutes}:</span>
+      <span class="h-6 w-[2ch] text-3xl/6">{timeParts.seconds}</span>
+      <span class="col-span-2 h-4 text-base/4">{timeParts.milliseconds}</span>
     </div>
   {/key}
   <UiIconbutton
-    class={clsx('relative', status === 'playing' ? 'color-secondary' : 'color-primary')}
+    class={clsx('relative', timer.status === 'playing' ? 'color-secondary' : 'color-primary')}
     filled
     size="lg"
     label={currentTime ? 'Reiniciar cronómetro' : 'Iniciar cronómetro'}
-    onclick={() => start()}
+    onclick={() => play()}
     onpointerdown={() => {
-      pressing = status === 'playing'
+      pressing = timer.status === 'playing'
     }}
     onpointerup={() => (pressing = false)}
     onpointercancel={() => (pressing = false)}>
-    <Fa size="lg" icon={status !== 'playing' ? faPlay : pressing ? faPause : faArrowRotateBack}
-    ></Fa>
+    <Fa
+      size="lg"
+      icon={timer.status !== 'playing' ? faPlay : pressing ? faPause : faArrowRotateBack}></Fa>
     <div
       class="absolute inset-0"
       use:longpress={pausePressDuration}
@@ -120,7 +125,7 @@
           class="flex flex-col items-center gap-4 rounded-card p-4 shadow-over color-canvas surface sm:contents"
           class:hidden={!pressing}>
           <UiCircularProgress
-            class={clsx('size-24 color-primary sm:size-full', !pressing && 'hidden')}
+            class={clsx('size-24 color-secondary sm:size-full', !pressing && 'hidden')}
             duration={`${pausePressDuration}ms`}
             stroke={16}></UiCircularProgress>
           <div class="text-base/4 sm:hidden">Pausar cronómetro</div>

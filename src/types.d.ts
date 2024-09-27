@@ -51,36 +51,33 @@ declare global {
       weight: Weight
     }
 
-    type Action = {
-      id: string
-      name: string
-      muscle: {
-        name: string
-      }
-      group: {
-        id: string
-        name: string
-        color: Partial<HSLColor>
-      }
-      serie: number
-      step: number
-      steps: number
-      description: string
-      delay: number
+    type TimePlayer =
+      | {
+          status: 'stopped'
+          currentTime: null
+          pauseTime: null
+          history: null
+        }
+      | {
+          status: 'playing'
+          currentTime: TimePlayerRecord
+          pauseTime: null
+          history: TimePlayerRecordCompleted[]
+        }
+      | {
+          status: 'paused'
+          currentTime: TimePlayerRecord
+          pauseTime: number
+          history: TimePlayerRecordCompleted[]
+        }
+
+    type TimePlayerRecord = {
+      start: number
+      end?: number
+      label?: string
     }
 
-    type ActionGroup = {
-      name: string
-      color: { hue: string }
-      actions: Action[]
-    }
-
-    type HSLColor = {
-      hue: string
-      saturation: string
-      lightness: string
-      alpha?: string
-    }
+    type TimePlayerRecordCompleted = TimePlayerRecord & { end: number }
   }
 }
 
