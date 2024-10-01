@@ -2,7 +2,6 @@
   import { faTrashAlt } from '@fortawesome/free-regular-svg-icons'
   import { faEllipsisV, faGripLines, faPlay } from '@fortawesome/free-solid-svg-icons'
   import { getMuscleGroups, type MuscleGroup } from '$data/trainer/config'
-  import { onMount } from 'svelte'
   import Fa from 'svelte-fa'
   import { goto } from '$app/navigation'
   import { sortitem, sortlist } from '$lib/actions/sortable.action'
@@ -17,25 +16,22 @@
   import { TrainingViewportContext } from './TrainingViewportContext.svelte'
 
   type Props = {
-    training: Types.Training
     routineIndex: number
     chartData?: ChartData[]
   }
 
-  let { training, routineIndex, chartData }: Props = $props()
+  let { routineIndex, chartData }: Props = $props()
 
   const muscleGroups = getMuscleGroups()
   const trainingViewportContext = TrainingViewportContext.get()
+  const training = $derived(trainingViewportContext.training$)
+  const routine = $derived(training.routines[routineIndex]!)
+  const groupedSeries$ = $derived(groupByMuscle(routine.series))
   let currentSerie$: Types.RoutineSerie | null = $state(null)
   let newSerie$: Types.RoutineSerie | undefined = $state.raw()
-  const routine = $derived(training.routines[routineIndex]!)
-  const groupedSeries$ = $derived.by(() => groupByMuscle(routine.series))
-  const trainerContext = TrainerContext.getContext()
   let container = $state() as HTMLElement
 
-  onMount(() => {
-    // container.scrollIntoView()
-  })
+  const trainerContext = TrainerContext.getContext()
 
   function groupByMuscle(series: Types.RoutineSerie[]) {
     const groupedSeries: { group: MuscleGroup; series: Types.RoutineSerie[] }[] = []

@@ -5,4 +5,4 @@
   export let data: PageData
 </script>
 
-<Routine training={data.training} routineIndex={data.routineIndex}></Routine>
+<Routine routineIndex={data.routineIndex}></Routine>

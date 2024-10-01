@@ -4,7 +4,7 @@
   import { type Snippet } from 'svelte'
   import Fa from 'svelte-fa'
   import UiIconlink from '../ui/UiIconlink.svelte'
-  import AppShellHeader from './AppBar.svelte'
+  import AppBar from './AppBar.svelte'
   import AppUserAvatar from './AppUserAvatar.svelte'
 
   type Props = {
@@ -31,7 +31,7 @@
   }
 </script>
 
-<AppShellHeader
+<AppBar
   class={clsx(
     'app-topbar',
     !filled && 'app-topbar-docked',
@@ -66,7 +66,7 @@
       <AppUserAvatar class="size-10 border-2 border-neutral-line"></AppUserAvatar>
     </a>
   {/snippet}
-</AppShellHeader>
+</AppBar>
 
 <style lang="postcss">
   :global {
@@ -79,9 +79,6 @@
     }
 
     @keyframes app-topbar-color {
-      from {
-        @apply shadow-none color-canvas;
-      }
       to {
         @apply shadow color-neutral-darkest;
       }

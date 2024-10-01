@@ -51,7 +51,7 @@
 </script>
 
 <UiDialog bind:open align="right" onclose={cancel} title="Editar ejercicio">
-  <div class="space-y-4">
+  <div class="space-y-4 contain-inline-size">
     <div class="grid gap-2">
       <label class="ui-field flex-[3_1_40ch]">
         <div class="ui-label">Nombre</div>

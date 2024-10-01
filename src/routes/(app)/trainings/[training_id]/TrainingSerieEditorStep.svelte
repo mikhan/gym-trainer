@@ -38,9 +38,9 @@
   }
 </script>
 
-<div class="flex items-end gap-2">
+<div class="grid grid-cols-[auto,1fr,auto,auto] items-end gap-2">
   <div>{index + 1}</div>
-  <label class="ui-field flex-auto">
+  <label class="ui-field">
     <div class="ui-label">Tipo</div>
     <div class="ui-input">
       <select required bind:value={step.type}>
@@ -49,31 +49,18 @@
       </select>
     </div>
   </label>
-  <label class="ui-field flex-auto">
+  <label class="ui-field">
     <div class="ui-label">Value</div>
     <div class="ui-input">
-      <input type="string" required use:autoselect bind:value={step.value} />
+      <input
+        class="min-w-[2ch] w-auto block"
+        type="string"
+        required
+        use:autoselect
+        bind:value={step.value} />
     </div>
   </label>
-  <!-- {#if !useSameDelay} -->
-  <!-- <label class="ui-field grow">
-          <div class="ui-label">Descanso</div>
-          <div class="ui-input max-w-24">
-            <input
-              class="text-right"
-              type="number"
-              min="0"
-              step="5"
-              required
-              bind:value={step.delay}
-              onchange={() =>
-                useSameDelay &&
-                serie$.steps.forEach((step) => (step.delay = serie$.steps[0]?.delay ?? 0))} />
-            <span>seg</span>
-          </div>
-        </label> -->
-  <!-- {/if} -->
-  <label class="ui-field">
+  <!-- <label class="ui-field">
     <div class="ui-label">Peso</div>
     <div class="flex gap-2">
       <div class="ui-input">
@@ -96,7 +83,7 @@
         </select>
       </div>
     </div>
-  </label>
+  </label> -->
   <UiIconbutton
     class="shrink-0"
     label="Delete step"

@@ -118,6 +118,7 @@ export class TrainerContext {
       records: {},
       timer: {
         status: 'stopped',
+        startTime: null,
         currentTime: null,
         pauseTime: null,
         history: null,
@@ -211,6 +212,7 @@ export class TrainerContext {
 
     const currentTime = { label, start: Date.now() }
     this.#state.timer = {
+      startTime: Date.now(),
       status: 'playing',
       history: [],
       currentTime,

@@ -54,18 +54,21 @@ declare global {
     type TimePlayer =
       | {
           status: 'stopped'
+          startTime: null
           currentTime: null
           pauseTime: null
           history: null
         }
       | {
           status: 'playing'
+          startTime: number
           currentTime: TimePlayerRecord
           pauseTime: null
           history: TimePlayerRecordCompleted[]
         }
       | {
           status: 'paused'
+          startTime: number
           currentTime: TimePlayerRecord
           pauseTime: number
           history: TimePlayerRecordCompleted[]

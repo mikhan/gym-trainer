@@ -1,14 +1,12 @@
-<script lang="ts" context="module">
-  export type ScrollSnapEvent = CustomEvent<{
-    snapTargetBlock: HTMLElement | null
-    snapTargetInline: HTMLElement | null
-  }>
-</script>
-
 <script lang="ts">
   import { clsx } from 'clsx'
   import { onMount, type Snippet } from 'svelte'
   import type { HTMLAttributes } from 'svelte/elements'
+
+  type ScrollSnapEvent = CustomEvent<{
+    snapTargetBlock: HTMLElement | null
+    snapTargetInline: HTMLElement | null
+  }>
 
   type Props = {
     children: Snippet
@@ -62,9 +60,10 @@
 
   function getCurrent(children: HTMLElement[]) {
     const measure = direction === 'horizontal' ? 'x' : 'y'
+    const offset = root.getBoundingClientRect()[measure]
     for (const child of children) {
       const rect = child.getBoundingClientRect()
-      if (rect[measure] >= 0) return child
+      if (rect[measure] - offset === 0) return child
     }
 
     return null
@@ -123,8 +122,6 @@
 <style lang="postcss">
   :global {
     :where(ui-carousel) {
-      width: 100%;
-      height: 100%;
       display: grid;
       grid-template-columns: 100%;
       grid-template-rows: 100%;
@@ -132,7 +129,7 @@
       grid-auto-rows: 100%;
       scroll-snap-type: both mandatory;
       scroll-behavior: auto;
-      container: carousel / size;
+      position: relative;
 
       &[data-direction='horizontal'] {
         grid-auto-flow: column;
@@ -144,8 +141,8 @@
         overflow-y: scroll;
       }
 
-      & > li {
-        scroll-snap-align: center;
+      & > * {
+        scroll-snap-align: end;
         scroll-snap-stop: always;
       }
     }

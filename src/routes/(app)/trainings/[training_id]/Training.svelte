@@ -44,8 +44,10 @@
       </UiIconbutton>
     {/snippet}
   </AppTopbar>
+</AppShellSection>
 
-  {#if trainingViewportContext.pristine$ === false}
+{#if trainingViewportContext.pristine$ === false}
+  <AppShellSection name="header">
     <AppEditTopbar title={`Editar entrenamiento ${trainingViewportContext.training$.name}`}>
       <UiButton
         outlined
@@ -61,8 +63,8 @@
         onclick={() => trainingViewportContext.save()}
         disabled={trainingViewportContext.saving$}>Guardar</UiButton>
     </AppEditTopbar>
-  {/if}
-</AppShellSection>
+  </AppShellSection>
+{/if}
 
 {#if localState.layout === 'list'}
   <TrainingRoutineList

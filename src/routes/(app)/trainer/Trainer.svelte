@@ -45,6 +45,11 @@
     if (pointerdown) update()
     else startViewTransition({ update, types: ['trainer-running-transition'] })
   }
+
+  const timeFormatter = new Intl.DateTimeFormat('es-MX', { hour: 'numeric', minute: '2-digit' })
+  function formatTime(time: Date | number) {
+    return timeFormatter.format(time)
+  }
 </script>
 
 <svelte:document
@@ -87,7 +92,6 @@
       }}>
       <UiCarousel
         class="size-full scrollbar-none"
-        direction="horizontal"
         label="Ejercicios"
         onscrollsnapchange={(e) => setCurrentSerie(e.detail.snapTargetInline?.dataset.id)}
         bind:this={carousel}>
@@ -113,6 +117,14 @@
     class="max-lg:contents grid items-start gap-layout-gap container mx-auto w-full 3xl:grid-cols-[1fr,36rem]">
     <div class="grid gap-layout-gap">
       <TrainerNavigator {data} onselect={(serieIndex) => gotoSerie(serieIndex)}></TrainerNavigator>
+      {#if trainerContext.state.timer?.startTime}
+        <article class="p-4 surface color-neutral rounded-card shadow">
+          <div>
+            <span class="font-bold">Hora de inicio:</span>
+            {formatTime(trainerContext.state.timer.startTime)}
+          </div>
+        </article>
+      {/if}
       <TrainerSerieInstructions
         image={'https://ik.imagekit.io/mikhan/gym-trainer/exercises/00289eafca-v258577.gif'}
         alt={`Imagen demostrando como ejecutar el ejercicio ${data.currentSerie.name}`}>

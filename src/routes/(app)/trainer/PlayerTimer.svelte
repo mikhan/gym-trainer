@@ -11,14 +11,15 @@
 
   type Props = {
     state: TrainerContextStateRunning
-    pausePressDuration?: number
   }
 
-  const { state: trainerContextState, pausePressDuration = 1000 }: Props = $props()
+  const { state: trainerContextState }: Props = $props()
+  const pausePressDuration = 1000
   const trainerContext = TrainerContext.getContext()
   const timer: Utils.DeepReadonly<Types.TimePlayer> = $derived(trainerContextState.timer)
   const defaultTimeParts = {
-    minutes: '0',
+    hours: '',
+    minutes: '0:',
     seconds: '00',
     milliseconds: '000',
   }
@@ -31,12 +32,17 @@
     if (currentTime) updateParts(currentTime.duration)
   })
 
+  const pad = (value: number) => String(value).padStart(2, '0')
   function updateParts(timestamp: number) {
     const duration = ~~(timestamp / 1000)
-
-    timeParts.milliseconds = String(~~((timestamp % 1000) / 10)).padStart(2, '0')
-    timeParts.seconds = String(~~duration % 60).padStart(2, '0')
-    if (duration >= 60) timeParts.minutes = String(~~(duration / 60))
+    const milliseconds = ~~((timestamp % 1000) / 10)
+    const seconds = ~~(duration % 60)
+    const minutes = ~~(duration / 60) % 60
+    const hours = ~~(duration / 60 / 60)
+    timeParts.milliseconds = pad(milliseconds)
+    timeParts.seconds = pad(seconds)
+    if (minutes) timeParts.minutes = `${hours ? pad(minutes) : minutes}:`
+    if (hours) timeParts.hours = `${hours}:`
   }
 
   function play() {
@@ -70,8 +76,8 @@
     }
 
     function recalculateDuration() {
-      if (timer.status !== 'playing') return
-      if (currentTime) currentTime.duration = ~~(Date.now() - currentTime.start)
+      if (!currentTime || timer.status !== 'playing') return
+      currentTime.duration = ~~(Date.now() - currentTime.start)
       requestAnimationFrame(recalculateDuration)
     }
   }
@@ -90,9 +96,10 @@
     <div
       class="grid h-full content-end items-end pl-2 text-right font-mono"
       class:animate-paused={timer.status === 'paused'}>
-      <span class="h-6 w-[4ch] text-3xl/6">{timeParts.minutes}:</span>
-      <span class="h-6 w-[2ch] text-3xl/6">{timeParts.seconds}</span>
-      <span class="col-span-2 h-4 text-base/4">{timeParts.milliseconds}</span>
+      <span class="h-4 w-[3ch] text-xl/4">{timeParts.hours}</span>
+      <span class="h-6 w-[3ch] text-3xl/6">{timeParts.minutes}</span>
+      <span class="h-6 text-3xl/6">{timeParts.seconds}</span>
+      <span class="col-span-3 h-4 text-base/4">{timeParts.milliseconds}</span>
     </div>
   {/key}
   <UiIconbutton

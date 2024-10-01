@@ -31,7 +31,7 @@ export class TrainingViewportContext {
   #backup = {} as Types.Training
   #database = getAppDatabaseContext()
 
-  training$ = $state.raw({}) as Types.Training
+  training$ = $state.raw() as Types.Training
   saving$ = $state(false)
   pristine$ = $state(true)
 
@@ -61,6 +61,7 @@ export class TrainingViewportContext {
   }
 
   update(training: Types.Training) {
+    console.log('update', training, training === this.training$)
     this.training$ = training
     this.pristine$ = false
   }

@@ -10,13 +10,12 @@
   import { TrainingViewportContext } from '../../TrainingViewportContext.svelte'
 
   type Props = {
-    training: Types.Training
     routineIndex: number
   }
 
-  const { training, routineIndex }: Props = $props()
-  const trainingViewportContext = TrainingViewportContext.create({ training })
-  const routine = $state(trainingViewportContext.training$.routines[routineIndex]!)
+  const { routineIndex }: Props = $props()
+  const trainingViewportContext = TrainingViewportContext.get()
+  const routine = $derived(trainingViewportContext.training$.routines[routineIndex]!)
 </script>
 
 <!-- <AppMetadata title={`Rutina ${routine.name}`}></AppMetadata> -->
@@ -46,7 +45,5 @@
   </AppEditTopbar>
 {/if} -->
 
-<TrainingListItem
-  {training}
-  {routineIndex}
-  chartData={trainingViewportContext.graphData[routine.id]}></TrainingListItem>
+<TrainingListItem {routineIndex} chartData={trainingViewportContext.graphData[routine.id]}
+></TrainingListItem>

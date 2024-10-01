@@ -1,11 +1,10 @@
-export const UNITS = ['kg', 'lb', 'gr'] as const
+export const UNITS = ['kg', 'lb'] as const
 
 export type Unit = (typeof UNITS)[number]
 
 const conversions: Record<Unit, number> = {
   kg: 1,
   lb: 2.20462,
-  gr: 1000,
 }
 
 export function convertUnit(value: number, from: string, to: string): number {

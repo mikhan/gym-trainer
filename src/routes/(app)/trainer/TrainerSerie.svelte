@@ -51,7 +51,7 @@
         {serie.steps.length} series
       </div>
       <ul
-        class="grid w-full snap-x snap-mandatory scroll-p-6 auto-cols-max grid-flow-col content-end justify-start gap-x-4 gap-y-2 overflow-x-scroll p-6 scrollbar-thin *:snap-start">
+        class="grid w-full snap-x snap-mandatory scroll-p-6 auto-cols-max grid-flow-col content-end justify-start gap-x-4 gap-y-2 overflow-x-scroll p-6 scrollbar *:snap-start">
         <!-- eslint-disable-next-line @typescript-eslint/no-unused-vars -->
         {#each serie.steps as step, stepIndex}
           <TrainerStep {serieIndex} {stepIndex} record={records?.[stepIndex]}></TrainerStep>

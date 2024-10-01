@@ -1,17 +1,15 @@
 <script lang="ts">
   import { type Snippet } from 'svelte'
   import { fly } from 'svelte/transition'
-  import { createStyler } from '$lib/actions/styler.action'
-  import { viewTransitionName } from '$lib/actions/transition.action'
   import { AppShellContext } from '$lib/components/app/AppShellContext.svelte'
+  import { AppStylesContext } from './AppStyleContext.svelte'
 
   type Props = { children: Snippet }
 
   let { children }: Props = $props()
 
   const appShellContext = AppShellContext.create()
-
-  const { getStyle, setStyle } = createStyler()
+  const appStylesContext = new AppStylesContext()
 
   // function autohideHeader(element: HTMLElement) {
   //   const container = element.parentElement!
@@ -41,8 +39,8 @@
 
 <div
   class="app-shell"
-  use:setStyle
-  use:getStyle={(e) => ({
+  style={appStylesContext.style}
+  use:appStylesContext.getStyleFrom={(e) => ({
     '--layout-width': `${e.clientWidth}px`,
     '--layout-height': `${e.clientHeight}px`,
   })}>
@@ -50,7 +48,7 @@
     {#key appShellContext.asideLevel}
       <aside
         class="app-aside"
-        use:getStyle={(e) => ({
+        use:appStylesContext.getStyleFrom={(e) => ({
           '--layout-aside-width': `${e.offsetWidth}px`,
           '--layout-aside-height': 'var(--layout-height)',
         })}>
@@ -61,7 +59,7 @@
 
   <div
     class="grid flex-1 scroll-pt-layout-header-height grid-cols-1 grid-rows-[auto,1fr,auto] overflow-y-scroll scroll-smooth scrollbar scrollbar-track-black scrollbar-stable"
-    use:getStyle={(e) => ({
+    use:appStylesContext.getStyleFrom={(e) => ({
       '--layout-header-width': `${e.clientWidth}px`,
       '--layout-footer-width': `${e.clientWidth}px`,
     })}>
@@ -70,7 +68,7 @@
         <header
           class="app-header"
           transition:fly={{ duration: 200, y: '-100%' }}
-          use:getStyle={(e) => ({
+          use:appStylesContext.getStyleFrom={(e) => ({
             '--layout-header-height': `${e.offsetHeight}px`,
           })}>
           {@render appShellContext.header()}
@@ -80,8 +78,7 @@
 
     <main
       class="app-viewport"
-      use:viewTransitionName={'app-viewport'}
-      use:getStyle={(e) => ({
+      use:appStylesContext.getStyleFrom={(e) => ({
         '--layout-viewport-width': `${e.clientWidth}px`,
       })}>
       {@render children()}
@@ -91,7 +88,7 @@
       {#key appShellContext.footerLevel}
         <footer
           class="app-footer"
-          use:getStyle={(e) => ({
+          use:appStylesContext.getStyleFrom={(e) => ({
             '--layout-footer-height': `${e.offsetHeight}px`,
           })}>
           {@render appShellContext.footer()}
